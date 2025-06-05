@@ -2,10 +2,11 @@
 # cpe - Computational Physics Environment
 
 ## Table of Contents
-- [About](#-about)
-- [How to Build](#-how-to-build)
-- [License](#-license)
+- [About](#about)
+- [How to Build](#how-to-build)
+- [License](#license)
 
+<a name="about"></a>
 ## About
 
 This project exists to be my playground for learning what is involved in
@@ -24,6 +25,7 @@ real-time applications like games or flight simulators.
 My primary objective is to learn how the codes work.  Things like performance
 and scalability to large problems are definitely lesser concerns at this point.
 
+<a name="how-to-build"></a>
 ## How to Build
 
 ### Linux
@@ -47,6 +49,7 @@ cmake --build .
 cmake --install .
 ```
 
+<a name="license"></a>
 ## License
 
 This product is distributed under the terms of the
