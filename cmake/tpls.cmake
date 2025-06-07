@@ -1,0 +1,22 @@
+set(all_options "${CPE_USE_GOOGLETEST}" "${CPE_USE_YAML_CPP}")
+set(need_tpls FALSE)
+foreach(opt ${all_options})
+  if(${opt})
+    set(need_tpls TRUE)
+  endif()
+endforeach()
+
+if(need_tpls)
+  h2("SETUP TPLS")
+  include(FetchContent)
+endif()
+
+option(CPE_USE_GOOGLETEST "Indicate if googletest should be included" ON)
+if(CPE_USE_GOOGLETEST)
+  include(tpl_googletest)
+endif()
+
+option(CPE_USE_YAML_CPP "Indicate if yaml-cpp should be included" ON)
+if(CPE_USE_YAML_CPP)
+  include(tpl_yaml_cpp)
+endif()

@@ -30,3 +30,17 @@
 *.exe
 *.out
 *.app
+
+# Build directories
+build
+BUILD
+build_
+
+# Install directories
+install
+INSTALL
+install_
+
+# Build system stuff
+compile_commands.json
+.cache
