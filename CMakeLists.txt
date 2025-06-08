@@ -7,8 +7,11 @@ h2("SETUP COMPILERS")
 message(STATUS "The CMake version is ${CMAKE_VERSION}")
 message(STATUS "The CMake generator is \"${CMAKE_GENERATOR}\"")
 project("${_project}"
-	VERSION "${_version}"
-	LANGUAGES C CXX)
+        VERSION "${_version}"
+        LANGUAGES C CXX)
+if(CPE_DO_UNIT_TESTS)
+  include(CTest)
+endif()
 
 include(tpls)
 
