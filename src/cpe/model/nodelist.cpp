@@ -22,24 +22,16 @@
 #include <cpe/model/nodelist.hpp>
 #include <sstream>
 #include <stdexcept>
-#include <utility>
 
 namespace cpe::model {
 
-NodeList::NodeList(std::size_t number) {
-  if (number > 0) node_list_.reserve(number);
-}
-
 void NodeList::add(std::size_t id, double x, double y, double z) {
-  if (node_ids_.count(id) > 0) {
+  if (nodes_.count(id) > 0) {
     std::stringstream msg;
     msg << "Cannot add node id=" << id << ", it already exists.";
     throw std::runtime_error(msg.str());
   }
-  Node node = {x, y, z};
-  std::size_t index = node_list_.size();
-  node_list_.push_back(std::move(node));
-  node_ids_[id] = index;
+  nodes_[id] = {x, y, z};
 }
 
 }  // namespace cpe::model

@@ -19,12 +19,10 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-#ifndef CPE_MODEL_NODELIST_HPP
-#define CPE_MODEL_NODELIST_HPP
+#pragma once
 
 #include <cstddef>
 #include <map>
-#include <vector>
 
 namespace cpe::model {
 
@@ -36,21 +34,14 @@ struct Node {
 
 class NodeList {
  public:
-  NodeList(std::size_t number = 0);
-
   void add(std::size_t id, double x, double y = 0.0, double z = 0.0);
 
-  Node& getById(std::size_t id) { return node_list_[node_ids_[id]]; }
-  Node& operator[](std::size_t i) { return node_list_[i]; }
+  const Node& operator[](std::size_t i) { return nodes_[i]; }
 
-  std::size_t capacity() { return node_list_.capacity(); }
-  std::size_t size() { return node_list_.size(); }
+  std::size_t size() { return nodes_.size(); }
 
  private:
-  std::map<std::size_t, std::size_t> node_ids_;
-  std::vector<Node> node_list_;
+  std::map<std::size_t, Node> nodes_;
 };
 
 }  // namespace cpe::model
-
-#endif  // CPE_MODEL_NODELIST_HPP

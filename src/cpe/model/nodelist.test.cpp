@@ -30,48 +30,24 @@ namespace {
 TEST(NodeListTest, Create) {
   cpe::model::NodeList node_list;
   EXPECT_EQ(node_list.size(), 0);
-  EXPECT_EQ(node_list.capacity(), 0);
-}
-
-TEST(NodeListTest, CreateReserve) {
-  const std::size_t n = 100000;
-  cpe::model::NodeList node_list(n);
-  EXPECT_EQ(node_list.size(), 0);
-  EXPECT_EQ(node_list.capacity(), n);
 }
 
 TEST(NodeListTest, Add) {
   const std::size_t n = 5;
   cpe::model::NodeList node_list;
   EXPECT_EQ(node_list.size(), 0);
-  EXPECT_EQ(node_list.capacity(), 0);
   for (std::size_t i = 0; i < n; i++) {
     node_list.add(i, 0.0);
   }
   EXPECT_EQ(node_list.size(), n);
-  EXPECT_GE(node_list.capacity(), n);
-}
-
-TEST(NodeListTest, AddReserve) {
-  const std::size_t n = 5;
-  cpe::model::NodeList node_list(n);
-  EXPECT_EQ(node_list.size(), 0);
-  EXPECT_EQ(node_list.capacity(), n);
-  for (std::size_t i = 0; i < n; i++) {
-    node_list.add(i, 0.0);
-  }
-  EXPECT_EQ(node_list.size(), n);
-  EXPECT_EQ(node_list.capacity(), n);
 }
 
 TEST(NodeListTest, AddDuplicate) {
   cpe::model::NodeList node_list;
   EXPECT_EQ(node_list.size(), 0);
-  EXPECT_EQ(node_list.capacity(), 0);
   node_list.add(0, 0.0);
   EXPECT_THROW(node_list.add(0, 0.0), std::runtime_error);
   EXPECT_EQ(node_list.size(), 1);
-  EXPECT_EQ(node_list.capacity(), 1);
 }
 
 TEST(NodeListTest, Access) {
@@ -82,14 +58,10 @@ TEST(NodeListTest, Access) {
   cpe::model::NodeList node_list;
   node_list.add(id, x, y, z);
 
-  cpe::model::Node& n1 = node_list[0];
-  EXPECT_EQ(n1.x, x);
-  EXPECT_EQ(n1.y, y);
-  EXPECT_EQ(n1.z, z);
-  cpe::model::Node& n2 = node_list.getById(id);
-  EXPECT_EQ(n2.x, x);
-  EXPECT_EQ(n2.y, y);
-  EXPECT_EQ(n2.z, z);
+  const cpe::model::Node& node = node_list[id];
+  EXPECT_EQ(node.x, x);
+  EXPECT_EQ(node.y, y);
+  EXPECT_EQ(node.z, z);
 }
 
 }  // namespace
