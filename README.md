@@ -38,6 +38,7 @@ git clone https://github.com/lamberss/cpe.git
 
 # Make a build directory and move into it
 mkdir -p cpe/BUILD
+cd cpe/BUILD
 
 # Configure the build (change build type and install prefix as desired)
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../INSTALL ..
