@@ -18,5 +18,8 @@ include(tpls)
 
 h2("CONFIGURING CODE")
 add_subdirectory(src)
+if(CPE_DO_SYSTEM_TESTS)
+  add_subdirectory(tests)
+endif()
 
 h2("FINALIZING")

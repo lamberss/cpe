@@ -8,9 +8,13 @@ endif()
 
 h1("Project: ${_project} v${_version} (${CMAKE_BUILD_TYPE})")
 
+option(CPE_DO_SYSTEM_TESTS "Build the system tests" ON)
+message(STATUS "Option CPE_DO_SYSTEM_TESTS: ${CPE_DO_SYSTEM_TESTS}")
+
 option(CPE_DO_UNIT_TESTS "Build the unit tests" ON)
 message(STATUS "Option CPE_DO_UNIT_TESTS: ${CPE_DO_UNIT_TESTS}")
-if(CPE_DO_UNIT_TESTS)
+
+if(CPE_DO_SYSTEM_TESTS OR CPE_DO_UNIT_TESTS)
   set(CPE_USE_GOOGLETEST ON)
 endif()
 

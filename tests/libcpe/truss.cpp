@@ -1,0 +1,81 @@
+// MIT License
+//
+// Copyright (c) 2025 Steven E. Lamberson, Jr.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+#include <gtest/gtest.h>
+
+#include <cpe/model/material.hpp>
+#include <cpe/model/nodelist.hpp>
+#include <cpe/model/property.hpp>
+#include <string>
+
+namespace {
+
+TEST(TrussCpeSystemTest, Truss) {
+  // Problem parameters
+  const double b = 0.005;  // m
+  const double H = 0.12;   // m
+  const double L = 0.16;   // m
+  // const double P =  1.0;      // N
+  const double E = 70.0e9;  // Pa
+  const double nu = 0.32;
+
+  // Define material
+  const std::string name("Aluminum");
+  cpe::model::Material material(name, E, nu);
+
+  // Define properties
+  cpe::model::Property property;
+  property[std::string("area")] = b * b;
+
+  // Define nodelist
+  cpe::model::NodeList node_list;
+  node_list.add(0, 0.0, 0.0);
+  node_list.add(1, 0.0, H);
+  node_list.add(2, L, 0.0);
+  node_list.add(3, L, H);
+  node_list.add(4, 2.0 * L, 0.0);
+  node_list.add(5, 2.0 * L, H);
+
+  // Define elements
+  // nodes 0 2
+  // nodes 0 3
+  // nodes 1 3
+  // nodes 2 3
+  // nodes 2 4
+  // nodes 3 4
+  // nodes 3 5
+  // nodes 4 5
+
+  // Define boundary conditions
+  // nodes 0 and 1, x=0, y=0
+  // all, z=0
+
+  // Define loads
+  // node 5, Fy=-P
+
+  // Assemble the model
+
+  // Compute the solution
+
+  // Output the results
+}
+
+}  // namespace
