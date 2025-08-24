@@ -22,12 +22,22 @@
 #include <gtest/gtest.h>
 
 #include <cpe/model/property.hpp>
+#include <string>
 
 namespace {
 
 TEST(PropertyTest, Create) {
   cpe::model::Property property;
   EXPECT_EQ(property.size(), 0);
+}
+
+TEST(PropertyTest, Accessor) {
+  cpe::model::Property property;
+  std::string label("label");
+  const double value = 5.0;
+  property[label] = value;
+  EXPECT_EQ(property.size(), 1);
+  EXPECT_EQ(property[label], value);
 }
 
 }  // namespace
