@@ -1,11 +1,16 @@
 message(STATUS "Adding library model")
-add_library(model material.cpp nodelist.cpp property.cpp)
+add_library(model material.cpp model.cpp nodelist.cpp property.cpp)
 target_include_directories(model PUBLIC ${PROJECT_SOURCE_DIR}/src)
 
 message(STATUS "Adding unit test for material")
 add_executable(material_test material.test.cpp)
 target_link_libraries(material_test model GTest::gtest_main)
 add_test(NAME material_test COMMAND material_test)
+
+message(STATUS "Adding unit test for model")
+add_executable(model_test model.test.cpp)
+target_link_libraries(model_test model GTest::gtest_main)
+add_test(NAME model_test COMMAND model_test)
 
 message(STATUS "Adding unit test for nodelist")
 add_executable(nodelist_test nodelist.test.cpp)
