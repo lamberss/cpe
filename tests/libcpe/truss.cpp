@@ -22,7 +22,7 @@
 #include <gtest/gtest.h>
 
 #include <cpe/model/material.hpp>
-#include <cpe/model/nodelist.hpp>
+#include <cpe/model/model.hpp>
 #include <cpe/model/property.hpp>
 #include <string>
 
@@ -37,6 +37,9 @@ TEST(TrussCpeSystemTest, Truss) {
   const double E = 70.0e9;  // Pa
   const double nu = 0.32;
 
+  // Create model
+  cpe::model::Model model;
+
   // Define material
   const std::string name("Aluminum");
   cpe::model::Material material(name, E, nu);
@@ -46,13 +49,12 @@ TEST(TrussCpeSystemTest, Truss) {
   property[std::string("area")] = b * b;
 
   // Define nodelist
-  cpe::model::NodeList node_list;
-  node_list.add(0, 0.0, 0.0);
-  node_list.add(1, 0.0, H);
-  node_list.add(2, L, 0.0);
-  node_list.add(3, L, H);
-  node_list.add(4, 2.0 * L, 0.0);
-  node_list.add(5, 2.0 * L, H);
+  model.nodes.add(0, 0.0, 0.0);
+  model.nodes.add(1, 0.0, H);
+  model.nodes.add(2, L, 0.0);
+  model.nodes.add(3, L, H);
+  model.nodes.add(4, 2.0 * L, 0.0);
+  model.nodes.add(5, 2.0 * L, H);
 
   // Define elements
   // nodes 0 2
