@@ -1,23 +1,17 @@
+set(TEST_EXE_PREFIX "${TEST_EXE_PREFIX}_model")
+set(TEST_NAME_PREFIX "${TEST_NAME_PREFIX}.model")
+
+set(model_sources material.cpp model.cpp nodelist.cpp property.cpp)
+
 message(STATUS "Adding library model")
-add_library(model material.cpp model.cpp nodelist.cpp property.cpp)
+add_library(model ${model_sources})
 target_include_directories(model PUBLIC ${PROJECT_SOURCE_DIR}/src)
 
-message(STATUS "Adding unit test for material")
-add_executable(material_test material.test.cpp)
-target_link_libraries(material_test model GTest::gtest_main)
-add_test(NAME material_test COMMAND material_test)
-
-message(STATUS "Adding unit test for model")
-add_executable(model_test model.test.cpp)
-target_link_libraries(model_test model GTest::gtest_main)
-add_test(NAME model_test COMMAND model_test)
-
-message(STATUS "Adding unit test for nodelist")
-add_executable(nodelist_test nodelist.test.cpp)
-target_link_libraries(nodelist_test model GTest::gtest_main)
-add_test(NAME nodelist_test COMMAND nodelist_test)
-
-message(STATUS "Adding unit test for property")
-add_executable(property_test property.test.cpp)
-target_link_libraries(property_test model GTest::gtest_main)
-add_test(NAME property_test COMMAND property_test)
+foreach(source ${model_sources})
+  cmake_path(GET source STEM component)
+  set(test_name ${TEST_EXE_PREFIX}_${component})
+  message(STATUS "Adding unit test for ${component}")
+  add_executable(${test_name} ${component}.test.cpp)
+  target_link_libraries(${test_name} model GTest::gtest_main)
+  add_test(NAME ${TEST_NAME_PREFIX}.${component} COMMAND ${test_name})
+endforeach()

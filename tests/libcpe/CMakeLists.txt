@@ -1,6 +1,7 @@
-set(TEST_SUFFIX "libcpe_${TEST_SUFFIX}")
+set(TEST_EXE_PREFIX "${TEST_EXE_PREFIX}_libcpe")
+set(TEST_NAME_PREFIX "${TEST_NAME_PREFIX}.libcpe")
 
 message(STATUS "Adding truss system test")
-add_executable(truss_${TEST_SUFFIX} truss.cpp)
-target_link_libraries(truss_${TEST_SUFFIX} model GTest::gtest_main)
-add_test(NAME truss_${TEST_SUFFIX} COMMAND truss_${TEST_SUFFIX})
+add_executable(${TEST_EXE_PREFIX}_truss truss.cpp)
+target_link_libraries(${TEST_EXE_PREFIX}_truss model GTest::gtest_main)
+add_test(NAME ${TEST_NAME_PREFIX}.truss COMMAND ${TEST_EXE_PREFIX}_truss)

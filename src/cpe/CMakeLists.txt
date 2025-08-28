@@ -1,1 +1,4 @@
+set(TEST_EXE_PREFIX "${TEST_EXE_PREFIX}_cpe")
+set(TEST_NAME_PREFIX "${TEST_NAME_PREFIX}.cpe")
+
 add_subdirectory(model)
