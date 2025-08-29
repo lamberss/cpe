@@ -21,27 +21,12 @@
 // SOFTWARE.
 #pragma once
 
-#include <cstddef>
-#include <map>
-
 namespace cpe::model {
 
 struct Node {
   double x = 0.0;
   double y = 0.0;
   double z = 0.0;
-};
-
-class NodeList {
- public:
-  void add(std::size_t id, double x, double y = 0.0, double z = 0.0);
-
-  const Node& operator[](std::size_t i) { return nodes_[i]; }
-
-  std::size_t size() { return nodes_.size(); }
-
- private:
-  std::map<std::size_t, Node> nodes_;
 };
 
 }  // namespace cpe::model

@@ -21,16 +21,11 @@
 // SOFTWARE.
 #pragma once
 
+#include <cpe/model/node.hpp>
 #include <cstddef>
 #include <map>
 
 namespace cpe::model {
-
-struct Node {
-  double x = 0.0;
-  double y = 0.0;
-  double z = 0.0;
-};
 
 class NodeList {
  public:
