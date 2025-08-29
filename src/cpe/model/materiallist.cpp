@@ -19,25 +19,20 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-#pragma once
-
-#include <string>
+#include <cpe/model/materiallist.hpp>
+#include <sstream>
+#include <stdexcept>
 
 namespace cpe::model {
 
-class Material {
- public:
-  Material();
-  Material(const std::string& name, double E, double nu);
-
-  const std::string& name() const { return name_; }
-  const double& youngsModulus() const { return E_; }
-  const double& poissonsRatio() const { return nu_; }
-
- private:
-  std::string name_;
-  double E_;
-  double nu_;
-};
+void MaterialList::add(std::string name, double E, double nu) {
+  if (materials_.count(name) > 0) {
+    std::stringstream msg;
+    msg << "Cannot add material name=" << name << ", it already exists.";
+    throw std::runtime_error(msg.str());
+  }
+  Material material(name, E, nu);
+  materials_.emplace(name, material);
+}
 
 }  // namespace cpe::model

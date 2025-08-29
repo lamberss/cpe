@@ -19,25 +19,44 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-#pragma once
+#include <gtest/gtest.h>
 
-#include <string>
+#include <cpe/model/materiallist.hpp>
+#include <stdexcept>
 
-namespace cpe::model {
+namespace {
 
-class Material {
- public:
-  Material();
-  Material(const std::string& name, double E, double nu);
+TEST(MaterialListTest, Create) {
+  cpe::model::MaterialList material_list;
+  EXPECT_EQ(material_list.size(), 0);
+}
 
-  const std::string& name() const { return name_; }
-  const double& youngsModulus() const { return E_; }
-  const double& poissonsRatio() const { return nu_; }
+TEST(MaterialListTest, Add) {
+  const std::string name("steel");
+  cpe::model::MaterialList material_list;
+  EXPECT_EQ(material_list.size(), 0);
+  material_list.add(name, 210.0e9, 0.3);
+  EXPECT_EQ(material_list.size(), 1);
+}
 
- private:
-  std::string name_;
-  double E_;
-  double nu_;
-};
+TEST(MaterialListTest, AddDuplicate) {
+  cpe::model::MaterialList material_list;
+  EXPECT_EQ(material_list.size(), 0);
+  material_list.add("steel", 210.0e9, 0.3);
+  EXPECT_THROW(material_list.add("steel", 0.0, 0.0), std::runtime_error);
+  EXPECT_EQ(material_list.size(), 1);
+}
 
-}  // namespace cpe::model
+TEST(MaterialListTest, Access) {
+  const std::string name = "steel";
+  const double E = 210.0e9;
+  const double nu = 0.3;
+  cpe::model::MaterialList material_list;
+  material_list.add(name, E, nu);
+
+  const cpe::model::Material& material = material_list[name];
+  EXPECT_EQ(material.youngsModulus(), E);
+  EXPECT_EQ(material.poissonsRatio(), nu);
+}
+
+}  // namespace

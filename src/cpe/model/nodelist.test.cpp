@@ -22,7 +22,6 @@
 #include <gtest/gtest.h>
 
 #include <cpe/model/nodelist.hpp>
-#include <cstddef>
 #include <stdexcept>
 
 namespace {

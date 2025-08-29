@@ -21,23 +21,22 @@
 // SOFTWARE.
 #pragma once
 
+#include <cpe/model/material.hpp>
+#include <map>
 #include <string>
 
 namespace cpe::model {
 
-class Material {
+class MaterialList {
  public:
-  Material();
-  Material(const std::string& name, double E, double nu);
+  void add(std::string name, double E, double nu);
 
-  const std::string& name() const { return name_; }
-  const double& youngsModulus() const { return E_; }
-  const double& poissonsRatio() const { return nu_; }
+  const Material& operator[](const std::string& s) { return materials_[s]; }
+
+  std::size_t size() const { return materials_.size(); }
 
  private:
-  std::string name_;
-  double E_;
-  double nu_;
+  std::map<std::string, Material> materials_;
 };
 
 }  // namespace cpe::model

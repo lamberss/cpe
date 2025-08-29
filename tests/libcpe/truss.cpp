@@ -21,7 +21,6 @@
 // SOFTWARE.
 #include <gtest/gtest.h>
 
-#include <cpe/model/material.hpp>
 #include <cpe/model/model.hpp>
 #include <cpe/model/property.hpp>
 #include <string>
@@ -41,8 +40,7 @@ TEST(TrussCpeSystemTest, Truss) {
   cpe::model::Model model;
 
   // Define material
-  const std::string name("Aluminum");
-  cpe::model::Material material(name, E, nu);
+  model.materials.add("Aluminum", E, nu);
 
   // Define properties
   cpe::model::Property property;

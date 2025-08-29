@@ -22,7 +22,6 @@
 #pragma once
 
 #include <cpe/model/node.hpp>
-#include <cstddef>
 #include <map>
 
 namespace cpe::model {
