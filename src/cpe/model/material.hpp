@@ -27,15 +27,19 @@ namespace cpe::model {
 
 class Material {
  public:
-  Material();
+  Material() = delete;
+  Material(const Material&) = delete;
+  Material(Material&&) = delete;
+  Material& operator=(const Material&) = delete;
+  Material& operator=(Material&&) = delete;
+
   Material(const std::string& name, double E, double nu);
 
-  const std::string& name() const { return name_; }
+  const std::string name;
   const double& youngsModulus() const { return E_; }
   const double& poissonsRatio() const { return nu_; }
 
  private:
-  std::string name_;
   double E_;
   double nu_;
 };

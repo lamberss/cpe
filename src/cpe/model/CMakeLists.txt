@@ -1,7 +1,7 @@
 set(TEST_EXE_PREFIX "${TEST_EXE_PREFIX}_model")
 set(TEST_NAME_PREFIX "${TEST_NAME_PREFIX}.model")
 
-set(model_sources material.cpp materiallist.cpp model.cpp nodelist.cpp property.cpp)
+set(model_sources material.cpp model.cpp nodelist.cpp property.cpp)
 
 message(STATUS "Adding library model")
 add_library(model ${model_sources})

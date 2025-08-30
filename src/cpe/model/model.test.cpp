@@ -28,7 +28,6 @@ namespace {
 
 TEST(ModelTest, Create) {
   cpe::model::Model model;
-  EXPECT_EQ(model.materials.size(), 0);
   EXPECT_EQ(model.nodes.size(), 0);
 }
 

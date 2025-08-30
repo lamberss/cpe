@@ -21,14 +21,27 @@
 // SOFTWARE.
 #pragma once
 
+#include <cpe/model/material.hpp>
 #include <cstddef>
 #include <map>
+#include <memory>
 #include <string>
 
 namespace cpe::model {
 
 class Property {
  public:
+  Property() = delete;
+  Property(const Property&) = delete;
+  Property(Property&&) = delete;
+  Property& operator=(const Property&) = delete;
+  Property& operator=(Property&&) = delete;
+
+  Property(const std::string& name, std::shared_ptr<Material> material);
+
+  const std::shared_ptr<Material> material;
+  const std::string name;
+
   double& operator[](const std::string& key) { return attributes_[key]; }
 
   std::size_t size() { return attributes_.size(); }

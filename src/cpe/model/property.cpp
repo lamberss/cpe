@@ -21,4 +21,9 @@
 // SOFTWARE.
 #include <cpe/model/property.hpp>
 
-namespace cpe::model {}  // namespace cpe::model
+namespace cpe::model {
+
+Property::Property(const std::string& n, std::shared_ptr<Material> m)
+    : material(m), name(n) {};
+
+}  // namespace cpe::model

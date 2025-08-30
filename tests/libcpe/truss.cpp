@@ -21,8 +21,10 @@
 // SOFTWARE.
 #include <gtest/gtest.h>
 
+#include <cpe/model/material.hpp>
 #include <cpe/model/model.hpp>
 #include <cpe/model/property.hpp>
+#include <memory>
 #include <string>
 
 namespace {
@@ -36,15 +38,17 @@ TEST(TrussCpeSystemTest, Truss) {
   const double E = 70.0e9;  // Pa
   const double nu = 0.32;
 
-  // Create model
-  cpe::model::Model model;
-
   // Define material
-  model.materials.add("Aluminum", E, nu);
+  std::shared_ptr<cpe::model::Material> material =
+      std::make_shared<cpe::model::Material>("Aluminum", E, nu);
 
   // Define properties
-  cpe::model::Property property;
-  property[std::string("area")] = b * b;
+  std::shared_ptr<cpe::model::Property> property =
+      std::make_shared<cpe::model::Property>("square", material);
+  (*property)["area"] = b * b;
+
+  // Create model
+  cpe::model::Model model;
 
   // Define nodelist
   model.nodes.add(0, 0.0, 0.0);

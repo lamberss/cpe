@@ -21,7 +21,6 @@
 // SOFTWARE.
 #pragma once
 
-#include <cpe/model/materiallist.hpp>
 #include <cpe/model/nodelist.hpp>
 #include <vector>
 
@@ -29,7 +28,6 @@ namespace cpe::model {
 
 class Model {
  public:
-  MaterialList materials;
   NodeList nodes;
 };
 
