@@ -20,6 +20,5 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 #include <cpe/model/model.hpp>
-#include <string>
 
 namespace cpe::model {}  // namespace cpe::model

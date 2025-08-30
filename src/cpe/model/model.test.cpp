@@ -22,7 +22,6 @@
 #include <gtest/gtest.h>
 
 #include <cpe/model/model.hpp>
-#include <string>
 
 namespace {
 

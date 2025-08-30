@@ -27,7 +27,6 @@
 #include <cpe/model/model.hpp>
 #include <cpe/model/property.hpp>
 #include <memory>
-#include <string>
 
 namespace {
 

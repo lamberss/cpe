@@ -22,7 +22,6 @@
 #pragma once
 
 #include <cpe/model/material.hpp>
-#include <cstddef>
 #include <map>
 #include <memory>
 #include <string>

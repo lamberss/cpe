@@ -24,7 +24,6 @@
 #include <cpe/model/elementblock.hpp>
 #include <cpe/model/material.hpp>
 #include <cpe/model/property.hpp>
-#include <string>
 
 namespace {
 

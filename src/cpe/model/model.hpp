@@ -22,7 +22,6 @@
 #pragma once
 
 #include <cpe/model/nodelist.hpp>
-#include <vector>
 
 namespace cpe::model {
 
