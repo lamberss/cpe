@@ -21,12 +21,16 @@
 // SOFTWARE.
 #pragma once
 
+#include <cpe/model/elementblock.hpp>
 #include <cpe/model/nodelist.hpp>
+#include <memory>
+#include <vector>
 
 namespace cpe::model {
 
 class Model {
  public:
+  std::vector<std::shared_ptr<ElementBlockBase> > blocks;
   NodeList nodes;
 };
 

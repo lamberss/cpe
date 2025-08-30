@@ -60,15 +60,18 @@ TEST(TrussCpeSystemTest, Truss) {
   model.nodes.add(5, 2.0 * L, H);
 
   // Define elements
-  cpe::model::ElementBlock<cpe::model::Element> block("truss", property, 8);
-  block.emplace_back(0, 2);
-  block.emplace_back(0, 3);
-  block.emplace_back(1, 3);
-  block.emplace_back(2, 3);
-  block.emplace_back(2, 4);
-  block.emplace_back(3, 4);
-  block.emplace_back(3, 5);
-  block.emplace_back(4, 5);
+  using element_block_t = cpe::model::ElementBlock<cpe::model::Element>;
+  std::shared_ptr<element_block_t> block =
+      std::make_shared<element_block_t>("truss", property, 8);
+  model.blocks.push_back(block);
+  block->emplace_back(0, 2);
+  block->emplace_back(0, 3);
+  block->emplace_back(1, 3);
+  block->emplace_back(2, 3);
+  block->emplace_back(2, 4);
+  block->emplace_back(3, 4);
+  block->emplace_back(3, 5);
+  block->emplace_back(4, 5);
 
   // Define boundary conditions
   // nodes 0 and 1, x=0, y=0

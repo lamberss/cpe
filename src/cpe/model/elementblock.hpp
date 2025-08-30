@@ -28,8 +28,14 @@
 
 namespace cpe::model {
 
+class ElementBlockBase {
+ public:
+  virtual void reserve(std::size_t) = 0;
+  virtual ~ElementBlockBase() = default;
+};
+
 template <typename T>
-class ElementBlock {
+class ElementBlock : public ElementBlockBase {
  public:
   ElementBlock() = delete;
   ElementBlock(const ElementBlock&) = delete;
