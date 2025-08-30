@@ -19,18 +19,41 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-#pragma once
+#include <gtest/gtest.h>
 
-namespace cpe::model {
+#include <cpe/model/node.hpp>
 
-class Node {
- public:
-  Node(double xx = 0.0, double yy = 0.0, double zz = 0.0)
-      : x(xx), y(yy), z(zz) {};
+namespace {
 
-  double x;
-  double y;
-  double z;
-};
+TEST(NodeTest, Create0) {
+  cpe::model::Node n;
+  EXPECT_EQ(n.x, 0.0);
+  EXPECT_EQ(n.y, 0.0);
+  EXPECT_EQ(n.z, 0.0);
+}
 
-}  // namespace cpe::model
+TEST(NodeTest, Create1) {
+  const double x = 1.0;
+  cpe::model::Node n(x);
+  EXPECT_EQ(n.x, x);
+  EXPECT_EQ(n.y, 0.0);
+  EXPECT_EQ(n.z, 0.0);
+}
+
+TEST(NodeTest, Create2) {
+  const double x = 1.0, y = 2.0;
+  cpe::model::Node n(x, y);
+  EXPECT_EQ(n.x, x);
+  EXPECT_EQ(n.y, y);
+  EXPECT_EQ(n.z, 0.0);
+}
+
+TEST(NodeTest, Create3) {
+  const double x = 1.0, y = 2.0, z = 3.0;
+  cpe::model::Node n(x, y, z);
+  EXPECT_EQ(n.x, x);
+  EXPECT_EQ(n.y, y);
+  EXPECT_EQ(n.z, z);
+}
+
+}  // namespace

@@ -19,18 +19,18 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-#pragma once
+#include <gtest/gtest.h>
 
-namespace cpe::model {
+#include <cpe/model/element.hpp>
 
-class Node {
- public:
-  Node(double xx = 0.0, double yy = 0.0, double zz = 0.0)
-      : x(xx), y(yy), z(zz) {};
+namespace {
 
-  double x;
-  double y;
-  double z;
-};
+TEST(ElementTest, CreateAndAccess) {
+  const std::size_t n1 = 1000532;
+  const std::size_t n2 = 47;
+  cpe::model::Element element(n1, n2);
+  EXPECT_EQ(element[0], n1);
+  EXPECT_EQ(element[1], n2);
+}
 
-}  // namespace cpe::model
+}  // namespace

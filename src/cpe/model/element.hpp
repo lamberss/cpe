@@ -21,16 +21,23 @@
 // SOFTWARE.
 #pragma once
 
+#include <array>
+
 namespace cpe::model {
 
-class Node {
+class Element {
  public:
-  Node(double xx = 0.0, double yy = 0.0, double zz = 0.0)
-      : x(xx), y(yy), z(zz) {};
+  Element() = delete;
 
-  double x;
-  double y;
-  double z;
+  Element(std::size_t n1, std::size_t n2) {
+    nodes[0] = n1;
+    nodes[1] = n2;
+  }
+
+  std::size_t operator[](std::size_t i) { return nodes[i]; }
+
+  static constexpr int nNodes = 2;
+  std::array<std::size_t, nNodes> nodes;
 };
 
 }  // namespace cpe::model

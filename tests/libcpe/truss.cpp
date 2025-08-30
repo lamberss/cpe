@@ -21,6 +21,8 @@
 // SOFTWARE.
 #include <gtest/gtest.h>
 
+#include <cpe/model/element.hpp>
+#include <cpe/model/elementblock.hpp>
 #include <cpe/model/material.hpp>
 #include <cpe/model/model.hpp>
 #include <cpe/model/property.hpp>
@@ -59,14 +61,15 @@ TEST(TrussCpeSystemTest, Truss) {
   model.nodes.add(5, 2.0 * L, H);
 
   // Define elements
-  // nodes 0 2
-  // nodes 0 3
-  // nodes 1 3
-  // nodes 2 3
-  // nodes 2 4
-  // nodes 3 4
-  // nodes 3 5
-  // nodes 4 5
+  cpe::model::ElementBlock<cpe::model::Element> block("truss", property, 8);
+  block.emplace_back(0, 2);
+  block.emplace_back(0, 3);
+  block.emplace_back(1, 3);
+  block.emplace_back(2, 3);
+  block.emplace_back(2, 4);
+  block.emplace_back(3, 4);
+  block.emplace_back(3, 5);
+  block.emplace_back(4, 5);
 
   // Define boundary conditions
   // nodes 0 and 1, x=0, y=0
