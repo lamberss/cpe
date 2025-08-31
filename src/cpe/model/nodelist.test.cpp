@@ -57,10 +57,15 @@ TEST(NodeListTest, Access) {
   cpe::model::NodeList node_list;
   node_list.add(id, x, y, z);
 
-  const cpe::model::Node& node = node_list[id];
-  EXPECT_EQ(node.x, x);
-  EXPECT_EQ(node.y, y);
-  EXPECT_EQ(node.z, z);
+  const cpe::model::Node& node1 = node_list[0];
+  EXPECT_EQ(node1.x, x);
+  EXPECT_EQ(node1.y, y);
+  EXPECT_EQ(node1.z, z);
+
+  const cpe::model::Node& node2 = node_list.getById(id);
+  EXPECT_EQ(node2.x, x);
+  EXPECT_EQ(node2.y, y);
+  EXPECT_EQ(node2.z, z);
 }
 
 }  // namespace

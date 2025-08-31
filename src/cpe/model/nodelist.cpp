@@ -25,13 +25,19 @@
 
 namespace cpe::model {
 
+NodeList::NodeList(std::size_t n) {
+  if (n > 0) reserve(n);
+}
+
 void NodeList::add(std::size_t id, double x, double y, double z) {
-  if (nodes_.count(id) > 0) {
+  if (node_ids_.count(id) > 0) {
     std::stringstream msg;
     msg << "Cannot add node id=" << id << ", it already exists.";
     throw std::runtime_error(msg.str());
   }
-  nodes_[id] = {x, y, z};
+  std::size_t index = nodes_.size();
+  nodes_.emplace_back(x, y, z);
+  node_ids_[id] = index;
 }
 
 }  // namespace cpe::model

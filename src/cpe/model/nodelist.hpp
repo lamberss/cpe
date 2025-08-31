@@ -23,19 +23,25 @@
 
 #include <cpe/model/node.hpp>
 #include <map>
+#include <vector>
 
 namespace cpe::model {
 
 class NodeList {
  public:
+  NodeList(std::size_t n = 0);
+
   void add(std::size_t id, double x, double y = 0.0, double z = 0.0);
 
+  const Node& getById(std::size_t id) { return nodes_[node_ids_[id]]; }
   const Node& operator[](std::size_t i) { return nodes_[i]; }
 
+  void reserve(std::size_t n) { nodes_.reserve(n); }
   std::size_t size() { return nodes_.size(); }
 
  private:
-  std::map<std::size_t, Node> nodes_;
+  std::map<std::size_t, std::size_t> node_ids_;
+  std::vector<Node> nodes_;
 };
 
 }  // namespace cpe::model
