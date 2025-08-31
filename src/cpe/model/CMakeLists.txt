@@ -7,7 +7,7 @@ message(STATUS "Adding library: model")
 add_library(model ${model_sources})
 target_include_directories(model PUBLIC ${PROJECT_SOURCE_DIR}/src)
 
-list(APPEND model_sources element.hpp elementblock.hpp node.hpp)
+list(APPEND model_sources dof.hpp element.hpp elementblock.hpp node.hpp)
 
 list(SORT model_sources)
 foreach(source ${model_sources})
