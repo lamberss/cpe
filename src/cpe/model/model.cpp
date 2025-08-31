@@ -21,4 +21,19 @@
 // SOFTWARE.
 #include <cpe/model/model.hpp>
 
-namespace cpe::model {}  // namespace cpe::model
+namespace cpe::model {
+
+void Model::add_constraint(dof::Dof dof) {
+  for (std::size_t i = 0; i < nodes.size(); ++i) add_constraint(dof, i);
+}
+
+void Model::add_constraint(dof::Dof dof, std::size_t i) {
+  if (constraints.count(i) == 0) constraints[i] = dof::NONE;
+  constraints[i] = static_cast<dof::Dof>(constraints[i] | dof);
+}
+
+void Model::add_constraint(dof::Dof dof, const std::vector<std::size_t>& is) {
+  for (std::size_t i : is) add_constraint(dof, i);
+}
+
+}  // namespace cpe::model

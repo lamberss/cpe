@@ -21,6 +21,7 @@
 // SOFTWARE.
 #pragma once
 
+#include <cpe/model/dof.hpp>
 #include <cpe/model/elementblock.hpp>
 #include <cpe/model/nodelist.hpp>
 #include <memory>
@@ -30,7 +31,12 @@ namespace cpe::model {
 
 class Model {
  public:
+  void add_constraint(dof::Dof dof);
+  void add_constraint(dof::Dof dof, std::size_t i);
+  void add_constraint(dof::Dof dof, const std::vector<std::size_t>& is);
+
   std::vector<std::shared_ptr<ElementBlockBase> > blocks;
+  std::map<std::size_t, dof::Dof> constraints;
   NodeList nodes;
 };
 

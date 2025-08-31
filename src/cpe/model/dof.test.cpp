@@ -51,9 +51,11 @@ TEST(NodeTest, Combinations) {
   cpe::model::dof::Dof trans = cpe::model::dof::ALL_TRANS;
   cpe::model::dof::Dof rot = cpe::model::dof::ALL_ROT;
   cpe::model::dof::Dof all = cpe::model::dof::ALL;
+  cpe::model::dof::Dof non2d = cpe::model::dof::ALL_NON2D;
   EXPECT_EQ(x | y | z, trans);
   EXPECT_EQ(dx | dy | dz, rot);
   EXPECT_EQ(x | y | z | dx | dy | dz, all);
+  EXPECT_EQ(z | dx | dy, non2d);
 }
 
 }  // namespace

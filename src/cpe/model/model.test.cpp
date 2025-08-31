@@ -31,4 +31,34 @@ TEST(ModelTest, Create) {
   EXPECT_EQ(model.nodes.size(), 0);
 }
 
+TEST(ModelTest, AddConstraintSingle) {
+  cpe::model::Model model;
+  model.nodes.add(0, 1.0);
+  model.nodes.add(1, 2.0);
+  model.add_constraint(cpe::model::dof::X, 0);
+  EXPECT_EQ(model.constraints[0], cpe::model::dof::X);
+  EXPECT_EQ(model.constraints[1], cpe::model::dof::NONE);
+  model.add_constraint(cpe::model::dof::Y, 0);
+  EXPECT_EQ(model.constraints[0], cpe::model::dof::X | cpe::model::dof::Y);
+  EXPECT_EQ(model.constraints[1], cpe::model::dof::NONE);
+}
+
+TEST(ModelTest, AddConstraintMulti) {
+  cpe::model::Model model;
+  model.nodes.add(0, 1.0);
+  model.nodes.add(1, 2.0);
+  model.add_constraint(cpe::model::dof::X, {0, 1});
+  EXPECT_EQ(model.constraints[0], cpe::model::dof::X);
+  EXPECT_EQ(model.constraints[1], cpe::model::dof::X);
+}
+
+TEST(ModelTest, AddConstraintAll) {
+  cpe::model::Model model;
+  model.nodes.add(0, 1.0);
+  model.nodes.add(1, 2.0);
+  model.add_constraint(cpe::model::dof::X);
+  EXPECT_EQ(model.constraints[0], cpe::model::dof::X);
+  EXPECT_EQ(model.constraints[1], cpe::model::dof::X);
+}
+
 }  // namespace
