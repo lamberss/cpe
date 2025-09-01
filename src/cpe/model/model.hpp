@@ -31,13 +31,21 @@ namespace cpe::model {
 
 class Model {
  public:
-  void add_constraint(dof::Dof dof);
-  void add_constraint(dof::Dof dof, std::size_t i);
-  void add_constraint(dof::Dof dof, const std::vector<std::size_t>& is);
+  Model();
+
+  void add_constraint(dof::Dof dof, double v);
+  void add_constraint(dof::Dof dof, double v, std::size_t i);
+  void add_constraint(dof::Dof dof, double v,
+                      const std::vector<std::size_t>& is);
 
   std::vector<std::shared_ptr<ElementBlockBase> > blocks;
   std::map<std::size_t, dof::Dof> constraints;
+  std::vector<double> global_dof;
   NodeList nodes;
+
+ private:
+  void assign_global_dof_indices();
+  bool global_dof_indices_assigned_;
 };
 
 }  // namespace cpe::model

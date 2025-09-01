@@ -19,29 +19,19 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-#pragma once
 
 #include <cpe/model/node.hpp>
-#include <map>
-#include <vector>
 
 namespace cpe::model {
 
-class NodeList {
- public:
-  NodeList(std::size_t n = 0);
-
-  void add(std::size_t id, double x, double y = 0.0, double z = 0.0);
-
-  Node& getById(std::size_t id) { return nodes_[node_ids_[id]]; }
-  Node& operator[](std::size_t i) { return nodes_[i]; }
-
-  void reserve(std::size_t n) { nodes_.reserve(n); }
-  std::size_t size() { return nodes_.size(); }
-
- private:
-  std::map<std::size_t, std::size_t> node_ids_;
-  std::vector<Node> nodes_;
+Node::Node(double xx, double yy, double zz)
+    : constrained_dofs(cpe::model::dof::NONE), x(xx), y(yy), z(zz) {
+  for (std::size_t i = 0; i < active_dof_index.size(); ++i) {
+    active_dof_index[i] = cpe::model::dof::INACTIVE_DOF;
+  }
+  for (std::size_t i = 0; i < global_dof_index.size(); ++i) {
+    global_dof_index[i] = cpe::model::dof::INACTIVE_DOF;
+  }
 };
 
 }  // namespace cpe::model

@@ -23,17 +23,41 @@
 
 namespace cpe::model {
 
-void Model::add_constraint(dof::Dof dof) {
-  for (std::size_t i = 0; i < nodes.size(); ++i) add_constraint(dof, i);
+Model::Model() : global_dof_indices_assigned_(false) {};
+
+void Model::add_constraint(dof::Dof dof, double v) {
+  for (std::size_t i = 0; i < nodes.size(); ++i) add_constraint(dof, v, i);
 }
 
-void Model::add_constraint(dof::Dof dof, std::size_t i) {
+void Model::add_constraint(dof::Dof dof, double v, std::size_t i) {
+  assign_global_dof_indices();
   if (constraints.count(i) == 0) constraints[i] = dof::NONE;
   constraints[i] = static_cast<dof::Dof>(constraints[i] | dof);
+  if (dof & dof::X) global_dof[nodes[i].global_dof_index[dof::IX]] = v;
+  if (dof & dof::Y) global_dof[nodes[i].global_dof_index[dof::IY]] = v;
+  if (dof & dof::Z) global_dof[nodes[i].global_dof_index[dof::IZ]] = v;
+  if (dof & dof::DX) global_dof[nodes[i].global_dof_index[dof::IDX]] = v;
+  if (dof & dof::DY) global_dof[nodes[i].global_dof_index[dof::IDY]] = v;
+  if (dof & dof::DZ) global_dof[nodes[i].global_dof_index[dof::IDZ]] = v;
 }
 
-void Model::add_constraint(dof::Dof dof, const std::vector<std::size_t>& is) {
-  for (std::size_t i : is) add_constraint(dof, i);
+void Model::add_constraint(dof::Dof dof, double v,
+                           const std::vector<std::size_t>& is) {
+  for (std::size_t i : is) add_constraint(dof, v, i);
+}
+
+void Model::assign_global_dof_indices() {
+  if (global_dof_indices_assigned_) return;
+
+  std::size_t global_dof_count = 0;
+  for (std::size_t i = 0; i < nodes.size(); ++i) {
+    for (std::size_t j = 0; j < cpe::model::dof::NUM_STRUC_DOF; ++j) {
+      nodes[i].global_dof_index[j] = global_dof_count++;
+    }
+  }
+  global_dof.resize(global_dof_count, 0.0);
+
+  global_dof_indices_assigned_ = true;
 }
 
 }  // namespace cpe::model

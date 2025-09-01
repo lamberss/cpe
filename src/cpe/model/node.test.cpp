@@ -25,11 +25,19 @@
 
 namespace {
 
+static constexpr std::array<std::size_t, cpe::model::dof::NUM_STRUC_DOF>
+    inactive{cpe::model::dof::INACTIVE_DOF, cpe::model::dof::INACTIVE_DOF,
+             cpe::model::dof::INACTIVE_DOF, cpe::model::dof::INACTIVE_DOF,
+             cpe::model::dof::INACTIVE_DOF, cpe::model::dof::INACTIVE_DOF};
+
 TEST(NodeTest, Create0) {
   cpe::model::Node n;
   EXPECT_EQ(n.x, 0.0);
   EXPECT_EQ(n.y, 0.0);
   EXPECT_EQ(n.z, 0.0);
+  EXPECT_EQ(n.constrained_dofs, cpe::model::dof::NONE);
+  EXPECT_EQ(n.active_dof_index, inactive);
+  EXPECT_EQ(n.global_dof_index, inactive);
 }
 
 TEST(NodeTest, Create1) {
@@ -38,6 +46,9 @@ TEST(NodeTest, Create1) {
   EXPECT_EQ(n.x, x);
   EXPECT_EQ(n.y, 0.0);
   EXPECT_EQ(n.z, 0.0);
+  EXPECT_EQ(n.constrained_dofs, cpe::model::dof::NONE);
+  EXPECT_EQ(n.active_dof_index, inactive);
+  EXPECT_EQ(n.global_dof_index, inactive);
 }
 
 TEST(NodeTest, Create2) {
@@ -46,6 +57,9 @@ TEST(NodeTest, Create2) {
   EXPECT_EQ(n.x, x);
   EXPECT_EQ(n.y, y);
   EXPECT_EQ(n.z, 0.0);
+  EXPECT_EQ(n.constrained_dofs, cpe::model::dof::NONE);
+  EXPECT_EQ(n.active_dof_index, inactive);
+  EXPECT_EQ(n.global_dof_index, inactive);
 }
 
 TEST(NodeTest, Create3) {
@@ -54,6 +68,9 @@ TEST(NodeTest, Create3) {
   EXPECT_EQ(n.x, x);
   EXPECT_EQ(n.y, y);
   EXPECT_EQ(n.z, z);
+  EXPECT_EQ(n.constrained_dofs, cpe::model::dof::NONE);
+  EXPECT_EQ(n.active_dof_index, inactive);
+  EXPECT_EQ(n.global_dof_index, inactive);
 }
 
 }  // namespace

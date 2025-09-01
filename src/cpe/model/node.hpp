@@ -21,12 +21,19 @@
 // SOFTWARE.
 #pragma once
 
+#include <array>
+#include <cpe/model/dof.hpp>
+
 namespace cpe::model {
 
 class Node {
  public:
-  Node(double xx = 0.0, double yy = 0.0, double zz = 0.0)
-      : x(xx), y(yy), z(zz) {};
+  Node(double xx = 0.0, double yy = 0.0, double zz = 0.0);
+
+  std::array<std::size_t, cpe::model::dof::NUM_STRUC_DOF> active_dof_index;
+  std::array<std::size_t, cpe::model::dof::NUM_STRUC_DOF> global_dof_index;
+
+  dof::Dof constrained_dofs;
 
   double x;
   double y;

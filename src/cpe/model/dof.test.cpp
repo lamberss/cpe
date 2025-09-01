@@ -22,26 +22,39 @@
 #include <gtest/gtest.h>
 
 #include <cpe/model/dof.hpp>
+#include <limits>
 
 namespace {
 
-TEST(NodeTest, None) { EXPECT_EQ(cpe::model::dof::NONE, 0); }
+TEST(DoFTest, DofIndex) {
+  EXPECT_EQ(cpe::model::dof::IX, 0);
+  EXPECT_EQ(cpe::model::dof::IY, 1);
+  EXPECT_EQ(cpe::model::dof::IZ, 2);
+  EXPECT_EQ(cpe::model::dof::IDX, 3);
+  EXPECT_EQ(cpe::model::dof::IDY, 4);
+  EXPECT_EQ(cpe::model::dof::IDZ, 5);
+  EXPECT_EQ(cpe::model::dof::NUM_STRUC_DOF, 6);
+  EXPECT_EQ(cpe::model::dof::INACTIVE_DOF,
+            std::numeric_limits<std::size_t>::max());
+}
 
-TEST(NodeTest, Translations) {
+TEST(DoFTest, DoF_None) { EXPECT_EQ(cpe::model::dof::NONE, 0); }
+
+TEST(DoFTest, DoF_Translations) {
   cpe::model::dof::Dof constraint = cpe::model::dof::NONE;
   EXPECT_EQ(constraint | cpe::model::dof::X, 1);
   EXPECT_EQ(constraint | cpe::model::dof::Y, 2);
   EXPECT_EQ(constraint | cpe::model::dof::Z, 4);
 }
 
-TEST(NodeTest, Rotations) {
+TEST(DoFTest, DoF_Rotations) {
   cpe::model::dof::Dof constraint = cpe::model::dof::NONE;
   EXPECT_EQ(constraint | cpe::model::dof::DX, 8);
   EXPECT_EQ(constraint | cpe::model::dof::DY, 16);
   EXPECT_EQ(constraint | cpe::model::dof::DZ, 32);
 }
 
-TEST(NodeTest, Combinations) {
+TEST(DoFTest, DoF_Combinations) {
   cpe::model::dof::Dof x = cpe::model::dof::X;
   cpe::model::dof::Dof y = cpe::model::dof::Y;
   cpe::model::dof::Dof z = cpe::model::dof::Z;

@@ -22,8 +22,15 @@
 #pragma once
 
 #include <cstdint>
+#include <limits>
 
 namespace cpe::model::dof {
+
+static constexpr std::size_t NUM_STRUC_DOF = 6;
+static constexpr std::size_t INACTIVE_DOF =
+    std::numeric_limits<std::size_t>::max();
+
+enum DofIndex { IX = 0, IY = 1, IZ = 2, IDX = 3, IDY = 4, IDZ = 5 };
 
 enum Dof : std::int8_t {
   NONE = 0,        // 00000000

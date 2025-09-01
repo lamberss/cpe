@@ -35,30 +35,68 @@ TEST(ModelTest, AddConstraintSingle) {
   cpe::model::Model model;
   model.nodes.add(0, 1.0);
   model.nodes.add(1, 2.0);
-  model.add_constraint(cpe::model::dof::X, 0);
+  model.add_constraint(cpe::model::dof::X, 1.0, 0);
   EXPECT_EQ(model.constraints[0], cpe::model::dof::X);
   EXPECT_EQ(model.constraints[1], cpe::model::dof::NONE);
-  model.add_constraint(cpe::model::dof::Y, 0);
+  model.add_constraint(cpe::model::dof::Y, 2.0, 0);
   EXPECT_EQ(model.constraints[0], cpe::model::dof::X | cpe::model::dof::Y);
   EXPECT_EQ(model.constraints[1], cpe::model::dof::NONE);
+  EXPECT_EQ(model.nodes[0].global_dof_index[0], 0);
+  EXPECT_EQ(model.nodes[0].global_dof_index[5], 5);
+  EXPECT_EQ(model.nodes[1].global_dof_index[0], 6);
+  EXPECT_EQ(model.nodes[1].global_dof_index[5], 11);
+  EXPECT_EQ(model.global_dof.size(), 12);
+  for (std::size_t i = 0; i < model.global_dof.size(); ++i) {
+    if (i == 0) {
+      EXPECT_EQ(model.global_dof[i], 1.0);
+    } else if (i == 1) {
+      EXPECT_EQ(model.global_dof[i], 2.0);
+    } else {
+      EXPECT_EQ(model.global_dof[i], 0.0);
+    }
+  }
 }
 
 TEST(ModelTest, AddConstraintMulti) {
   cpe::model::Model model;
   model.nodes.add(0, 1.0);
   model.nodes.add(1, 2.0);
-  model.add_constraint(cpe::model::dof::X, {0, 1});
+  model.add_constraint(cpe::model::dof::X, 1.0, {0, 1});
   EXPECT_EQ(model.constraints[0], cpe::model::dof::X);
   EXPECT_EQ(model.constraints[1], cpe::model::dof::X);
+  EXPECT_EQ(model.nodes[0].global_dof_index[0], 0);
+  EXPECT_EQ(model.nodes[0].global_dof_index[5], 5);
+  EXPECT_EQ(model.nodes[1].global_dof_index[0], 6);
+  EXPECT_EQ(model.nodes[1].global_dof_index[5], 11);
+  EXPECT_EQ(model.global_dof.size(), 12);
+  for (std::size_t i = 0; i < model.global_dof.size(); ++i) {
+    if (i == 0 || i == 6) {
+      EXPECT_EQ(model.global_dof[i], 1.0);
+    } else {
+      EXPECT_EQ(model.global_dof[i], 0.0);
+    }
+  }
 }
 
 TEST(ModelTest, AddConstraintAll) {
   cpe::model::Model model;
   model.nodes.add(0, 1.0);
   model.nodes.add(1, 2.0);
-  model.add_constraint(cpe::model::dof::X);
+  model.add_constraint(cpe::model::dof::X, 1.0);
   EXPECT_EQ(model.constraints[0], cpe::model::dof::X);
   EXPECT_EQ(model.constraints[1], cpe::model::dof::X);
+  EXPECT_EQ(model.nodes[0].global_dof_index[0], 0);
+  EXPECT_EQ(model.nodes[0].global_dof_index[5], 5);
+  EXPECT_EQ(model.nodes[1].global_dof_index[0], 6);
+  EXPECT_EQ(model.nodes[1].global_dof_index[5], 11);
+  EXPECT_EQ(model.global_dof.size(), 12);
+  for (std::size_t i = 0; i < model.global_dof.size(); ++i) {
+    if (i == 0 || i == 6) {
+      EXPECT_EQ(model.global_dof[i], 1.0);
+    } else {
+      EXPECT_EQ(model.global_dof[i], 0.0);
+    }
+  }
 }
 
 }  // namespace

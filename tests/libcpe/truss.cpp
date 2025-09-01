@@ -74,8 +74,8 @@ TEST(TrussCpeSystemTest, Truss) {
   block->emplace_back(4, 5);
 
   // Define boundary conditions
-  model.add_constraint(cpe::model::dof::ALL, {0, 1});
-  model.add_constraint(cpe::model::dof::ALL_NON2D);
+  model.add_constraint(cpe::model::dof::ALL, 0.0, {0, 1});
+  model.add_constraint(cpe::model::dof::ALL_NON2D, 0.0);
 
   // Define loads
   // node 5, Fy=-P
