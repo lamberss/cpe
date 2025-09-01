@@ -27,6 +27,7 @@
 #include <cpe/model/material.hpp>
 #include <cpe/model/model.hpp>
 #include <cpe/model/property.hpp>
+#include <filesystem>
 #include <memory>
 
 namespace {
@@ -86,7 +87,9 @@ TEST(TrussCpeSystemTest, Truss) {
   // Compute the solution
 
   // Output the results
-  cpe::io::vtk::writeVTU("truss.vtu", model);
+  const std::string filename("truss.vtu");
+  cpe::io::vtk::writeVTU(filename, model);
+  if (std::filesystem::exists(filename)) std::filesystem::remove(filename);
 }
 
 }  // namespace
