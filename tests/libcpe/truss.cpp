@@ -32,10 +32,10 @@ namespace {
 
 TEST(TrussCpeSystemTest, Truss) {
   // Problem parameters
-  const double b = 0.005;  // m
-  const double H = 0.12;   // m
-  const double L = 0.16;   // m
-  // const double P =  1.0;      // N
+  const double b = 0.005;   // m
+  const double H = 0.12;    // m
+  const double L = 0.16;    // m
+  const double P = 1.0;     // N
   const double E = 70.0e9;  // Pa
   const double nu = 0.32;
 
@@ -78,7 +78,7 @@ TEST(TrussCpeSystemTest, Truss) {
   model.add_constraint(cpe::model::dof::ALL_NON2D, 0.0);
 
   // Define loads
-  // node 5, Fy=-P
+  model.add_force(cpe::model::dof::Y, -P, 5);
 
   // Assemble the model
 
