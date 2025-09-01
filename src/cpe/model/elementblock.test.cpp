@@ -21,25 +21,19 @@
 // SOFTWARE.
 #include <gtest/gtest.h>
 
+#include <cpe/model/element.hpp>
 #include <cpe/model/elementblock.hpp>
 #include <cpe/model/material.hpp>
 #include <cpe/model/property.hpp>
 
 namespace {
 
-struct TestElement {
-  double a;
-  double b;
-
-  TestElement(const double& aa, const double& bb) : a(aa), b(bb) {};
-};
-
 TEST(PropertyTest, Create) {
   std::shared_ptr<cpe::model::Material> material =
       std::make_shared<cpe::model::Material>("a", 1.0, 0.1);
   std::shared_ptr<cpe::model::Property> property =
       std::make_shared<cpe::model::Property>("property", material);
-  cpe::model::ElementBlock<TestElement> block("elements", property);
+  cpe::model::ElementBlock<cpe::model::Element> block("elements", property);
   EXPECT_EQ(block.size(), 0);
   EXPECT_EQ(block.property->name, "property");
 }
@@ -49,15 +43,15 @@ TEST(PropertyTest, AddAndAccess) {
       std::make_shared<cpe::model::Material>("a", 1.0, 0.1);
   std::shared_ptr<cpe::model::Property> property =
       std::make_shared<cpe::model::Property>("property", material);
-  cpe::model::ElementBlock<TestElement> block("elements", property, 1);
+  cpe::model::ElementBlock<cpe::model::Element> block("elements", property, 1);
   EXPECT_EQ(block.capacity(), 1);
   EXPECT_EQ(block.size(), 0);
-  const double a = 1.0;
-  const double b = 2.0;
+  const unsigned int a = 1;
+  const unsigned int b = 2;
   block.emplace_back(a, b);
   EXPECT_EQ(block.size(), 1);
-  EXPECT_EQ(block[0].a, a);
-  EXPECT_EQ(block[0].b, b);
+  EXPECT_EQ(block[0][0], a);
+  EXPECT_EQ(block[0][1], b);
 }
 
 }  // namespace

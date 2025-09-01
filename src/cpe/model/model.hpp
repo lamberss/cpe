@@ -42,6 +42,9 @@ class Model {
   void add_force(dof::Dof dof, double v, std::size_t i);
   void add_force(dof::Dof dof, double v, const std::vector<std::size_t>& is);
 
+  std::size_t get_number_of_elements() const;
+  std::size_t get_number_of_nodes() const { return nodes.size(); }
+
   std::vector<std::shared_ptr<ElementBlockBase> > blocks;
   std::map<std::size_t, dof::Dof> constraints;
   std::vector<double> global_dof;

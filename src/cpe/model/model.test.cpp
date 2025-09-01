@@ -21,6 +21,7 @@
 // SOFTWARE.
 #include <gtest/gtest.h>
 
+#include <cpe/model/element.hpp>
 #include <cpe/model/model.hpp>
 
 namespace {
@@ -145,6 +146,43 @@ TEST(ModelTest, AddForceAll) {
       EXPECT_EQ(model.global_force[i], 0.0);
     }
   }
+}
+
+TEST(ModelTest, GetNumberOfElements) {
+  std::shared_ptr<cpe::model::Material> material =
+      std::make_shared<cpe::model::Material>("Aluminum", 70.0e9, 0.3);
+  std::shared_ptr<cpe::model::Property> property_square =
+      std::make_shared<cpe::model::Property>("square", material);
+  (*property_square)["area"] = 1.0;
+  std::shared_ptr<cpe::model::Property> property_circle =
+      std::make_shared<cpe::model::Property>("circle", material);
+  (*property_circle)["area"] = 2.0;
+  cpe::model::Model model;
+  model.nodes.add(0, 1.0);
+  model.nodes.add(1, 2.0);
+  using element_block_t = cpe::model::ElementBlock<cpe::model::Element>;
+  std::shared_ptr<element_block_t> block1 =
+      std::make_shared<element_block_t>("truss1", property_square, 4);
+  model.blocks.push_back(block1);
+  std::shared_ptr<element_block_t> block2 =
+      std::make_shared<element_block_t>("truss2", property_circle, 4);
+  model.blocks.push_back(block2);
+  block1->emplace_back(0, 2);
+  block1->emplace_back(0, 3);
+  block1->emplace_back(1, 3);
+  block1->emplace_back(2, 3);
+  block2->emplace_back(2, 4);
+  block2->emplace_back(3, 4);
+  block2->emplace_back(3, 5);
+  block2->emplace_back(4, 5);
+  EXPECT_EQ(model.get_number_of_elements(), 8);
+}
+
+TEST(ModelTest, GetNumberOfNodes) {
+  cpe::model::Model model;
+  model.nodes.add(0, 1.0);
+  model.nodes.add(1, 2.0);
+  EXPECT_EQ(model.get_number_of_nodes(), 2);
 }
 
 }  // namespace

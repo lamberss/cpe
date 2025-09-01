@@ -65,6 +65,14 @@ void Model::add_force(dof::Dof dof, double v,
   for (std::size_t i : is) add_force(dof, v, i);
 }
 
+std::size_t Model::get_number_of_elements() const {
+  std::size_t result = 0;
+  for (std::size_t i = 0; i < blocks.size(); ++i) {
+    result += blocks[i]->size();
+  }
+  return result;
+}
+
 void Model::assign_global_dof_indices() {
   if (global_dof_indices_assigned_) return;
 

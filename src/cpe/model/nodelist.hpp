@@ -35,9 +35,11 @@ class NodeList {
 
   Node& getById(std::size_t id) { return nodes_[node_ids_[id]]; }
   Node& operator[](std::size_t i) { return nodes_[i]; }
+  const Node& operator[](std::size_t i) const { return nodes_[i]; }
 
   void reserve(std::size_t n) { nodes_.reserve(n); }
   std::size_t size() { return nodes_.size(); }
+  std::size_t size() const { return nodes_.size(); }
 
  private:
   std::map<std::size_t, std::size_t> node_ids_;

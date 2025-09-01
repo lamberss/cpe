@@ -21,6 +21,7 @@
 // SOFTWARE.
 #pragma once
 
+#include <cpe/model/element.hpp>
 #include <cpe/model/property.hpp>
 #include <string>
 #include <utility>
@@ -30,7 +31,9 @@ namespace cpe::model {
 
 class ElementBlockBase {
  public:
+  virtual Element& operator[](std::size_t) = 0;
   virtual void reserve(std::size_t) = 0;
+  virtual std::size_t size() const = 0;
   virtual ~ElementBlockBase() = default;
 };
 
@@ -59,7 +62,7 @@ class ElementBlock : public ElementBlockBase {
   }
   T& operator[](std::size_t i) { return elements_[i]; }
   void reserve(std::size_t c) { elements_.reserve(c); }
-  std::size_t size() { return elements_.size(); }
+  std::size_t size() const { return elements_.size(); }
 
  private:
   std::vector<T> elements_;

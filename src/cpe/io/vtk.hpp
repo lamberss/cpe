@@ -21,26 +21,13 @@
 // SOFTWARE.
 #pragma once
 
-#include <array>
+#include <cpe/model/model.hpp>
+#include <fstream>
+#include <string>
 
-namespace cpe::model {
+namespace cpe::io::vtk {
 
-class Element {
- public:
-  Element() = delete;
+void writeVTU(const std::string& outputfile, const cpe::model::Model& model);
+void writeVTU(std::ostream& outputstream, const cpe::model::Model& model);
 
-  Element(std::size_t n1, std::size_t n2) {
-    nodes[0] = n1;
-    nodes[1] = n2;
-  }
-
-  std::size_t operator[](std::size_t i) { return nodes[i]; }
-  std::size_t size() const { return nodes.size(); }
-
-  static constexpr unsigned int nNodes = 2;
-  static constexpr unsigned int vtk_type = 3;  // VTK_LINE
-  static constexpr std::array<std::uint8_t, nNodes> vtk_order{0, 1};
-  std::array<std::size_t, nNodes> nodes;
-};
-
-}  // namespace cpe::model
+}  // namespace cpe::io::vtk

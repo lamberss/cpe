@@ -22,71 +22,70 @@
 #include <gtest/gtest.h>
 
 #include <cpe/io/vtk.hpp>
-#include <cpe/model/element.hpp>
-#include <cpe/model/elementblock.hpp>
-#include <cpe/model/material.hpp>
 #include <cpe/model/model.hpp>
-#include <cpe/model/property.hpp>
-#include <memory>
+#include <sstream>
 
 namespace {
 
-TEST(TrussCpeSystemTest, Truss) {
-  // Problem parameters
-  const double b = 0.005;   // m
-  const double H = 0.12;    // m
-  const double L = 0.16;    // m
-  const double P = 1.0;     // N
-  const double E = 70.0e9;  // Pa
-  const double nu = 0.32;
+TEST(VTKTest, writeVTU) {
+  std::stringstream os;
 
-  // Define material
   std::shared_ptr<cpe::model::Material> material =
-      std::make_shared<cpe::model::Material>("Aluminum", E, nu);
+      std::make_shared<cpe::model::Material>("Aluminum", 70.0e9, 0.3);
 
-  // Define properties
   std::shared_ptr<cpe::model::Property> property =
       std::make_shared<cpe::model::Property>("square", material);
-  (*property)["area"] = b * b;
+  (*property)["area"] = 1.0;
 
-  // Create model
   cpe::model::Model model;
+  model.nodes.add(0, -1.0, 0.0, 0.0);
+  model.nodes.add(1, 1.0, 0.0, 0.0);
+  model.nodes.add(2, 0.0, 1.0, 0.0);
 
-  // Define nodelist
-  model.nodes.add(0, 0.0, 0.0);
-  model.nodes.add(1, 0.0, H);
-  model.nodes.add(2, L, 0.0);
-  model.nodes.add(3, L, H);
-  model.nodes.add(4, 2.0 * L, 0.0);
-  model.nodes.add(5, 2.0 * L, H);
-
-  // Define elements
   using element_block_t = cpe::model::ElementBlock<cpe::model::Element>;
   std::shared_ptr<element_block_t> block =
       std::make_shared<element_block_t>("truss", property, 8);
   model.blocks.push_back(block);
+  block->emplace_back(0, 1);
+  block->emplace_back(1, 2);
   block->emplace_back(0, 2);
-  block->emplace_back(0, 3);
-  block->emplace_back(1, 3);
-  block->emplace_back(2, 3);
-  block->emplace_back(2, 4);
-  block->emplace_back(3, 4);
-  block->emplace_back(3, 5);
-  block->emplace_back(4, 5);
 
-  // Define boundary conditions
-  model.add_constraint(cpe::model::dof::ALL, 0.0, {0, 1});
-  model.add_constraint(cpe::model::dof::ALL_NON2D, 0.0);
+  std::string expected = R"(<?xml version="1.0" encoding="UTF-8"?>
+<VTKFile type="UnstructuredGrid" version="0.1">
+  <UnstructuredGrid>
+    <Piece NumberOfPoints="3" NumberOfCells="3">
+      <Points>
+        <DataArray type="Float64" NumberOfComponents="3" format="ascii">
+          -1.00000000000000000e+00   0.00000000000000000e+00   0.00000000000000000e+00
+           1.00000000000000000e+00   0.00000000000000000e+00   0.00000000000000000e+00
+           0.00000000000000000e+00   1.00000000000000000e+00   0.00000000000000000e+00
+        </DataArray>
+      </Points>
+      <Cells>
+        <DataArray type="Int64" Name="connectivity" format="ascii">
+          0  1
+          1  2
+          0  2
+        </DataArray>
+        <DataArray type="Int64" Name="offsets" format="ascii">
+          2
+          4
+          6
+        </DataArray>
+        <DataArray type="UInt8" Name="types" format="ascii">
+          3
+          3
+          3
+        </DataArray>
+      </Cells>
+    </Piece>
+  </UnstructuredGrid>
+</VTKFile>
+)";
 
-  // Define loads
-  model.add_force(cpe::model::dof::Y, -P, 5);
+  cpe::io::vtk::writeVTU(os, model);
 
-  // Assemble the model
-
-  // Compute the solution
-
-  // Output the results
-  cpe::io::vtk::writeVTU("truss.vtu", model);
+  EXPECT_EQ(os.str(), expected);
 }
 
 }  // namespace
