@@ -22,6 +22,7 @@
 #pragma once
 
 #include <array>
+#include <cstdint>
 
 namespace cpe::model {
 
@@ -37,8 +38,8 @@ class Element {
   std::size_t operator[](std::size_t i) { return nodes[i]; }
   std::size_t size() const { return nodes.size(); }
 
-  static constexpr unsigned int nNodes = 2;
-  static constexpr unsigned int vtk_type = 3;  // VTK_LINE
+  static constexpr std::uint8_t nNodes = 2;
+  static constexpr std::uint8_t vtk_type = 3;  // VTK_LINE
   static constexpr std::array<std::uint8_t, nNodes> vtk_order{0, 1};
   std::array<std::size_t, nNodes> nodes;
 };
