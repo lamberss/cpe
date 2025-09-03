@@ -32,8 +32,8 @@ TEST(MaterialTest, Create) {
   const double nu = 0.3;
   cpe::model::Material material(name, E, nu);
   EXPECT_EQ(material.name, name);
-  EXPECT_EQ(material.youngsModulus(), E);
-  EXPECT_EQ(material.poissonsRatio(), nu);
+  EXPECT_EQ(material.YoungsModulus(), E);
+  EXPECT_EQ(material.PoissonsRatio(), nu);
 }
 
 }  // namespace

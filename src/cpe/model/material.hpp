@@ -33,14 +33,14 @@ class Material {
   Material& operator=(const Material&) = delete;
   Material& operator=(Material&&) = delete;
 
-  Material(const std::string& name, double E, double nu);
+  Material(const std::string& name, double e, double nu);
 
   const std::string name;
-  const double& youngsModulus() const { return E_; }
-  const double& poissonsRatio() const { return nu_; }
+  const double& YoungsModulus() const { return e_; }
+  const double& PoissonsRatio() const { return nu_; }
 
  private:
-  double E_;
+  double e_;
   double nu_;
 };
 
