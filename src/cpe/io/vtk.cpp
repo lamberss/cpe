@@ -34,8 +34,8 @@ void writeVTU_cells(std::ostream& os, const cpe::model::Model& model,
   std::string pre(indent * level, ' ');
   std::string ind(indent, ' ');
 
-  std::vector<std::size_t> offsets(model.get_number_of_elements(), 0);
-  std::vector<std::uint8_t> types(model.get_number_of_elements(), 0);
+  std::vector<std::size_t> offsets(model.GetNumElements(), 0);
+  std::vector<std::uint8_t> types(model.GetNumElements(), 0);
 
   os << pre << "<Cells>\n";
 
@@ -81,7 +81,7 @@ void writeVTU_points(std::ostream& os, const cpe::model::Model& model,
      << "<DataArray type=\"Float64\" NumberOfComponents=\"3\" "
         "format=\"ascii\">\n";
 
-  for (std::size_t i = 0; i < model.get_number_of_nodes(); ++i) {
+  for (std::size_t i = 0; i < model.GetNumNodes(); ++i) {
     os << pre << ind << ind << std::setw(double_width) << model.nodes[i].x
        << ind << std::setw(double_width) << model.nodes[i].y << ind
        << std::setw(double_width) << model.nodes[i].z << "\n";
@@ -103,8 +103,8 @@ void writeVTU(std::ostream& os, const cpe::model::Model& model) {
   os << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
   os << "<VTKFile type=\"UnstructuredGrid\" version=\"0.1\">\n";
   os << "  <UnstructuredGrid>\n";
-  os << "    <Piece NumberOfPoints=\"" << model.get_number_of_nodes()
-     << "\" NumberOfCells=\"" << model.get_number_of_elements() << "\">\n";
+  os << "    <Piece NumberOfPoints=\"" << model.GetNumNodes()
+     << "\" NumberOfCells=\"" << model.GetNumElements() << "\">\n";
 
   const int indent_level = 3;
   writeVTU_points(os, model, indent_level);

@@ -33,17 +33,17 @@ class Model {
  public:
   Model();
 
-  void add_constraint(dof::Dof dof, double v);
-  void add_constraint(dof::Dof dof, double v, std::size_t i);
-  void add_constraint(dof::Dof dof, double v,
-                      const std::vector<std::size_t>& is);
+  void AddConstraint(dof::Dof dof, double v);
+  void AddConstraint(dof::Dof dof, double v, std::size_t i);
+  void AddConstraint(dof::Dof dof, double v,
+                     const std::vector<std::size_t>& is);
 
-  void add_force(dof::Dof dof, double v);
-  void add_force(dof::Dof dof, double v, std::size_t i);
-  void add_force(dof::Dof dof, double v, const std::vector<std::size_t>& is);
+  void AddForce(dof::Dof dof, double v);
+  void AddForce(dof::Dof dof, double v, std::size_t i);
+  void AddForce(dof::Dof dof, double v, const std::vector<std::size_t>& is);
 
-  std::size_t get_number_of_elements() const;
-  std::size_t get_number_of_nodes() const { return nodes.size(); }
+  std::size_t GetNumElements() const;
+  std::size_t GetNumNodes() const { return nodes.size(); }
 
   std::vector<std::shared_ptr<ElementBlockBase> > blocks;
   std::map<std::size_t, dof::Dof> constraints;
@@ -52,7 +52,7 @@ class Model {
   NodeList nodes;
 
  private:
-  void assign_global_dof_indices();
+  void AssignGlobalDofIndices();
   bool global_dof_indices_assigned_;
 };
 

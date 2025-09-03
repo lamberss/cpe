@@ -25,12 +25,12 @@ namespace cpe::model {
 
 Model::Model() : global_dof_indices_assigned_(false) {};
 
-void Model::add_constraint(dof::Dof dof, double v) {
-  for (std::size_t i = 0; i < nodes.size(); ++i) add_constraint(dof, v, i);
+void Model::AddConstraint(dof::Dof dof, double v) {
+  for (std::size_t i = 0; i < nodes.size(); ++i) AddConstraint(dof, v, i);
 }
 
-void Model::add_constraint(dof::Dof dof, double v, std::size_t i) {
-  assign_global_dof_indices();
+void Model::AddConstraint(dof::Dof dof, double v, std::size_t i) {
+  AssignGlobalDofIndices();
   if (constraints.count(i) == 0) constraints[i] = dof::kNone;
   constraints[i] = static_cast<dof::Dof>(constraints[i] | dof);
   if (dof & dof::kX) global_dof[nodes[i].global_dof_index[dof::kIx]] = v;
@@ -41,17 +41,17 @@ void Model::add_constraint(dof::Dof dof, double v, std::size_t i) {
   if (dof & dof::kDz) global_dof[nodes[i].global_dof_index[dof::kIdz]] = v;
 }
 
-void Model::add_constraint(dof::Dof dof, double v,
-                           const std::vector<std::size_t>& is) {
-  for (std::size_t i : is) add_constraint(dof, v, i);
+void Model::AddConstraint(dof::Dof dof, double v,
+                          const std::vector<std::size_t>& is) {
+  for (std::size_t i : is) AddConstraint(dof, v, i);
 }
 
-void Model::add_force(dof::Dof dof, double v) {
-  for (std::size_t i = 0; i < nodes.size(); ++i) add_force(dof, v, i);
+void Model::AddForce(dof::Dof dof, double v) {
+  for (std::size_t i = 0; i < nodes.size(); ++i) AddForce(dof, v, i);
 }
 
-void Model::add_force(dof::Dof dof, double v, std::size_t i) {
-  assign_global_dof_indices();
+void Model::AddForce(dof::Dof dof, double v, std::size_t i) {
+  AssignGlobalDofIndices();
   if (dof & dof::kX) global_force[nodes[i].global_dof_index[dof::kIx]] = v;
   if (dof & dof::kY) global_force[nodes[i].global_dof_index[dof::kIy]] = v;
   if (dof & dof::kZ) global_force[nodes[i].global_dof_index[dof::kIz]] = v;
@@ -60,12 +60,12 @@ void Model::add_force(dof::Dof dof, double v, std::size_t i) {
   if (dof & dof::kDz) global_force[nodes[i].global_dof_index[dof::kIdz]] = v;
 }
 
-void Model::add_force(dof::Dof dof, double v,
-                      const std::vector<std::size_t>& is) {
-  for (std::size_t i : is) add_force(dof, v, i);
+void Model::AddForce(dof::Dof dof, double v,
+                     const std::vector<std::size_t>& is) {
+  for (std::size_t i : is) AddForce(dof, v, i);
 }
 
-std::size_t Model::get_number_of_elements() const {
+std::size_t Model::GetNumElements() const {
   std::size_t result = 0;
   for (std::size_t i = 0; i < blocks.size(); ++i) {
     result += blocks[i]->GetNumElements();
@@ -73,7 +73,7 @@ std::size_t Model::get_number_of_elements() const {
   return result;
 }
 
-void Model::assign_global_dof_indices() {
+void Model::AssignGlobalDofIndices() {
   if (global_dof_indices_assigned_) return;
 
   std::size_t global_dof_count = 0;
