@@ -27,6 +27,9 @@
 namespace cpe::model {
 
 class Element {
+ private:
+  static constexpr std::uint8_t kNumNodes = 2;
+
  public:
   Element() = delete;
 
@@ -36,12 +39,11 @@ class Element {
   }
 
   std::size_t operator[](std::size_t i) { return nodes[i]; }
-  std::size_t size() const { return nodes.size(); }
+  std::size_t GetNumNodes() const { return nodes.size(); }
 
-  static constexpr std::uint8_t nNodes = 2;
-  static constexpr std::uint8_t vtk_type = 3;  // VTK_LINE
-  static constexpr std::array<std::uint8_t, nNodes> vtk_order{0, 1};
-  std::array<std::size_t, nNodes> nodes;
+  static constexpr std::uint8_t kVtkType = 3;  // VTK_LINE
+  static constexpr std::array<std::uint8_t, kNumNodes> kVtkOrder{0, 1};
+  std::array<std::size_t, kNumNodes> nodes;
 };
 
 }  // namespace cpe::model

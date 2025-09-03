@@ -45,13 +45,13 @@ void writeVTU_cells(std::ostream& os, const cpe::model::Model& model,
     auto& block = *(model.blocks[i]);
     for (std::size_t j = 0; j < block.GetNumElements(); ++j) {
       os << pre << ind;
-      for (unsigned int k = 0; k < block[j].size(); ++k) {
-        os << ind << block[j][block[j].vtk_order[k]];
+      for (unsigned int k = 0; k < block[j].GetNumNodes(); ++k) {
+        os << ind << block[j][block[j].kVtkOrder[k]];
       }
       os << "\n";
       if (j >= 1) offsets[j] = offsets[j - 1];
-      offsets[j] += block[j].size();
-      types[j] = block[j].vtk_type;
+      offsets[j] += block[j].GetNumNodes();
+      types[j] = block[j].kVtkType;
     }
   }
   os << pre << ind << "</DataArray>\n";
