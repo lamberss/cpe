@@ -26,7 +26,9 @@ namespace cpe::model {
 Model::Model() : global_dof_indices_assigned_(false) {};
 
 void Model::AddConstraint(dof::Dof dof, double v) {
-  for (std::size_t i = 0; i < nodes.size(); ++i) AddConstraint(dof, v, i);
+  for (std::size_t i = 0; i < nodes.GetNumNodes(); ++i) {
+    AddConstraint(dof, v, i);
+  }
 }
 
 void Model::AddConstraint(dof::Dof dof, double v, std::size_t i) {
@@ -47,7 +49,7 @@ void Model::AddConstraint(dof::Dof dof, double v,
 }
 
 void Model::AddForce(dof::Dof dof, double v) {
-  for (std::size_t i = 0; i < nodes.size(); ++i) AddForce(dof, v, i);
+  for (std::size_t i = 0; i < nodes.GetNumNodes(); ++i) AddForce(dof, v, i);
 }
 
 void Model::AddForce(dof::Dof dof, double v, std::size_t i) {
@@ -77,7 +79,7 @@ void Model::AssignGlobalDofIndices() {
   if (global_dof_indices_assigned_) return;
 
   std::size_t global_dof_count = 0;
-  for (std::size_t i = 0; i < nodes.size(); ++i) {
+  for (std::size_t i = 0; i < nodes.GetNumNodes(); ++i) {
     for (std::size_t j = 0; j < cpe::model::dof::kNumStrucDof; ++j) {
       nodes[i].global_dof_index[j] = global_dof_count++;
     }

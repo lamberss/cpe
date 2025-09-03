@@ -43,7 +43,7 @@ class Model {
   void AddForce(dof::Dof dof, double v, const std::vector<std::size_t>& is);
 
   std::size_t GetNumElements() const;
-  std::size_t GetNumNodes() const { return nodes.size(); }
+  std::size_t GetNumNodes() const { return nodes.GetNumNodes(); }
 
   std::vector<std::shared_ptr<ElementBlockBase> > blocks;
   std::map<std::size_t, dof::Dof> constraints;

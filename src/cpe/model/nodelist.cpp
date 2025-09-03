@@ -26,10 +26,10 @@
 namespace cpe::model {
 
 NodeList::NodeList(std::size_t n) {
-  if (n > 0) reserve(n);
+  if (n > 0) Reserve(n);
 }
 
-void NodeList::add(std::size_t id, double x, double y, double z) {
+void NodeList::AddNode(std::size_t id, double x, double y, double z) {
   if (node_ids_.count(id) > 0) {
     std::stringstream msg;
     msg << "Cannot add node id=" << id << ", it already exists.";
