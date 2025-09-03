@@ -88,7 +88,7 @@ TEST(TrussCpeSystemTest, Truss) {
 
   // Output the results
   const std::string filename("truss.vtu");
-  cpe::io::vtk::writeVTU(filename, model);
+  cpe::io::vtk::WriteVtu(filename, model);
   if (std::filesystem::exists(filename)) std::filesystem::remove(filename);
 }
 

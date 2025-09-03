@@ -29,8 +29,8 @@ static unsigned int double_precision =
     std::numeric_limits<double>::max_digits10;
 static unsigned int double_width = 24;
 
-void writeVTU_cells(std::ostream& os, const cpe::model::Model& model,
-                    int level = 0, int indent = 2) {
+void WriteVtuCells(std::ostream& os, const cpe::model::Model& model,
+                   int level = 0, int indent = 2) {
   std::string pre(indent * level, ' ');
   std::string ind(indent, ' ');
 
@@ -70,8 +70,8 @@ void writeVTU_cells(std::ostream& os, const cpe::model::Model& model,
   os << pre << "</Cells>\n";
 }
 
-void writeVTU_points(std::ostream& os, const cpe::model::Model& model,
-                     int level = 0, int indent = 2) {
+void WriteVtuPoints(std::ostream& os, const cpe::model::Model& model,
+                    int level = 0, int indent = 2) {
   std::string pre(indent * level, ' ');
   std::string ind(indent, ' ');
 
@@ -91,13 +91,13 @@ void writeVTU_points(std::ostream& os, const cpe::model::Model& model,
   os << pre << "</Points>\n";
 }
 
-void writeVTU(const std::string& outputfile, const cpe::model::Model& model) {
+void WriteVtu(const std::string& outputfile, const cpe::model::Model& model) {
   std::ofstream outputstream(outputfile);
-  writeVTU(outputstream, model);
+  WriteVtu(outputstream, model);
   outputstream.close();
 }
 
-void writeVTU(std::ostream& os, const cpe::model::Model& model) {
+void WriteVtu(std::ostream& os, const cpe::model::Model& model) {
   os << std::scientific
      << std::setprecision(std::numeric_limits<double>::max_digits10);
   os << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
@@ -107,8 +107,8 @@ void writeVTU(std::ostream& os, const cpe::model::Model& model) {
      << "\" NumberOfCells=\"" << model.GetNumElements() << "\">\n";
 
   const int indent_level = 3;
-  writeVTU_points(os, model, indent_level);
-  writeVTU_cells(os, model, indent_level);
+  WriteVtuPoints(os, model, indent_level);
+  WriteVtuCells(os, model, indent_level);
 
   os << "    </Piece>\n";
   os << "  </UnstructuredGrid>\n";

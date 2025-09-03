@@ -27,7 +27,7 @@
 
 namespace {
 
-TEST(VTKTest, writeVTU) {
+TEST(VTKTest, WriteVtu) {
   std::stringstream os;
 
   std::shared_ptr<cpe::model::Material> material =
@@ -83,7 +83,7 @@ TEST(VTKTest, writeVTU) {
 </VTKFile>
 )";
 
-  cpe::io::vtk::writeVTU(os, model);
+  cpe::io::vtk::WriteVtu(os, model);
 
   EXPECT_EQ(os.str(), expected);
 }

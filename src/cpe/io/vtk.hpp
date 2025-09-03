@@ -27,7 +27,7 @@
 
 namespace cpe::io::vtk {
 
-void writeVTU(const std::string& outputfile, const cpe::model::Model& model);
-void writeVTU(std::ostream& outputstream, const cpe::model::Model& model);
+void WriteVtu(const std::string& outputfile, const cpe::model::Model& model);
+void WriteVtu(std::ostream& outputstream, const cpe::model::Model& model);
 
 }  // namespace cpe::io::vtk
