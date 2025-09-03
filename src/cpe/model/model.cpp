@@ -31,14 +31,14 @@ void Model::add_constraint(dof::Dof dof, double v) {
 
 void Model::add_constraint(dof::Dof dof, double v, std::size_t i) {
   assign_global_dof_indices();
-  if (constraints.count(i) == 0) constraints[i] = dof::NONE;
+  if (constraints.count(i) == 0) constraints[i] = dof::kNone;
   constraints[i] = static_cast<dof::Dof>(constraints[i] | dof);
-  if (dof & dof::X) global_dof[nodes[i].global_dof_index[dof::IX]] = v;
-  if (dof & dof::Y) global_dof[nodes[i].global_dof_index[dof::IY]] = v;
-  if (dof & dof::Z) global_dof[nodes[i].global_dof_index[dof::IZ]] = v;
-  if (dof & dof::DX) global_dof[nodes[i].global_dof_index[dof::IDX]] = v;
-  if (dof & dof::DY) global_dof[nodes[i].global_dof_index[dof::IDY]] = v;
-  if (dof & dof::DZ) global_dof[nodes[i].global_dof_index[dof::IDZ]] = v;
+  if (dof & dof::kX) global_dof[nodes[i].global_dof_index[dof::kIx]] = v;
+  if (dof & dof::kY) global_dof[nodes[i].global_dof_index[dof::kIy]] = v;
+  if (dof & dof::kZ) global_dof[nodes[i].global_dof_index[dof::kIz]] = v;
+  if (dof & dof::kDx) global_dof[nodes[i].global_dof_index[dof::kIdx]] = v;
+  if (dof & dof::kDy) global_dof[nodes[i].global_dof_index[dof::kIdy]] = v;
+  if (dof & dof::kDz) global_dof[nodes[i].global_dof_index[dof::kIdz]] = v;
 }
 
 void Model::add_constraint(dof::Dof dof, double v,
@@ -52,12 +52,12 @@ void Model::add_force(dof::Dof dof, double v) {
 
 void Model::add_force(dof::Dof dof, double v, std::size_t i) {
   assign_global_dof_indices();
-  if (dof & dof::X) global_force[nodes[i].global_dof_index[dof::IX]] = v;
-  if (dof & dof::Y) global_force[nodes[i].global_dof_index[dof::IY]] = v;
-  if (dof & dof::Z) global_force[nodes[i].global_dof_index[dof::IZ]] = v;
-  if (dof & dof::DX) global_force[nodes[i].global_dof_index[dof::IDX]] = v;
-  if (dof & dof::DY) global_force[nodes[i].global_dof_index[dof::IDY]] = v;
-  if (dof & dof::DZ) global_force[nodes[i].global_dof_index[dof::IDZ]] = v;
+  if (dof & dof::kX) global_force[nodes[i].global_dof_index[dof::kIx]] = v;
+  if (dof & dof::kY) global_force[nodes[i].global_dof_index[dof::kIy]] = v;
+  if (dof & dof::kZ) global_force[nodes[i].global_dof_index[dof::kIz]] = v;
+  if (dof & dof::kDx) global_force[nodes[i].global_dof_index[dof::kIdx]] = v;
+  if (dof & dof::kDy) global_force[nodes[i].global_dof_index[dof::kIdy]] = v;
+  if (dof & dof::kDz) global_force[nodes[i].global_dof_index[dof::kIdz]] = v;
 }
 
 void Model::add_force(dof::Dof dof, double v,
@@ -78,7 +78,7 @@ void Model::assign_global_dof_indices() {
 
   std::size_t global_dof_count = 0;
   for (std::size_t i = 0; i < nodes.size(); ++i) {
-    for (std::size_t j = 0; j < cpe::model::dof::NUM_STRUC_DOF; ++j) {
+    for (std::size_t j = 0; j < cpe::model::dof::kNumStrucDof; ++j) {
       nodes[i].global_dof_index[j] = global_dof_count++;
     }
   }

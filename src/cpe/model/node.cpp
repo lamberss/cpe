@@ -25,12 +25,12 @@
 namespace cpe::model {
 
 Node::Node(double xx, double yy, double zz)
-    : constrained_dofs(cpe::model::dof::NONE), x(xx), y(yy), z(zz) {
+    : constrained_dofs(cpe::model::dof::kNone), x(xx), y(yy), z(zz) {
   for (std::size_t i = 0; i < active_dof_index.size(); ++i) {
-    active_dof_index[i] = cpe::model::dof::INACTIVE_DOF;
+    active_dof_index[i] = cpe::model::dof::kInactiveDof;
   }
   for (std::size_t i = 0; i < global_dof_index.size(); ++i) {
-    global_dof_index[i] = cpe::model::dof::INACTIVE_DOF;
+    global_dof_index[i] = cpe::model::dof::kInactiveDof;
   }
 };
 

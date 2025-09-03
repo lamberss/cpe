@@ -26,24 +26,24 @@
 
 namespace cpe::model::dof {
 
-static constexpr std::size_t NUM_STRUC_DOF = 6;
-static constexpr std::size_t INACTIVE_DOF =
+static constexpr std::size_t kNumStrucDof = 6;
+static constexpr std::size_t kInactiveDof =
     std::numeric_limits<std::size_t>::max();
 
-enum DofIndex { IX = 0, IY = 1, IZ = 2, IDX = 3, IDY = 4, IDZ = 5 };
+enum DofIndex { kIx = 0, kIy = 1, kIz = 2, kIdx = 3, kIdy = 4, kIdz = 5 };
 
 enum Dof : std::int8_t {
-  NONE = 0,        // 00000000
-  X = 1,           // 00000001
-  Y = 2,           // 00000010
-  Z = 4,           // 00000100
-  ALL_TRANS = 7,   // 00000111
-  DX = 8,          // 00001000
-  DY = 16,         // 00010000
-  ALL_NON2D = 28,  // 00011100
-  DZ = 32,         // 00100000
-  ALL_ROT = 56,    // 00111000
-  ALL = 63         // 00111111
+  kNone = 0,       // 00000000
+  kX = 1,          // 00000001
+  kY = 2,          // 00000010
+  kZ = 4,          // 00000100
+  kAllTrans = 7,   // 00000111
+  kDx = 8,         // 00001000
+  kDy = 16,        // 00010000
+  kAllNon2d = 28,  // 00011100
+  kDz = 32,        // 00100000
+  kAllRot = 56,    // 00111000
+  kAll = 63        // 00111111
 };
 
 }  // namespace cpe::model::dof
