@@ -23,7 +23,7 @@
 
 namespace cpe::model {
 
-Property::Property(const std::string& n, std::shared_ptr<Material> m)
-    : material(m), name(n) {};
+Property::Property(const std::string& name, std::shared_ptr<Material> material)
+    : material_(material), name_(name) {};
 
 }  // namespace cpe::model

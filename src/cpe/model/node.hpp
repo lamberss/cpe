@@ -28,16 +28,16 @@ namespace cpe::model {
 
 class Node {
  public:
-  Node(double xx = 0.0, double yy = 0.0, double zz = 0.0);
+  Node(double x = 0.0, double y = 0.0, double z = 0.0);
 
-  std::array<std::size_t, cpe::model::dof::kNumStrucDof> active_dof_index;
-  std::array<std::size_t, cpe::model::dof::kNumStrucDof> global_dof_index;
+  std::array<std::size_t, cpe::model::dof::kNumStrucDof> active_dof_index_;
+  std::array<std::size_t, cpe::model::dof::kNumStrucDof> global_dof_index_;
 
-  dof::Dof constrained_dofs;
+  dof::Dof constrained_dofs_;
 
-  double x;
-  double y;
-  double z;
+  double x_;
+  double y_;
+  double z_;
 };
 
 }  // namespace cpe::model

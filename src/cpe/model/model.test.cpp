@@ -28,122 +28,122 @@ namespace {
 
 TEST(ModelTest, Create) {
   cpe::model::Model model;
-  EXPECT_EQ(model.blocks.size(), 0);
-  EXPECT_EQ(model.nodes.GetNumNodes(), 0);
+  EXPECT_EQ(model.blocks_.size(), 0);
+  EXPECT_EQ(model.nodes_.GetNumNodes(), 0);
 }
 
 TEST(ModelTest, AddConstraintSingle) {
   cpe::model::Model model;
-  model.nodes.AddNode(0, 1.0);
-  model.nodes.AddNode(1, 2.0);
+  model.nodes_.AddNode(0, 1.0);
+  model.nodes_.AddNode(1, 2.0);
   model.AddConstraint(cpe::model::dof::kX, 1.0, 0);
-  EXPECT_EQ(model.constraints[0], cpe::model::dof::kX);
-  EXPECT_EQ(model.constraints[1], cpe::model::dof::kNone);
+  EXPECT_EQ(model.constraints_[0], cpe::model::dof::kX);
+  EXPECT_EQ(model.constraints_[1], cpe::model::dof::kNone);
   model.AddConstraint(cpe::model::dof::kY, 2.0, 0);
-  EXPECT_EQ(model.constraints[0], cpe::model::dof::kX | cpe::model::dof::kY);
-  EXPECT_EQ(model.constraints[1], cpe::model::dof::kNone);
-  EXPECT_EQ(model.nodes[0].global_dof_index[0], 0);
-  EXPECT_EQ(model.nodes[0].global_dof_index[5], 5);
-  EXPECT_EQ(model.nodes[1].global_dof_index[0], 6);
-  EXPECT_EQ(model.nodes[1].global_dof_index[5], 11);
-  EXPECT_EQ(model.global_dof.size(), 12);
-  for (std::size_t i = 0; i < model.global_dof.size(); ++i) {
+  EXPECT_EQ(model.constraints_[0], cpe::model::dof::kX | cpe::model::dof::kY);
+  EXPECT_EQ(model.constraints_[1], cpe::model::dof::kNone);
+  EXPECT_EQ(model.nodes_[0].global_dof_index_[0], 0);
+  EXPECT_EQ(model.nodes_[0].global_dof_index_[5], 5);
+  EXPECT_EQ(model.nodes_[1].global_dof_index_[0], 6);
+  EXPECT_EQ(model.nodes_[1].global_dof_index_[5], 11);
+  EXPECT_EQ(model.global_dof_.size(), 12);
+  for (std::size_t i = 0; i < model.global_dof_.size(); ++i) {
     if (i == 0) {
-      EXPECT_EQ(model.global_dof[i], 1.0);
+      EXPECT_EQ(model.global_dof_[i], 1.0);
     } else if (i == 1) {
-      EXPECT_EQ(model.global_dof[i], 2.0);
+      EXPECT_EQ(model.global_dof_[i], 2.0);
     } else {
-      EXPECT_EQ(model.global_dof[i], 0.0);
+      EXPECT_EQ(model.global_dof_[i], 0.0);
     }
   }
 }
 
 TEST(ModelTest, AddConstraintMulti) {
   cpe::model::Model model;
-  model.nodes.AddNode(0, 1.0);
-  model.nodes.AddNode(1, 2.0);
+  model.nodes_.AddNode(0, 1.0);
+  model.nodes_.AddNode(1, 2.0);
   model.AddConstraint(cpe::model::dof::kX, 1.0, {0, 1});
-  EXPECT_EQ(model.constraints[0], cpe::model::dof::kX);
-  EXPECT_EQ(model.constraints[1], cpe::model::dof::kX);
-  EXPECT_EQ(model.nodes[0].global_dof_index[0], 0);
-  EXPECT_EQ(model.nodes[0].global_dof_index[5], 5);
-  EXPECT_EQ(model.nodes[1].global_dof_index[0], 6);
-  EXPECT_EQ(model.nodes[1].global_dof_index[5], 11);
-  EXPECT_EQ(model.global_dof.size(), 12);
-  for (std::size_t i = 0; i < model.global_dof.size(); ++i) {
+  EXPECT_EQ(model.constraints_[0], cpe::model::dof::kX);
+  EXPECT_EQ(model.constraints_[1], cpe::model::dof::kX);
+  EXPECT_EQ(model.nodes_[0].global_dof_index_[0], 0);
+  EXPECT_EQ(model.nodes_[0].global_dof_index_[5], 5);
+  EXPECT_EQ(model.nodes_[1].global_dof_index_[0], 6);
+  EXPECT_EQ(model.nodes_[1].global_dof_index_[5], 11);
+  EXPECT_EQ(model.global_dof_.size(), 12);
+  for (std::size_t i = 0; i < model.global_dof_.size(); ++i) {
     if (i == 0 || i == 6) {
-      EXPECT_EQ(model.global_dof[i], 1.0);
+      EXPECT_EQ(model.global_dof_[i], 1.0);
     } else {
-      EXPECT_EQ(model.global_dof[i], 0.0);
+      EXPECT_EQ(model.global_dof_[i], 0.0);
     }
   }
 }
 
 TEST(ModelTest, AddConstraintAll) {
   cpe::model::Model model;
-  model.nodes.AddNode(0, 1.0);
-  model.nodes.AddNode(1, 2.0);
+  model.nodes_.AddNode(0, 1.0);
+  model.nodes_.AddNode(1, 2.0);
   model.AddConstraint(cpe::model::dof::kX, 1.0);
-  EXPECT_EQ(model.constraints[0], cpe::model::dof::kX);
-  EXPECT_EQ(model.constraints[1], cpe::model::dof::kX);
-  EXPECT_EQ(model.nodes[0].global_dof_index[0], 0);
-  EXPECT_EQ(model.nodes[0].global_dof_index[5], 5);
-  EXPECT_EQ(model.nodes[1].global_dof_index[0], 6);
-  EXPECT_EQ(model.nodes[1].global_dof_index[5], 11);
-  EXPECT_EQ(model.global_dof.size(), 12);
-  for (std::size_t i = 0; i < model.global_dof.size(); ++i) {
+  EXPECT_EQ(model.constraints_[0], cpe::model::dof::kX);
+  EXPECT_EQ(model.constraints_[1], cpe::model::dof::kX);
+  EXPECT_EQ(model.nodes_[0].global_dof_index_[0], 0);
+  EXPECT_EQ(model.nodes_[0].global_dof_index_[5], 5);
+  EXPECT_EQ(model.nodes_[1].global_dof_index_[0], 6);
+  EXPECT_EQ(model.nodes_[1].global_dof_index_[5], 11);
+  EXPECT_EQ(model.global_dof_.size(), 12);
+  for (std::size_t i = 0; i < model.global_dof_.size(); ++i) {
     if (i == 0 || i == 6) {
-      EXPECT_EQ(model.global_dof[i], 1.0);
+      EXPECT_EQ(model.global_dof_[i], 1.0);
     } else {
-      EXPECT_EQ(model.global_dof[i], 0.0);
+      EXPECT_EQ(model.global_dof_[i], 0.0);
     }
   }
 }
 
 TEST(ModelTest, AddForceSingle) {
   cpe::model::Model model;
-  model.nodes.AddNode(0, 1.0);
-  model.nodes.AddNode(1, 2.0);
+  model.nodes_.AddNode(0, 1.0);
+  model.nodes_.AddNode(1, 2.0);
   model.AddForce(cpe::model::dof::kX, 1.0, 0);
   model.AddForce(cpe::model::dof::kY, 2.0, 0);
-  EXPECT_EQ(model.global_force.size(), 12);
-  for (std::size_t i = 0; i < model.global_force.size(); ++i) {
+  EXPECT_EQ(model.global_force_.size(), 12);
+  for (std::size_t i = 0; i < model.global_force_.size(); ++i) {
     if (i == 0) {
-      EXPECT_EQ(model.global_force[i], 1.0);
+      EXPECT_EQ(model.global_force_[i], 1.0);
     } else if (i == 1) {
-      EXPECT_EQ(model.global_force[i], 2.0);
+      EXPECT_EQ(model.global_force_[i], 2.0);
     } else {
-      EXPECT_EQ(model.global_force[i], 0.0);
+      EXPECT_EQ(model.global_force_[i], 0.0);
     }
   }
 }
 
 TEST(ModelTest, AddForceMulti) {
   cpe::model::Model model;
-  model.nodes.AddNode(0, 1.0);
-  model.nodes.AddNode(1, 2.0);
+  model.nodes_.AddNode(0, 1.0);
+  model.nodes_.AddNode(1, 2.0);
   model.AddForce(cpe::model::dof::kX, 1.0, {0, 1});
-  EXPECT_EQ(model.global_force.size(), 12);
-  for (std::size_t i = 0; i < model.global_force.size(); ++i) {
+  EXPECT_EQ(model.global_force_.size(), 12);
+  for (std::size_t i = 0; i < model.global_force_.size(); ++i) {
     if (i == 0 || i == 6) {
-      EXPECT_EQ(model.global_force[i], 1.0);
+      EXPECT_EQ(model.global_force_[i], 1.0);
     } else {
-      EXPECT_EQ(model.global_force[i], 0.0);
+      EXPECT_EQ(model.global_force_[i], 0.0);
     }
   }
 }
 
 TEST(ModelTest, AddForceAll) {
   cpe::model::Model model;
-  model.nodes.AddNode(0, 1.0);
-  model.nodes.AddNode(1, 2.0);
+  model.nodes_.AddNode(0, 1.0);
+  model.nodes_.AddNode(1, 2.0);
   model.AddForce(cpe::model::dof::kX, 1.0);
-  EXPECT_EQ(model.global_force.size(), 12);
-  for (std::size_t i = 0; i < model.global_force.size(); ++i) {
+  EXPECT_EQ(model.global_force_.size(), 12);
+  for (std::size_t i = 0; i < model.global_force_.size(); ++i) {
     if (i == 0 || i == 6) {
-      EXPECT_EQ(model.global_force[i], 1.0);
+      EXPECT_EQ(model.global_force_[i], 1.0);
     } else {
-      EXPECT_EQ(model.global_force[i], 0.0);
+      EXPECT_EQ(model.global_force_[i], 0.0);
     }
   }
 }
@@ -158,15 +158,15 @@ TEST(ModelTest, GetNumberOfElements) {
       std::make_shared<cpe::model::Property>("circle", material);
   (*property_circle)["area"] = 2.0;
   cpe::model::Model model;
-  model.nodes.AddNode(0, 1.0);
-  model.nodes.AddNode(1, 2.0);
+  model.nodes_.AddNode(0, 1.0);
+  model.nodes_.AddNode(1, 2.0);
   using element_block_t = cpe::model::ElementBlock<cpe::model::Element>;
   std::shared_ptr<element_block_t> block1 =
       std::make_shared<element_block_t>("truss1", property_square, 4);
-  model.blocks.push_back(block1);
+  model.blocks_.push_back(block1);
   std::shared_ptr<element_block_t> block2 =
       std::make_shared<element_block_t>("truss2", property_circle, 4);
-  model.blocks.push_back(block2);
+  model.blocks_.push_back(block2);
   block1->AddElement(0, 2);
   block1->AddElement(0, 3);
   block1->AddElement(1, 3);
@@ -180,8 +180,8 @@ TEST(ModelTest, GetNumberOfElements) {
 
 TEST(ModelTest, GetNumberOfNodes) {
   cpe::model::Model model;
-  model.nodes.AddNode(0, 1.0);
-  model.nodes.AddNode(1, 2.0);
+  model.nodes_.AddNode(0, 1.0);
+  model.nodes_.AddNode(1, 2.0);
   EXPECT_EQ(model.GetNumNodes(), 2);
 }
 

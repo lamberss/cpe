@@ -38,14 +38,14 @@ TEST(VTKTest, WriteVtu) {
   (*property)["area"] = 1.0;
 
   cpe::model::Model model;
-  model.nodes.AddNode(0, -1.0, 0.0, 0.0);
-  model.nodes.AddNode(1, 1.0, 0.0, 0.0);
-  model.nodes.AddNode(2, 0.0, 1.0, 0.0);
+  model.nodes_.AddNode(0, -1.0, 0.0, 0.0);
+  model.nodes_.AddNode(1, 1.0, 0.0, 0.0);
+  model.nodes_.AddNode(2, 0.0, 1.0, 0.0);
 
   using element_block_t = cpe::model::ElementBlock<cpe::model::Element>;
   std::shared_ptr<element_block_t> block =
       std::make_shared<element_block_t>("truss", property, 8);
-  model.blocks.push_back(block);
+  model.blocks_.push_back(block);
   block->AddElement(0, 1);
   block->AddElement(1, 2);
   block->AddElement(0, 2);

@@ -25,6 +25,6 @@
 namespace cpe::model {
 
 Material::Material(const std::string& n, double e, double nu)
-    : name(n), e_(e), nu_(nu) {};
+    : name_(n), e_(e), nu_(nu) {};
 
 }  // namespace cpe::model

@@ -41,8 +41,8 @@ void WriteVtuCells(std::ostream& os, const cpe::model::Model& model,
 
   os << pre << ind
      << "<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">\n";
-  for (std::size_t i = 0; i < model.blocks.size(); ++i) {
-    auto& block = *(model.blocks[i]);
+  for (std::size_t i = 0; i < model.blocks_.size(); ++i) {
+    auto& block = *(model.blocks_[i]);
     for (std::size_t j = 0; j < block.GetNumElements(); ++j) {
       os << pre << ind;
       for (unsigned int k = 0; k < block[j].GetNumNodes(); ++k) {
@@ -82,9 +82,9 @@ void WriteVtuPoints(std::ostream& os, const cpe::model::Model& model,
         "format=\"ascii\">\n";
 
   for (std::size_t i = 0; i < model.GetNumNodes(); ++i) {
-    os << pre << ind << ind << std::setw(double_width) << model.nodes[i].x
-       << ind << std::setw(double_width) << model.nodes[i].y << ind
-       << std::setw(double_width) << model.nodes[i].z << "\n";
+    os << pre << ind << ind << std::setw(double_width) << model.nodes_[i].x_
+       << ind << std::setw(double_width) << model.nodes_[i].y_ << ind
+       << std::setw(double_width) << model.nodes_[i].z_ << "\n";
   }
 
   os << pre << ind << "</DataArray>\n";

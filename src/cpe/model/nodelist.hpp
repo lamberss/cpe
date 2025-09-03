@@ -34,12 +34,14 @@ class NodeList {
   void AddNode(std::size_t id, double x, double y = 0.0, double z = 0.0);
 
   Node& GetNodeById(std::size_t id) { return nodes_[node_ids_[id]]; }
+
+  std::size_t GetNumNodes() { return nodes_.size(); }
+  std::size_t GetNumNodes() const { return nodes_.size(); }
+
   Node& operator[](std::size_t i) { return nodes_[i]; }
   const Node& operator[](std::size_t i) const { return nodes_[i]; }
 
   void Reserve(std::size_t n) { nodes_.reserve(n); }
-  std::size_t GetNumNodes() { return nodes_.size(); }
-  std::size_t GetNumNodes() const { return nodes_.size(); }
 
  private:
   std::map<std::size_t, std::size_t> node_ids_;

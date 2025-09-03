@@ -35,9 +35,10 @@ class Material {
 
   Material(const std::string& name, double e, double nu);
 
-  const std::string name;
   const double& YoungsModulus() const { return e_; }
   const double& PoissonsRatio() const { return nu_; }
+
+  const std::string name_;
 
  private:
   double e_;

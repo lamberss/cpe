@@ -31,7 +31,7 @@ TEST(MaterialTest, Create) {
   const double E = 210.0e9;
   const double nu = 0.3;
   cpe::model::Material material(name, E, nu);
-  EXPECT_EQ(material.name, name);
+  EXPECT_EQ(material.name_, name);
   EXPECT_EQ(material.YoungsModulus(), E);
   EXPECT_EQ(material.PoissonsRatio(), nu);
 }

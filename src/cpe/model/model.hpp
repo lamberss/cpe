@@ -43,13 +43,13 @@ class Model {
   void AddForce(dof::Dof dof, double v, const std::vector<std::size_t>& is);
 
   std::size_t GetNumElements() const;
-  std::size_t GetNumNodes() const { return nodes.GetNumNodes(); }
+  std::size_t GetNumNodes() const { return nodes_.GetNumNodes(); }
 
-  std::vector<std::shared_ptr<ElementBlockBase> > blocks;
-  std::map<std::size_t, dof::Dof> constraints;
-  std::vector<double> global_dof;
-  std::vector<double> global_force;
-  NodeList nodes;
+  std::vector<std::shared_ptr<ElementBlockBase> > blocks_;
+  std::map<std::size_t, dof::Dof> constraints_;
+  std::vector<double> global_dof_;
+  std::vector<double> global_force_;
+  NodeList nodes_;
 
  private:
   void AssignGlobalDofIndices();

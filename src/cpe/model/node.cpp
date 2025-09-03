@@ -24,13 +24,13 @@
 
 namespace cpe::model {
 
-Node::Node(double xx, double yy, double zz)
-    : constrained_dofs(cpe::model::dof::kNone), x(xx), y(yy), z(zz) {
-  for (std::size_t i = 0; i < active_dof_index.size(); ++i) {
-    active_dof_index[i] = cpe::model::dof::kInactiveDof;
+Node::Node(double x, double y, double z)
+    : constrained_dofs_(cpe::model::dof::kNone), x_(x), y_(y), z_(z) {
+  for (std::size_t i = 0; i < active_dof_index_.size(); ++i) {
+    active_dof_index_[i] = cpe::model::dof::kInactiveDof;
   }
-  for (std::size_t i = 0; i < global_dof_index.size(); ++i) {
-    global_dof_index[i] = cpe::model::dof::kInactiveDof;
+  for (std::size_t i = 0; i < global_dof_index_.size(); ++i) {
+    global_dof_index_[i] = cpe::model::dof::kInactiveDof;
   }
 };
 

@@ -32,45 +32,45 @@ static constexpr std::array<std::size_t, cpe::model::dof::kNumStrucDof>
 
 TEST(NodeTest, Create0) {
   cpe::model::Node n;
-  EXPECT_EQ(n.x, 0.0);
-  EXPECT_EQ(n.y, 0.0);
-  EXPECT_EQ(n.z, 0.0);
-  EXPECT_EQ(n.constrained_dofs, cpe::model::dof::kNone);
-  EXPECT_EQ(n.active_dof_index, inactive);
-  EXPECT_EQ(n.global_dof_index, inactive);
+  EXPECT_EQ(n.x_, 0.0);
+  EXPECT_EQ(n.y_, 0.0);
+  EXPECT_EQ(n.z_, 0.0);
+  EXPECT_EQ(n.constrained_dofs_, cpe::model::dof::kNone);
+  EXPECT_EQ(n.active_dof_index_, inactive);
+  EXPECT_EQ(n.global_dof_index_, inactive);
 }
 
 TEST(NodeTest, Create1) {
   const double x = 1.0;
   cpe::model::Node n(x);
-  EXPECT_EQ(n.x, x);
-  EXPECT_EQ(n.y, 0.0);
-  EXPECT_EQ(n.z, 0.0);
-  EXPECT_EQ(n.constrained_dofs, cpe::model::dof::kNone);
-  EXPECT_EQ(n.active_dof_index, inactive);
-  EXPECT_EQ(n.global_dof_index, inactive);
+  EXPECT_EQ(n.x_, x);
+  EXPECT_EQ(n.y_, 0.0);
+  EXPECT_EQ(n.z_, 0.0);
+  EXPECT_EQ(n.constrained_dofs_, cpe::model::dof::kNone);
+  EXPECT_EQ(n.active_dof_index_, inactive);
+  EXPECT_EQ(n.global_dof_index_, inactive);
 }
 
 TEST(NodeTest, Create2) {
   const double x = 1.0, y = 2.0;
   cpe::model::Node n(x, y);
-  EXPECT_EQ(n.x, x);
-  EXPECT_EQ(n.y, y);
-  EXPECT_EQ(n.z, 0.0);
-  EXPECT_EQ(n.constrained_dofs, cpe::model::dof::kNone);
-  EXPECT_EQ(n.active_dof_index, inactive);
-  EXPECT_EQ(n.global_dof_index, inactive);
+  EXPECT_EQ(n.x_, x);
+  EXPECT_EQ(n.y_, y);
+  EXPECT_EQ(n.z_, 0.0);
+  EXPECT_EQ(n.constrained_dofs_, cpe::model::dof::kNone);
+  EXPECT_EQ(n.active_dof_index_, inactive);
+  EXPECT_EQ(n.global_dof_index_, inactive);
 }
 
 TEST(NodeTest, Create3) {
   const double x = 1.0, y = 2.0, z = 3.0;
   cpe::model::Node n(x, y, z);
-  EXPECT_EQ(n.x, x);
-  EXPECT_EQ(n.y, y);
-  EXPECT_EQ(n.z, z);
-  EXPECT_EQ(n.constrained_dofs, cpe::model::dof::kNone);
-  EXPECT_EQ(n.active_dof_index, inactive);
-  EXPECT_EQ(n.global_dof_index, inactive);
+  EXPECT_EQ(n.x_, x);
+  EXPECT_EQ(n.y_, y);
+  EXPECT_EQ(n.z_, z);
+  EXPECT_EQ(n.constrained_dofs_, cpe::model::dof::kNone);
+  EXPECT_EQ(n.active_dof_index_, inactive);
+  EXPECT_EQ(n.global_dof_index_, inactive);
 }
 
 }  // namespace

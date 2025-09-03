@@ -34,16 +34,16 @@ class Element {
   Element() = delete;
 
   Element(std::size_t n1, std::size_t n2) {
-    nodes[0] = n1;
-    nodes[1] = n2;
+    nodes_[0] = n1;
+    nodes_[1] = n2;
   }
 
-  std::size_t operator[](std::size_t i) { return nodes[i]; }
-  std::size_t GetNumNodes() const { return nodes.size(); }
+  std::size_t GetNumNodes() const { return nodes_.size(); }
+  std::size_t operator[](std::size_t i) { return nodes_[i]; }
 
   static constexpr std::uint8_t kVtkType = 3;  // VTK_LINE
   static constexpr std::array<std::uint8_t, kNumNodes> kVtkOrder{0, 1};
-  std::array<std::size_t, kNumNodes> nodes;
+  std::array<std::size_t, kNumNodes> nodes_;
 };
 
 }  // namespace cpe::model

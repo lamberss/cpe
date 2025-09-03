@@ -38,12 +38,12 @@ class Property {
 
   Property(const std::string& name, std::shared_ptr<Material> material);
 
-  const std::shared_ptr<Material> material;
-  const std::string name;
+  std::size_t GetNumAttributes() { return attributes_.size(); }
 
   double& operator[](const std::string& key) { return attributes_[key]; }
 
-  std::size_t GetNumAttributes() { return attributes_.size(); }
+  const std::shared_ptr<Material> material_;
+  const std::string name_;
 
  private:
   std::map<std::string, double> attributes_;

@@ -58,14 +58,14 @@ TEST(NodeListTest, Access) {
   node_list.AddNode(id, x, y, z);
 
   const cpe::model::Node& node1 = node_list[0];
-  EXPECT_EQ(node1.x, x);
-  EXPECT_EQ(node1.y, y);
-  EXPECT_EQ(node1.z, z);
+  EXPECT_EQ(node1.x_, x);
+  EXPECT_EQ(node1.y_, y);
+  EXPECT_EQ(node1.z_, z);
 
   const cpe::model::Node& node2 = node_list.GetNodeById(id);
-  EXPECT_EQ(node2.x, x);
-  EXPECT_EQ(node2.y, y);
-  EXPECT_EQ(node2.z, z);
+  EXPECT_EQ(node2.x_, x);
+  EXPECT_EQ(node2.y_, y);
+  EXPECT_EQ(node2.z_, z);
 }
 
 }  // namespace

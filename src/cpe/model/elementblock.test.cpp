@@ -35,7 +35,7 @@ TEST(PropertyTest, Create) {
       std::make_shared<cpe::model::Property>("property", material);
   cpe::model::ElementBlock<cpe::model::Element> block("elements", property);
   EXPECT_EQ(block.GetNumElements(), 0);
-  EXPECT_EQ(block.property->name, "property");
+  EXPECT_EQ(block.property_->name_, "property");
 }
 
 TEST(PropertyTest, AddAndAccess) {
