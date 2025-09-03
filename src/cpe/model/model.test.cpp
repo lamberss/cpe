@@ -160,12 +160,12 @@ TEST(ModelTest, GetNumberOfElements) {
   cpe::model::Model model;
   model.nodes_.AddNode(0, 1.0);
   model.nodes_.AddNode(1, 2.0);
-  using element_block_t = cpe::model::ElementBlock<cpe::model::Element>;
-  std::shared_ptr<element_block_t> block1 =
-      std::make_shared<element_block_t>("truss1", property_square, 4);
+  using ElementBlock = cpe::model::ElementBlock<cpe::model::Element>;
+  std::shared_ptr<ElementBlock> block1 =
+      std::make_shared<ElementBlock>("truss1", property_square, 4);
   model.blocks_.push_back(block1);
-  std::shared_ptr<element_block_t> block2 =
-      std::make_shared<element_block_t>("truss2", property_circle, 4);
+  std::shared_ptr<ElementBlock> block2 =
+      std::make_shared<ElementBlock>("truss2", property_circle, 4);
   model.blocks_.push_back(block2);
   block1->AddElement(0, 2);
   block1->AddElement(0, 3);

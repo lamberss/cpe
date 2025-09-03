@@ -26,9 +26,9 @@
 namespace {
 
 static constexpr std::array<std::size_t, cpe::model::dof::kNumStrucDof>
-    inactive{cpe::model::dof::kInactiveDof, cpe::model::dof::kInactiveDof,
-             cpe::model::dof::kInactiveDof, cpe::model::dof::kInactiveDof,
-             cpe::model::dof::kInactiveDof, cpe::model::dof::kInactiveDof};
+    kInactive{cpe::model::dof::kInactiveDof, cpe::model::dof::kInactiveDof,
+              cpe::model::dof::kInactiveDof, cpe::model::dof::kInactiveDof,
+              cpe::model::dof::kInactiveDof, cpe::model::dof::kInactiveDof};
 
 TEST(NodeTest, Create0) {
   cpe::model::Node n;
@@ -36,8 +36,8 @@ TEST(NodeTest, Create0) {
   EXPECT_EQ(n.y_, 0.0);
   EXPECT_EQ(n.z_, 0.0);
   EXPECT_EQ(n.constrained_dofs_, cpe::model::dof::kNone);
-  EXPECT_EQ(n.active_dof_index_, inactive);
-  EXPECT_EQ(n.global_dof_index_, inactive);
+  EXPECT_EQ(n.active_dof_index_, kInactive);
+  EXPECT_EQ(n.global_dof_index_, kInactive);
 }
 
 TEST(NodeTest, Create1) {
@@ -47,8 +47,8 @@ TEST(NodeTest, Create1) {
   EXPECT_EQ(n.y_, 0.0);
   EXPECT_EQ(n.z_, 0.0);
   EXPECT_EQ(n.constrained_dofs_, cpe::model::dof::kNone);
-  EXPECT_EQ(n.active_dof_index_, inactive);
-  EXPECT_EQ(n.global_dof_index_, inactive);
+  EXPECT_EQ(n.active_dof_index_, kInactive);
+  EXPECT_EQ(n.global_dof_index_, kInactive);
 }
 
 TEST(NodeTest, Create2) {
@@ -58,8 +58,8 @@ TEST(NodeTest, Create2) {
   EXPECT_EQ(n.y_, y);
   EXPECT_EQ(n.z_, 0.0);
   EXPECT_EQ(n.constrained_dofs_, cpe::model::dof::kNone);
-  EXPECT_EQ(n.active_dof_index_, inactive);
-  EXPECT_EQ(n.global_dof_index_, inactive);
+  EXPECT_EQ(n.active_dof_index_, kInactive);
+  EXPECT_EQ(n.global_dof_index_, kInactive);
 }
 
 TEST(NodeTest, Create3) {
@@ -69,8 +69,8 @@ TEST(NodeTest, Create3) {
   EXPECT_EQ(n.y_, y);
   EXPECT_EQ(n.z_, z);
   EXPECT_EQ(n.constrained_dofs_, cpe::model::dof::kNone);
-  EXPECT_EQ(n.active_dof_index_, inactive);
-  EXPECT_EQ(n.global_dof_index_, inactive);
+  EXPECT_EQ(n.active_dof_index_, kInactive);
+  EXPECT_EQ(n.global_dof_index_, kInactive);
 }
 
 }  // namespace
