@@ -167,14 +167,14 @@ TEST(ModelTest, GetNumberOfElements) {
   std::shared_ptr<element_block_t> block2 =
       std::make_shared<element_block_t>("truss2", property_circle, 4);
   model.blocks.push_back(block2);
-  block1->emplace_back(0, 2);
-  block1->emplace_back(0, 3);
-  block1->emplace_back(1, 3);
-  block1->emplace_back(2, 3);
-  block2->emplace_back(2, 4);
-  block2->emplace_back(3, 4);
-  block2->emplace_back(3, 5);
-  block2->emplace_back(4, 5);
+  block1->AddElement(0, 2);
+  block1->AddElement(0, 3);
+  block1->AddElement(1, 3);
+  block1->AddElement(2, 3);
+  block2->AddElement(2, 4);
+  block2->AddElement(3, 4);
+  block2->AddElement(3, 5);
+  block2->AddElement(4, 5);
   EXPECT_EQ(model.get_number_of_elements(), 8);
 }
 

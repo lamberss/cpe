@@ -66,14 +66,14 @@ TEST(TrussCpeSystemTest, Truss) {
   std::shared_ptr<element_block_t> block =
       std::make_shared<element_block_t>("truss", property, 8);
   model.blocks.push_back(block);
-  block->emplace_back(0, 2);
-  block->emplace_back(0, 3);
-  block->emplace_back(1, 3);
-  block->emplace_back(2, 3);
-  block->emplace_back(2, 4);
-  block->emplace_back(3, 4);
-  block->emplace_back(3, 5);
-  block->emplace_back(4, 5);
+  block->AddElement(0, 2);
+  block->AddElement(0, 3);
+  block->AddElement(1, 3);
+  block->AddElement(2, 3);
+  block->AddElement(2, 4);
+  block->AddElement(3, 4);
+  block->AddElement(3, 5);
+  block->AddElement(4, 5);
 
   // Define boundary conditions
   model.add_constraint(cpe::model::dof::kAll, 0.0, {0, 1});

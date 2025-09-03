@@ -46,9 +46,9 @@ TEST(VTKTest, writeVTU) {
   std::shared_ptr<element_block_t> block =
       std::make_shared<element_block_t>("truss", property, 8);
   model.blocks.push_back(block);
-  block->emplace_back(0, 1);
-  block->emplace_back(1, 2);
-  block->emplace_back(0, 2);
+  block->AddElement(0, 1);
+  block->AddElement(1, 2);
+  block->AddElement(0, 2);
 
   std::string expected = R"(<?xml version="1.0" encoding="UTF-8"?>
 <VTKFile type="UnstructuredGrid" version="0.1">

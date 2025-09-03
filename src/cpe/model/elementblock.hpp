@@ -32,8 +32,8 @@ namespace cpe::model {
 class ElementBlockBase {
  public:
   virtual Element& operator[](std::size_t) = 0;
-  virtual void reserve(std::size_t) = 0;
-  virtual std::size_t size() const = 0;
+  virtual void Reserve(std::size_t) = 0;
+  virtual std::size_t GetNumElements() const = 0;
   virtual ~ElementBlockBase() = default;
 };
 
@@ -49,20 +49,20 @@ class ElementBlock : public ElementBlockBase {
   ElementBlock(const std::string& n, std::shared_ptr<Property> p,
                std::size_t r = 0)
       : name(n), property(p) {
-    reserve(r);
+    Reserve(r);
   }
 
   const std::string name;
   const std::shared_ptr<Property> property;
 
-  std::size_t capacity() { return elements_.capacity(); }
+  std::size_t Capacity() { return elements_.capacity(); }
   template <class... Args>
-  void emplace_back(Args&&... args) {
+  void AddElement(Args&&... args) {
     elements_.emplace_back(std::forward<Args>(args)...);
   }
   T& operator[](std::size_t i) { return elements_[i]; }
-  void reserve(std::size_t c) { elements_.reserve(c); }
-  std::size_t size() const { return elements_.size(); }
+  void Reserve(std::size_t c) { elements_.reserve(c); }
+  std::size_t GetNumElements() const { return elements_.size(); }
 
  private:
   std::vector<T> elements_;

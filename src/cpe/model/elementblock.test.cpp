@@ -34,7 +34,7 @@ TEST(PropertyTest, Create) {
   std::shared_ptr<cpe::model::Property> property =
       std::make_shared<cpe::model::Property>("property", material);
   cpe::model::ElementBlock<cpe::model::Element> block("elements", property);
-  EXPECT_EQ(block.size(), 0);
+  EXPECT_EQ(block.GetNumElements(), 0);
   EXPECT_EQ(block.property->name, "property");
 }
 
@@ -44,12 +44,12 @@ TEST(PropertyTest, AddAndAccess) {
   std::shared_ptr<cpe::model::Property> property =
       std::make_shared<cpe::model::Property>("property", material);
   cpe::model::ElementBlock<cpe::model::Element> block("elements", property, 1);
-  EXPECT_EQ(block.capacity(), 1);
-  EXPECT_EQ(block.size(), 0);
+  EXPECT_EQ(block.Capacity(), 1);
+  EXPECT_EQ(block.GetNumElements(), 0);
   const unsigned int a = 1;
   const unsigned int b = 2;
-  block.emplace_back(a, b);
-  EXPECT_EQ(block.size(), 1);
+  block.AddElement(a, b);
+  EXPECT_EQ(block.GetNumElements(), 1);
   EXPECT_EQ(block[0][0], a);
   EXPECT_EQ(block[0][1], b);
 }

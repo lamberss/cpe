@@ -43,7 +43,7 @@ void writeVTU_cells(std::ostream& os, const cpe::model::Model& model,
      << "<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">\n";
   for (std::size_t i = 0; i < model.blocks.size(); ++i) {
     auto& block = *(model.blocks[i]);
-    for (std::size_t j = 0; j < block.size(); ++j) {
+    for (std::size_t j = 0; j < block.GetNumElements(); ++j) {
       os << pre << ind;
       for (unsigned int k = 0; k < block[j].size(); ++k) {
         os << ind << block[j][block[j].vtk_order[k]];

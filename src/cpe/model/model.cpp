@@ -68,7 +68,7 @@ void Model::add_force(dof::Dof dof, double v,
 std::size_t Model::get_number_of_elements() const {
   std::size_t result = 0;
   for (std::size_t i = 0; i < blocks.size(); ++i) {
-    result += blocks[i]->size();
+    result += blocks[i]->GetNumElements();
   }
   return result;
 }
