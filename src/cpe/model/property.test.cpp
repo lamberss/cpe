@@ -31,7 +31,7 @@ TEST(PropertyTest, Create) {
   std::shared_ptr<cpe::model::Material> material =
       std::make_shared<cpe::model::Material>("a", 1.0, 0.1);
   cpe::model::Property property("property", material);
-  EXPECT_EQ(property.size(), 0);
+  EXPECT_EQ(property.GetNumAttributes(), 0);
   EXPECT_EQ(property.material->name, material->name);
   EXPECT_EQ(property.name, "property");
 }
@@ -43,7 +43,7 @@ TEST(PropertyTest, Accessor) {
   std::string label("label");
   const double value = 5.0;
   property[label] = value;
-  EXPECT_EQ(property.size(), 1);
+  EXPECT_EQ(property.GetNumAttributes(), 1);
   EXPECT_EQ(property[label], value);
 }
 

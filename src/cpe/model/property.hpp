@@ -43,7 +43,7 @@ class Property {
 
   double& operator[](const std::string& key) { return attributes_[key]; }
 
-  std::size_t size() { return attributes_.size(); }
+  std::size_t GetNumAttributes() { return attributes_.size(); }
 
  private:
   std::map<std::string, double> attributes_;
