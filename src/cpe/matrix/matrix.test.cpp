@@ -31,8 +31,7 @@ TEST(MatrixTest, Create) {
   cpe::matrix::Matrix m(r, c);
   EXPECT_EQ(m.GetNumColumns(), c);
   EXPECT_EQ(m.GetNumRows(), r);
-  EXPECT_EQ(m.GetAllocatedSize(),
-            3 * sizeof(std::size_t) + c * r * sizeof(double));
+  EXPECT_EQ(m.GetAllocatedSize(), c * r * sizeof(double));
   for (auto i = 0U; i < r; ++i) {
     for (auto j = 0U; j < c; ++j) {
       // Working around a google test bug
