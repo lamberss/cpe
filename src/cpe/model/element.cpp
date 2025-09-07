@@ -74,8 +74,9 @@ void Element::Assemble(const NodeList& nodes,
     if (!is_dof_active[i]) continue;
     for (std::size_t j = 0; j < 3 * kNumNodes; ++j) {
       if (!is_dof_active[j]) continue;
-      double& value = global_stiff[dof_index[i], dof_index[j]];
-      value += stiff[i, j];
+      std::size_t di = dof_index[i];
+      std::size_t dj = dof_index[j];
+      global_stiff[di, dj] += stiff[i, j];
     }
   }
 }
