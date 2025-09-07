@@ -73,4 +73,12 @@ TEST(NodeTest, Create3) {
   EXPECT_EQ(n.global_dof_index_, kInactive);
 }
 
+TEST(NodeTest, GetDistance) {
+  const double x = 1.0, y = 2.0, z = 3.0;
+  cpe::model::Node n1;
+  cpe::model::Node n2(x, y, z);
+  EXPECT_EQ(n1.GetDistance(n2), std::sqrt(14.0));
+  EXPECT_EQ(n2.GetDistance(n1), std::sqrt(14.0));
+}
+
 }  // namespace

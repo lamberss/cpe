@@ -46,9 +46,13 @@ class Matrix {
   Matrix& operator*=(double rhs);
   friend Matrix operator*(Matrix lhs, const Matrix& rhs);
 
-  std::size_t GetAllocatedSize() { return sizeof(data_[0]) * data_.capacity(); }
-  std::size_t GetNumColumns() { return n_cols_; }
-  std::size_t GetNumRows() { return n_rows_; }
+  std::size_t GetAllocatedSize() const {
+    return sizeof(data_[0]) * data_.capacity();
+  }
+  std::size_t GetNumColumns() const { return n_cols_; }
+  std::size_t GetNumRows() const { return n_rows_; }
+
+  Matrix Transpose() const;
 
  private:
   std::size_t n_cols_;

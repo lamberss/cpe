@@ -22,28 +22,40 @@
 #pragma once
 
 #include <array>
+#include <cpe/matrix/matrix.hpp>
+#include <cpe/model/dof.hpp>
+#include <cpe/model/nodelist.hpp>
+#include <cpe/model/property.hpp>
 #include <cstdint>
+#include <memory>
 
 namespace cpe::model {
 
 class Element {
  private:
-  static constexpr std::uint8_t kNumNodes = 2;
 
  public:
   Element() = delete;
+  virtual ~Element() = default;
 
-  Element(std::size_t n1, std::size_t n2) {
+  Element(std::shared_ptr<Property> property, std::size_t n1, std::size_t n2)
+      : property_(property) {
     nodes_[0] = n1;
     nodes_[1] = n2;
   }
 
+  virtual void Assemble(const NodeList& nodes,
+                        std::shared_ptr<cpe::matrix::Matrix> stiffness_matrix);
+
   std::size_t GetNumNodes() const { return nodes_.size(); }
   std::size_t operator[](std::size_t i) { return nodes_[i]; }
 
+  static constexpr std::uint8_t kNumNodes = 2;
   static constexpr std::uint8_t kVtkType = 3;  // VTK_LINE
   static constexpr std::array<std::uint8_t, kNumNodes> kVtkOrder{0, 1};
   std::array<std::size_t, kNumNodes> nodes_;
+  std::shared_ptr<Property> property_;
+  static dof::Dof GetSupportedDof() { return dof::kAllTrans; }
 };
 
 }  // namespace cpe::model

@@ -1,13 +1,14 @@
 set(TEST_EXE_PREFIX "${TEST_EXE_PREFIX}_model")
 set(TEST_NAME_PREFIX "${TEST_NAME_PREFIX}.model")
 
-set(model_sources node.cpp material.cpp model.cpp nodelist.cpp property.cpp)
+set(model_sources element.cpp node.cpp material.cpp model.cpp nodelist.cpp property.cpp)
 
 message(STATUS "Adding library: model")
 add_library(model ${model_sources})
 target_include_directories(model PUBLIC ${PROJECT_SOURCE_DIR}/src)
+target_link_libraries(model PUBLIC matrix)
 
-list(APPEND model_sources dof.hpp element.hpp elementblock.hpp)
+list(APPEND model_sources dof.hpp elementblock.hpp)
 
 list(SORT model_sources)
 foreach(source ${model_sources})

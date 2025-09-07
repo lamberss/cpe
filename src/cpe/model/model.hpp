@@ -21,6 +21,7 @@
 // SOFTWARE.
 #pragma once
 
+#include <cpe/matrix/matrix.hpp>
 #include <cpe/model/dof.hpp>
 #include <cpe/model/elementblock.hpp>
 #include <cpe/model/nodelist.hpp>
@@ -42,14 +43,19 @@ class Model {
   void AddForce(dof::Dof dof, double v, std::size_t i);
   void AddForce(dof::Dof dof, double v, const std::vector<std::size_t>& is);
 
+  void Assemble();
+
   std::size_t GetNumElements() const;
   std::size_t GetNumNodes() const { return nodes_.GetNumNodes(); }
 
+  std::shared_ptr<cpe::matrix::Matrix> active_dof_;
+  std::shared_ptr<cpe::matrix::Matrix> active_force_;
   std::vector<std::shared_ptr<ElementBlockBase> > blocks_;
   std::map<std::size_t, dof::Dof> constraints_;
   std::vector<double> global_dof_;
   std::vector<double> global_force_;
   NodeList nodes_;
+  std::shared_ptr<cpe::matrix::Matrix> stiffness_matrix_;
 
  private:
   void AssignGlobalDofIndices();

@@ -22,6 +22,7 @@
 #pragma once
 
 #include <array>
+#include <cmath>
 #include <cpe/model/dof.hpp>
 
 namespace cpe::model {
@@ -30,8 +31,13 @@ class Node {
  public:
   Node(double x = 0.0, double y = 0.0, double z = 0.0);
 
-  std::array<std::size_t, cpe::model::dof::kNumStrucDof> active_dof_index_;
-  std::array<std::size_t, cpe::model::dof::kNumStrucDof> global_dof_index_;
+  inline double GetDistance(const Node& other) const {
+    return std::sqrt(std::pow(other.x_ - x_, 2) + std::pow(other.y_ - y_, 2) +
+                     std::pow(other.z_ - z_, 2));
+  }
+
+  std::array<std::size_t, dof::kNumStrucDof> active_dof_index_;
+  std::array<std::size_t, dof::kNumStrucDof> global_dof_index_;
 
   dof::Dof constrained_dofs_;
 

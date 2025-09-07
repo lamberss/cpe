@@ -83,6 +83,7 @@ TEST(TrussCpeSystemTest, Truss) {
   model.AddForce(cpe::model::dof::kY, -P, 5);
 
   // Assemble the model
+  model.Assemble();
 
   // Compute the solution
 

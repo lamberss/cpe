@@ -175,4 +175,36 @@ TEST(MatrixTest, MultiplyMatrix) {
   EXPECT_EQ(c11, 154.0);
 }
 
+TEST(MatrixTest, Transpose) {
+  constexpr unsigned int m = 2;
+  constexpr unsigned int n = 3;
+  cpe::matrix::Matrix a(m, n);
+
+  cpe::matrix::Matrix b = a.Transpose();
+
+  EXPECT_EQ(b.GetNumColumns(), m);
+  EXPECT_EQ(b.GetNumRows(), n);
+
+  const double a00 = a[0, 0];
+  const double a10 = a[1, 0];
+  const double a01 = a[0, 1];
+  const double a11 = a[1, 1];
+  const double a02 = a[0, 2];
+  const double a12 = a[1, 2];
+
+  const double b00 = b[0, 0];
+  const double b10 = b[1, 0];
+  const double b20 = b[2, 0];
+  const double b01 = b[0, 1];
+  const double b11 = b[1, 1];
+  const double b21 = b[2, 1];
+
+  EXPECT_EQ(b00, a00);
+  EXPECT_EQ(b10, a01);
+  EXPECT_EQ(b20, a02);
+  EXPECT_EQ(b01, a10);
+  EXPECT_EQ(b11, a11);
+  EXPECT_EQ(b21, a12);
+}
+
 }  // namespace

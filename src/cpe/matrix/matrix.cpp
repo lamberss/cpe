@@ -60,4 +60,14 @@ Matrix operator*(Matrix lhs, const Matrix& rhs) {
   return result;
 }
 
+Matrix Matrix::Transpose() const {
+  Matrix result(GetNumColumns(), GetNumRows());
+  for (std::size_t i = 0; i < GetNumRows(); ++i) {
+    for (std::size_t j = 0; j < GetNumColumns(); ++j) {
+      result[j, i] = (*this)[i, j];
+    }
+  }
+  return result;
+}
+
 }  // namespace cpe::matrix

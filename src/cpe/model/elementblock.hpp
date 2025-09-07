@@ -21,8 +21,10 @@
 // SOFTWARE.
 #pragma once
 
+#include <cpe/matrix/matrix.hpp>
 #include <cpe/model/element.hpp>
 #include <cpe/model/property.hpp>
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -32,7 +34,10 @@ namespace cpe::model {
 class ElementBlockBase {
  public:
   virtual ~ElementBlockBase() = default;
+  virtual void Assemble(const NodeList&,
+                        std::shared_ptr<cpe::matrix::Matrix>) = 0;
   virtual std::size_t GetNumElements() const = 0;
+  virtual dof::Dof GetSupportedDof() const { return dof::kAll; }
   virtual void Reserve(std::size_t) = 0;
   virtual Element& operator[](std::size_t) = 0;
 };
@@ -54,10 +59,17 @@ class ElementBlock : public ElementBlockBase {
 
   template <class... Args>
   void AddElement(Args&&... args) {
-    elements_.emplace_back(std::forward<Args>(args)...);
+    elements_.emplace_back(property_, std::forward<Args>(args)...);
+  }
+  void Assemble(const NodeList& nodes,
+                std::shared_ptr<cpe::matrix::Matrix> stiffness_matrix) {
+    for (std::size_t i = 0; i < GetNumElements(); ++i) {
+      elements_[i].Assemble(nodes, stiffness_matrix);
+    }
   }
   std::size_t Capacity() { return elements_.capacity(); }
   std::size_t GetNumElements() const { return elements_.size(); }
+  dof::Dof GetSupportedDof() const { return T::GetSupportedDof(); }
   T& operator[](std::size_t i) { return elements_[i]; }
   void Reserve(std::size_t c) { elements_.reserve(c); }
 

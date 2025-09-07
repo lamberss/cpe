@@ -148,6 +148,36 @@ TEST(ModelTest, AddForceAll) {
   }
 }
 
+TEST(ModelTest, Assemble) {
+  cpe::model::Model model;
+  model.nodes_.AddNode(0, 1.0);
+  model.nodes_.AddNode(1, 2.0);
+  std::shared_ptr<cpe::model::Material> material =
+      std::make_shared<cpe::model::Material>("Aluminum", 70.0e9, 0.3);
+  std::shared_ptr<cpe::model::Property> property =
+      std::make_shared<cpe::model::Property>("square", material);
+  (*property)["area"] = 1.0;
+  using ElementBlock = cpe::model::ElementBlock<cpe::model::Element>;
+  std::shared_ptr<ElementBlock> block =
+      std::make_shared<ElementBlock>("truss", property, 8);
+  model.blocks_.push_back(block);
+  block->AddElement(0, 1);
+  model.AddConstraint(cpe::model::dof::kAll, 0.0, 0);
+  model.AddConstraint(cpe::model::dof::kAllNon2d, 0.0);
+  // NOTE: Assembly will add a constraint on kDz since the element doesn't
+  // support that
+  model.AddForce(cpe::model::dof::kX, 1.0, 1);
+  model.Assemble();
+  EXPECT_EQ(model.active_dof_->GetNumColumns(), 1);
+  EXPECT_EQ(model.active_dof_->GetNumRows(), 2);
+  EXPECT_EQ(model.active_force_->GetNumColumns(), 1);
+  EXPECT_EQ(model.active_force_->GetNumRows(), 2);
+  EXPECT_EQ((*model.active_force_)[0], 1.0);
+  EXPECT_EQ((*model.active_force_)[1], 0.0);
+  EXPECT_EQ(model.stiffness_matrix_->GetNumColumns(), 2);
+  EXPECT_EQ(model.stiffness_matrix_->GetNumRows(), 2);
+}
+
 TEST(ModelTest, GetNumberOfElements) {
   std::shared_ptr<cpe::model::Material> material =
       std::make_shared<cpe::model::Material>("Aluminum", 70.0e9, 0.3);
