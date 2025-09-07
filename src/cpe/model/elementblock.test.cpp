@@ -54,7 +54,9 @@ class TestElement : public cpe::model::Element {
     auto& global_stiff = *stiffness_matrix;
     for (std::size_t i = 0; i < dof_index.size(); ++i) {
       for (std::size_t j = 0; j < dof_index.size(); ++j) {
-        global_stiff[dof_index[i], dof_index[j]] += 1.0;
+        std::size_t di = dof_index[i];
+        std::size_t dj = dof_index[j];
+        global_stiff[di, dj] += 1.0;
       }
     }
   }
