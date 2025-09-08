@@ -46,8 +46,8 @@ int Solve(const cpe::matrix::Matrix& A, cpe::matrix::Matrix& x,
   std::cout << std::setw(15) << "-------------";
   std::cout << std::endl;
 
-  constexpr std::size_t maximum_iterations = 1000;
-  std::size_t iteration_count = 0;
+  constexpr int maximum_iterations = 1000;
+  int iteration_count = 0;
   for (std::size_t it = 0; it < maximum_iterations; ++it) {
     iteration_count++;
 
