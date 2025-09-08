@@ -27,6 +27,6 @@
 namespace cpe::linearsolver::gaussseidel {
 
 int Solve(const cpe::matrix::Matrix& A, cpe::matrix::Matrix& x,
-          const cpe::matrix::Matrix& b);
+          const cpe::matrix::Matrix& b, double tolerance = 1.0e-6);
 
 }  // namespace cpe::linearsolver::gaussseidel

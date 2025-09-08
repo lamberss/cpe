@@ -27,9 +27,8 @@
 namespace cpe::linearsolver::jacobi {
 
 int Solve(const cpe::matrix::Matrix& A, cpe::matrix::Matrix& x,
-          const cpe::matrix::Matrix& b) {
+          const cpe::matrix::Matrix& b, double tolerance) {
   constexpr double min_value = 1.0e-12;
-  constexpr double update_absolute_tolerance = 1.0e-6;
   cpe::matrix::Matrix residual(A.GetNumRows(), 1);
   cpe::matrix::Matrix update(A.GetNumRows(), 1);
   cpe::matrix::Matrix x_old(A.GetNumRows(), 1);
@@ -49,6 +48,7 @@ int Solve(const cpe::matrix::Matrix& A, cpe::matrix::Matrix& x,
 
   constexpr int maximum_iterations = 1000;
   int iteration_count = 0;
+  bool converged = false;
   for (std::size_t it = 0; it < maximum_iterations; ++it) {
     iteration_count++;
 
@@ -83,11 +83,12 @@ int Solve(const cpe::matrix::Matrix& A, cpe::matrix::Matrix& x,
     std::cout << std::setw(15) << update_relative_error;
     std::cout << std::endl;
 
-    if (update_absolute_error <= update_absolute_tolerance) break;
+    converged = update_absolute_error <= tolerance;
+    if (converged) break;
     for (std::size_t i = 0; i < A.GetNumRows(); ++i) x_old[i] = x[i];
   }
 
-  return iteration_count;
+  return converged ? iteration_count : -1;
 }
 
 }  // namespace cpe::linearsolver::jacobi

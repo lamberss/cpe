@@ -27,6 +27,7 @@
 namespace cpe::linearsolver::ssor {
 
 int Solve(const cpe::matrix::Matrix& A, cpe::matrix::Matrix& x,
-          const cpe::matrix::Matrix& b, double relaxation_factor = 1.0);
+          const cpe::matrix::Matrix& b, double tolerance = 1.0e-6,
+          double relaxation_factor = 1.0);
 
 }  // namespace cpe::linearsolver::ssor
