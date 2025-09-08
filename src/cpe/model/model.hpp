@@ -48,6 +48,8 @@ class Model {
   std::size_t GetNumElements() const;
   std::size_t GetNumNodes() const { return nodes_.GetNumNodes(); }
 
+  void Solve();
+
   std::shared_ptr<cpe::matrix::Matrix> active_dof_;
   std::shared_ptr<cpe::matrix::Matrix> active_force_;
   std::vector<std::shared_ptr<ElementBlockBase> > blocks_;

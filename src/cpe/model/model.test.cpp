@@ -21,6 +21,7 @@
 // SOFTWARE.
 #include <gtest/gtest.h>
 
+#include <cpe/linearsolver/ssor.hpp>
 #include <cpe/model/element.hpp>
 #include <cpe/model/model.hpp>
 
@@ -213,6 +214,28 @@ TEST(ModelTest, GetNumberOfNodes) {
   model.nodes_.AddNode(0, 1.0);
   model.nodes_.AddNode(1, 2.0);
   EXPECT_EQ(model.GetNumNodes(), 2);
+}
+
+TEST(ModelTest, Solve) {
+  cpe::model::Model model;
+  model.stiffness_matrix_ = std::make_shared<cpe::matrix::Matrix>(5, 5);
+  cpe::matrix::Matrix& A = *(model.stiffness_matrix_);
+  A[0, 0] = A[1, 1] = A[2, 2] = A[3, 3] = A[4, 4] = 4.0;
+  A[0, 1] = A[1, 2] = A[2, 3] = A[3, 4] = -1.0;
+  A[1, 0] = A[2, 1] = A[3, 2] = A[4, 3] = -1.0;
+  A[0, 3] = A[3, 0] = A[1, 4] = A[4, 1] = 1.0;
+  model.active_force_ = std::make_shared<cpe::matrix::Matrix>(5, 1);
+  cpe::matrix::Matrix& b = *(model.active_force_);
+  b[0] = b[1] = b[2] = b[3] = b[4] = 100.0;
+  model.active_dof_ = std::make_shared<cpe::matrix::Matrix>(5, 1);
+  cpe::matrix::Matrix& x = *(model.active_dof_);
+  int num_iter = cpe::linearsolver::ssor::Solve(A, x, b, 1.0e-6, 1.0);
+  EXPECT_EQ(num_iter, 15);
+  EXPECT_NEAR(x[0], 25.000000, 0.0001);
+  EXPECT_NEAR(x[1], 35.714285, 0.0001);
+  EXPECT_NEAR(x[2], 42.857143, 0.0001);
+  EXPECT_NEAR(x[3], 35.714285, 0.0001);
+  EXPECT_NEAR(x[4], 25.000000, 0.0001);
 }
 
 }  // namespace

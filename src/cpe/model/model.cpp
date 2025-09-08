@@ -19,6 +19,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
+#include <cpe/linearsolver/ssor.hpp>
 #include <cpe/model/model.hpp>
 
 namespace cpe::model {
@@ -124,6 +125,11 @@ std::size_t Model::GetNumElements() const {
     result += blocks_[i]->GetNumElements();
   }
   return result;
+}
+
+void Model::Solve() {
+  std::ignore = cpe::linearsolver::ssor::Solve(*stiffness_matrix_, *active_dof_,
+                                               *active_force_, 1.0e-10, 1.5);
 }
 
 void Model::AssignGlobalDofIndices() {

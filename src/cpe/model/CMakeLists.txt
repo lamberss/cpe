@@ -6,7 +6,7 @@ set(model_sources element.cpp node.cpp material.cpp model.cpp nodelist.cpp prope
 message(STATUS "Adding library: model")
 add_library(model ${model_sources})
 target_include_directories(model PUBLIC ${PROJECT_SOURCE_DIR}/src)
-target_link_libraries(model PUBLIC matrix)
+target_link_libraries(model PUBLIC linearsolver matrix)
 
 list(APPEND model_sources dof.hpp elementblock.hpp)
 
