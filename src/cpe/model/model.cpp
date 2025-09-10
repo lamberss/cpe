@@ -32,13 +32,13 @@ void Model::AddConstraint(dof::Dof dof, double v) {
   }
 }
 
-void Model::AddConstraint(dof::Dof dof, double v, std::size_t i) {
+void Model::AddConstraint(dof::Dof dof, double v, std::size_t node_id) {
   const std::array<dof::Dof, dof::kNumStrucDof> kDofs{
       dof::kX, dof::kY, dof::kZ, dof::kDx, dof::kDy, dof::kDz};
   AssignGlobalDofIndices();
-  if (constraints_.count(i) == 0) constraints_[i] = dof::kNone;
-  constraints_[i] = static_cast<dof::Dof>(constraints_[i] | dof);
-  Node& node = nodes_.GetNodeById(i);
+  if (constraints_.count(node_id) == 0) constraints_[node_id] = dof::kNone;
+  constraints_[node_id] = static_cast<dof::Dof>(constraints_[node_id] | dof);
+  Node& node = nodes_.GetNodeById(node_id);
   auto& global_dof = (*global_dof_);
   for (std::size_t i = 0; i < kDofs.size(); ++i) {
     if (dof & kDofs[i]) {
@@ -57,11 +57,11 @@ void Model::AddForce(dof::Dof dof, double v) {
   for (std::size_t i = 0; i < nodes_.GetNumNodes(); ++i) AddForce(dof, v, i);
 }
 
-void Model::AddForce(dof::Dof dof, double v, std::size_t i) {
+void Model::AddForce(dof::Dof dof, double v, std::size_t node_id) {
   const std::array<dof::Dof, dof::kNumStrucDof> kDofs{
       dof::kX, dof::kY, dof::kZ, dof::kDx, dof::kDy, dof::kDz};
   AssignGlobalDofIndices();
-  Node& node = nodes_.GetNodeById(i);
+  Node& node = nodes_.GetNodeById(node_id);
   auto& global_force = (*global_force_);
   for (std::size_t i = 0; i < kDofs.size(); ++i) {
     if (dof & kDofs[i]) global_force[node.global_dof_index_[i]] = v;
