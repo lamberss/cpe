@@ -40,7 +40,7 @@ TEST(ElementTest, CreateAndAccess) {
   EXPECT_EQ(element.GetSupportedDof(), cpe::model::dof::kAllTrans);
 }
 
-TEST(ElementTest, AssembleXAllignedConstrained) {
+TEST(ElementTest, AssembleXAlligned) {
   std::shared_ptr<cpe::model::Material> material =
       std::make_shared<cpe::model::Material>("Fake material", 1000.0, 0.3);
   std::shared_ptr<cpe::model::Property> property =
@@ -54,39 +54,12 @@ TEST(ElementTest, AssembleXAllignedConstrained) {
   cpe::model::NodeList nodes;
   nodes.AddNode(n1, 0.0, 0.0, 0.0);
   nodes.AddNode(n2, length, 0.0, 0.0);
-  nodes[0].constrained_dofs_ = cpe::model::dof::kAll;
-  nodes[1].constrained_dofs_ = static_cast<cpe::model::dof::Dof>(
-      cpe::model::dof::kAllRot | cpe::model::dof::kY | cpe::model::dof::kZ);
-  nodes[1].active_dof_index_[0] = 0;
-
-  std::shared_ptr<cpe::matrix::Matrix> stiff =
-      std::make_unique<cpe::matrix::Matrix>(1, 1);
-  element.Assemble(nodes, stiff);
-
-  double a = (*stiff)[0, 0];
-  EXPECT_EQ(a, k);
-}
-
-TEST(ElementTest, AssembleXAllignedUnconstrained) {
-  std::shared_ptr<cpe::model::Material> material =
-      std::make_shared<cpe::model::Material>("Fake material", 1000.0, 0.3);
-  std::shared_ptr<cpe::model::Property> property =
-      std::make_shared<cpe::model::Property>("square", material);
-  (*property)["area"] = 10.0;
-  const double length = 100.0;
-  const double k = (*property)["area"] * material->YoungsModulus() / length;
-  const std::size_t n1 = 0;
-  const std::size_t n2 = 1;
-  cpe::model::Element element(property, n1, n2);
-  cpe::model::NodeList nodes;
-  nodes.AddNode(n1, 0.0, 0.0, 0.0);
-  nodes.AddNode(n2, length, 0.0, 0.0);
-  nodes[0].active_dof_index_[0] = 0;
-  nodes[0].active_dof_index_[1] = 1;
-  nodes[0].active_dof_index_[2] = 2;
-  nodes[1].active_dof_index_[0] = 3;
-  nodes[1].active_dof_index_[1] = 4;
-  nodes[1].active_dof_index_[2] = 5;
+  nodes[0].global_dof_index_[0] = 0;
+  nodes[0].global_dof_index_[1] = 1;
+  nodes[0].global_dof_index_[2] = 2;
+  nodes[1].global_dof_index_[0] = 3;
+  nodes[1].global_dof_index_[1] = 4;
+  nodes[1].global_dof_index_[2] = 5;
 
   std::shared_ptr<cpe::matrix::Matrix> stiff =
       std::make_unique<cpe::matrix::Matrix>(6, 6);
@@ -106,7 +79,7 @@ TEST(ElementTest, AssembleXAllignedUnconstrained) {
   }
 }
 
-TEST(ElementTest, AssembleYAllignedConstrained) {
+TEST(ElementTest, AssembleYAlligned) {
   std::shared_ptr<cpe::model::Material> material =
       std::make_shared<cpe::model::Material>("Fake material", 1000.0, 0.3);
   std::shared_ptr<cpe::model::Property> property =
@@ -120,39 +93,12 @@ TEST(ElementTest, AssembleYAllignedConstrained) {
   cpe::model::NodeList nodes;
   nodes.AddNode(n1, 0.0, 0.0, 0.0);
   nodes.AddNode(n2, 0.0, length, 0.0);
-  nodes[0].constrained_dofs_ = cpe::model::dof::kAll;
-  nodes[1].constrained_dofs_ = static_cast<cpe::model::dof::Dof>(
-      cpe::model::dof::kAllRot | cpe::model::dof::kX | cpe::model::dof::kZ);
-  nodes[1].active_dof_index_[1] = 0;
-
-  std::shared_ptr<cpe::matrix::Matrix> stiff =
-      std::make_unique<cpe::matrix::Matrix>(1, 1);
-  element.Assemble(nodes, stiff);
-
-  double a = (*stiff)[0, 0];
-  EXPECT_EQ(a, k);
-}
-
-TEST(ElementTest, AssembleYAllignedUnconstrained) {
-  std::shared_ptr<cpe::model::Material> material =
-      std::make_shared<cpe::model::Material>("Fake material", 1000.0, 0.3);
-  std::shared_ptr<cpe::model::Property> property =
-      std::make_shared<cpe::model::Property>("square", material);
-  (*property)["area"] = 10.0;
-  const double length = 100.0;
-  const double k = (*property)["area"] * material->YoungsModulus() / length;
-  const std::size_t n1 = 0;
-  const std::size_t n2 = 1;
-  cpe::model::Element element(property, n1, n2);
-  cpe::model::NodeList nodes;
-  nodes.AddNode(n1, 0.0, 0.0, 0.0);
-  nodes.AddNode(n2, 0.0, length, 0.0);
-  nodes[0].active_dof_index_[0] = 0;
-  nodes[0].active_dof_index_[1] = 1;
-  nodes[0].active_dof_index_[2] = 2;
-  nodes[1].active_dof_index_[0] = 3;
-  nodes[1].active_dof_index_[1] = 4;
-  nodes[1].active_dof_index_[2] = 5;
+  nodes[0].global_dof_index_[0] = 0;
+  nodes[0].global_dof_index_[1] = 1;
+  nodes[0].global_dof_index_[2] = 2;
+  nodes[1].global_dof_index_[0] = 3;
+  nodes[1].global_dof_index_[1] = 4;
+  nodes[1].global_dof_index_[2] = 5;
 
   std::shared_ptr<cpe::matrix::Matrix> stiff =
       std::make_unique<cpe::matrix::Matrix>(6, 6);
@@ -172,7 +118,7 @@ TEST(ElementTest, AssembleYAllignedUnconstrained) {
   }
 }
 
-TEST(ElementTest, AssembleZAllignedConstrained) {
+TEST(ElementTest, AssembleZAlligned) {
   std::shared_ptr<cpe::model::Material> material =
       std::make_shared<cpe::model::Material>("Fake material", 1000.0, 0.3);
   std::shared_ptr<cpe::model::Property> property =
@@ -186,39 +132,12 @@ TEST(ElementTest, AssembleZAllignedConstrained) {
   cpe::model::NodeList nodes;
   nodes.AddNode(n1, 0.0, 0.0, 0.0);
   nodes.AddNode(n2, 0.0, 0.0, length);
-  nodes[0].constrained_dofs_ = cpe::model::dof::kAll;
-  nodes[1].constrained_dofs_ = static_cast<cpe::model::dof::Dof>(
-      cpe::model::dof::kAllRot | cpe::model::dof::kX | cpe::model::dof::kY);
-  nodes[1].active_dof_index_[2] = 0;
-
-  std::shared_ptr<cpe::matrix::Matrix> stiff =
-      std::make_unique<cpe::matrix::Matrix>(1, 1);
-  element.Assemble(nodes, stiff);
-
-  double a = (*stiff)[0, 0];
-  EXPECT_EQ(a, k);
-}
-
-TEST(ElementTest, AssembleZAllignedUnconstrained) {
-  std::shared_ptr<cpe::model::Material> material =
-      std::make_shared<cpe::model::Material>("Fake material", 1000.0, 0.3);
-  std::shared_ptr<cpe::model::Property> property =
-      std::make_shared<cpe::model::Property>("square", material);
-  (*property)["area"] = 10.0;
-  const double length = 100.0;
-  const double k = (*property)["area"] * material->YoungsModulus() / length;
-  const std::size_t n1 = 0;
-  const std::size_t n2 = 1;
-  cpe::model::Element element(property, n1, n2);
-  cpe::model::NodeList nodes;
-  nodes.AddNode(n1, 0.0, 0.0, 0.0);
-  nodes.AddNode(n2, 0.0, 0.0, length);
-  nodes[0].active_dof_index_[0] = 0;
-  nodes[0].active_dof_index_[1] = 1;
-  nodes[0].active_dof_index_[2] = 2;
-  nodes[1].active_dof_index_[0] = 3;
-  nodes[1].active_dof_index_[1] = 4;
-  nodes[1].active_dof_index_[2] = 5;
+  nodes[0].global_dof_index_[0] = 0;
+  nodes[0].global_dof_index_[1] = 1;
+  nodes[0].global_dof_index_[2] = 2;
+  nodes[1].global_dof_index_[0] = 3;
+  nodes[1].global_dof_index_[1] = 4;
+  nodes[1].global_dof_index_[2] = 5;
 
   std::shared_ptr<cpe::matrix::Matrix> stiff =
       std::make_unique<cpe::matrix::Matrix>(6, 6);
@@ -238,7 +157,7 @@ TEST(ElementTest, AssembleZAllignedUnconstrained) {
   }
 }
 
-TEST(ElementTest, AssembleArbitraryUnconstrained) {
+TEST(ElementTest, AssembleArbitrary) {
   std::shared_ptr<cpe::model::Material> material =
       std::make_shared<cpe::model::Material>("Fake material", 1000.0, 0.3);
   std::shared_ptr<cpe::model::Property> property =
@@ -253,12 +172,12 @@ TEST(ElementTest, AssembleArbitraryUnconstrained) {
   cpe::model::NodeList nodes;
   nodes.AddNode(n1, 0.0, 0.0, 0.0);
   nodes.AddNode(n2, p, p, p);
-  nodes[0].active_dof_index_[0] = 0;
-  nodes[0].active_dof_index_[1] = 1;
-  nodes[0].active_dof_index_[2] = 2;
-  nodes[1].active_dof_index_[0] = 3;
-  nodes[1].active_dof_index_[1] = 4;
-  nodes[1].active_dof_index_[2] = 5;
+  nodes[0].global_dof_index_[0] = 0;
+  nodes[0].global_dof_index_[1] = 1;
+  nodes[0].global_dof_index_[2] = 2;
+  nodes[1].global_dof_index_[0] = 3;
+  nodes[1].global_dof_index_[1] = 4;
+  nodes[1].global_dof_index_[2] = 5;
 
   std::shared_ptr<cpe::matrix::Matrix> stiff =
       std::make_unique<cpe::matrix::Matrix>(6, 6);

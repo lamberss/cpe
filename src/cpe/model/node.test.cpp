@@ -35,8 +35,6 @@ TEST(NodeTest, Create0) {
   EXPECT_EQ(n.x_, 0.0);
   EXPECT_EQ(n.y_, 0.0);
   EXPECT_EQ(n.z_, 0.0);
-  EXPECT_EQ(n.constrained_dofs_, cpe::model::dof::kNone);
-  EXPECT_EQ(n.active_dof_index_, kInactive);
   EXPECT_EQ(n.global_dof_index_, kInactive);
 }
 
@@ -46,8 +44,6 @@ TEST(NodeTest, Create1) {
   EXPECT_EQ(n.x_, x);
   EXPECT_EQ(n.y_, 0.0);
   EXPECT_EQ(n.z_, 0.0);
-  EXPECT_EQ(n.constrained_dofs_, cpe::model::dof::kNone);
-  EXPECT_EQ(n.active_dof_index_, kInactive);
   EXPECT_EQ(n.global_dof_index_, kInactive);
 }
 
@@ -57,8 +53,6 @@ TEST(NodeTest, Create2) {
   EXPECT_EQ(n.x_, x);
   EXPECT_EQ(n.y_, y);
   EXPECT_EQ(n.z_, 0.0);
-  EXPECT_EQ(n.constrained_dofs_, cpe::model::dof::kNone);
-  EXPECT_EQ(n.active_dof_index_, kInactive);
   EXPECT_EQ(n.global_dof_index_, kInactive);
 }
 
@@ -68,8 +62,6 @@ TEST(NodeTest, Create3) {
   EXPECT_EQ(n.x_, x);
   EXPECT_EQ(n.y_, y);
   EXPECT_EQ(n.z_, z);
-  EXPECT_EQ(n.constrained_dofs_, cpe::model::dof::kNone);
-  EXPECT_EQ(n.active_dof_index_, kInactive);
   EXPECT_EQ(n.global_dof_index_, kInactive);
 }
 

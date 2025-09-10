@@ -39,18 +39,18 @@ class TestElement : public cpe::model::Element {
     const cpe::model::Node& n2 = nodes.GetNodeById(nodes_[1]);
     std::array<std::size_t, cpe::model::dof::kNumStrucDof * kNumNodes>
         dof_index;
-    dof_index[0] = n1.active_dof_index_[cpe::model::dof::kIx];
-    dof_index[1] = n1.active_dof_index_[cpe::model::dof::kIy];
-    dof_index[2] = n1.active_dof_index_[cpe::model::dof::kIz];
-    dof_index[3] = n1.active_dof_index_[cpe::model::dof::kIdx];
-    dof_index[4] = n1.active_dof_index_[cpe::model::dof::kIdy];
-    dof_index[5] = n1.active_dof_index_[cpe::model::dof::kIdz];
-    dof_index[6] = n2.active_dof_index_[cpe::model::dof::kIx];
-    dof_index[7] = n2.active_dof_index_[cpe::model::dof::kIy];
-    dof_index[8] = n2.active_dof_index_[cpe::model::dof::kIz];
-    dof_index[9] = n2.active_dof_index_[cpe::model::dof::kIdx];
-    dof_index[10] = n2.active_dof_index_[cpe::model::dof::kIdy];
-    dof_index[11] = n2.active_dof_index_[cpe::model::dof::kIdz];
+    dof_index[0] = n1.global_dof_index_[cpe::model::dof::kIx];
+    dof_index[1] = n1.global_dof_index_[cpe::model::dof::kIy];
+    dof_index[2] = n1.global_dof_index_[cpe::model::dof::kIz];
+    dof_index[3] = n1.global_dof_index_[cpe::model::dof::kIdx];
+    dof_index[4] = n1.global_dof_index_[cpe::model::dof::kIdy];
+    dof_index[5] = n1.global_dof_index_[cpe::model::dof::kIdz];
+    dof_index[6] = n2.global_dof_index_[cpe::model::dof::kIx];
+    dof_index[7] = n2.global_dof_index_[cpe::model::dof::kIy];
+    dof_index[8] = n2.global_dof_index_[cpe::model::dof::kIz];
+    dof_index[9] = n2.global_dof_index_[cpe::model::dof::kIdx];
+    dof_index[10] = n2.global_dof_index_[cpe::model::dof::kIdy];
+    dof_index[11] = n2.global_dof_index_[cpe::model::dof::kIdz];
     auto& global_stiff = *stiffness_matrix;
     for (std::size_t i = 0; i < dof_index.size(); ++i) {
       for (std::size_t j = 0; j < dof_index.size(); ++j) {
@@ -118,7 +118,7 @@ TEST(PropertyTest, Assemble) {
   std::size_t index = 0;
   for (std::size_t i = 0; i < kNumNodes; ++i) {
     for (std::size_t j = 0; j < kNumDof; ++j) {
-      nodes[i].active_dof_index_[j] = index++;
+      nodes[i].global_dof_index_[j] = index++;
     }
   }
   std::shared_ptr<cpe::matrix::Matrix> stiff =

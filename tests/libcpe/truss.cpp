@@ -86,7 +86,8 @@ TEST(TrussCpeSystemTest, Truss) {
   model.Assemble();
 
   // Compute the solution
-  model.Solve();
+  int result = model.Solve();
+  EXPECT_GT(result, 0);
 
   // Output the results
   const std::string filename("truss.vtu");

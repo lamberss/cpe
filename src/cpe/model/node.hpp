@@ -36,10 +36,7 @@ class Node {
                      std::pow(other.z_ - z_, 2));
   }
 
-  std::array<std::size_t, dof::kNumStrucDof> active_dof_index_;
   std::array<std::size_t, dof::kNumStrucDof> global_dof_index_;
-
-  dof::Dof constrained_dofs_;
 
   double x_;
   double y_;

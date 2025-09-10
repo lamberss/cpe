@@ -56,24 +56,15 @@ void Element::Assemble(const NodeList& nodes,
 
   // Add contribution to the assembled stiffness matrix
   std::array<std::size_t, 3 * kNumNodes> dof_index;
-  dof_index[0] = n1.active_dof_index_[dof::kIx];
-  dof_index[1] = n1.active_dof_index_[dof::kIy];
-  dof_index[2] = n1.active_dof_index_[dof::kIz];
-  dof_index[3] = n2.active_dof_index_[dof::kIx];
-  dof_index[4] = n2.active_dof_index_[dof::kIy];
-  dof_index[5] = n2.active_dof_index_[dof::kIz];
-  std::array<bool, 3 * kNumNodes> is_dof_active;
-  is_dof_active[0] = (n1.constrained_dofs_ & dof::kX) == 0;
-  is_dof_active[1] = (n1.constrained_dofs_ & dof::kY) == 0;
-  is_dof_active[2] = (n1.constrained_dofs_ & dof::kZ) == 0;
-  is_dof_active[3] = (n2.constrained_dofs_ & dof::kX) == 0;
-  is_dof_active[4] = (n2.constrained_dofs_ & dof::kY) == 0;
-  is_dof_active[5] = (n2.constrained_dofs_ & dof::kZ) == 0;
+  dof_index[0] = n1.global_dof_index_[dof::kIx];
+  dof_index[1] = n1.global_dof_index_[dof::kIy];
+  dof_index[2] = n1.global_dof_index_[dof::kIz];
+  dof_index[3] = n2.global_dof_index_[dof::kIx];
+  dof_index[4] = n2.global_dof_index_[dof::kIy];
+  dof_index[5] = n2.global_dof_index_[dof::kIz];
   auto& global_stiff = *stiffness_matrix;
   for (std::size_t i = 0; i < 3 * kNumNodes; ++i) {
-    if (!is_dof_active[i]) continue;
     for (std::size_t j = 0; j < 3 * kNumNodes; ++j) {
-      if (!is_dof_active[j]) continue;
       std::size_t di = dof_index[i];
       std::size_t dj = dof_index[j];
       global_stiff[di, dj] += stiff[i, j];

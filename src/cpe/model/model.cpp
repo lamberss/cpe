@@ -33,17 +33,19 @@ void Model::AddConstraint(dof::Dof dof, double v) {
 }
 
 void Model::AddConstraint(dof::Dof dof, double v, std::size_t i) {
+  const std::array<dof::Dof, dof::kNumStrucDof> kDofs{
+      dof::kX, dof::kY, dof::kZ, dof::kDx, dof::kDy, dof::kDz};
   AssignGlobalDofIndices();
   if (constraints_.count(i) == 0) constraints_[i] = dof::kNone;
   constraints_[i] = static_cast<dof::Dof>(constraints_[i] | dof);
   Node& node = nodes_.GetNodeById(i);
-  node.constrained_dofs_ = static_cast<dof::Dof>(node.constrained_dofs_ | dof);
-  if (dof & dof::kX) global_dof_[node.global_dof_index_[dof::kIx]] = v;
-  if (dof & dof::kY) global_dof_[node.global_dof_index_[dof::kIy]] = v;
-  if (dof & dof::kZ) global_dof_[node.global_dof_index_[dof::kIz]] = v;
-  if (dof & dof::kDx) global_dof_[node.global_dof_index_[dof::kIdx]] = v;
-  if (dof & dof::kDy) global_dof_[node.global_dof_index_[dof::kIdy]] = v;
-  if (dof & dof::kDz) global_dof_[node.global_dof_index_[dof::kIdz]] = v;
+  auto& global_dof = (*global_dof_);
+  for (std::size_t i = 0; i < kDofs.size(); ++i) {
+    if (dof & kDofs[i]) {
+      global_dof[node.global_dof_index_[i]] = v;
+      global_dof_constrained_[node.global_dof_index_[i]] = true;
+    }
+  }
 }
 
 void Model::AddConstraint(dof::Dof dof, double v,
@@ -56,14 +58,14 @@ void Model::AddForce(dof::Dof dof, double v) {
 }
 
 void Model::AddForce(dof::Dof dof, double v, std::size_t i) {
+  const std::array<dof::Dof, dof::kNumStrucDof> kDofs{
+      dof::kX, dof::kY, dof::kZ, dof::kDx, dof::kDy, dof::kDz};
   AssignGlobalDofIndices();
   Node& node = nodes_.GetNodeById(i);
-  if (dof & dof::kX) global_force_[node.global_dof_index_[dof::kIx]] = v;
-  if (dof & dof::kY) global_force_[node.global_dof_index_[dof::kIy]] = v;
-  if (dof & dof::kZ) global_force_[node.global_dof_index_[dof::kIz]] = v;
-  if (dof & dof::kDx) global_force_[node.global_dof_index_[dof::kIdx]] = v;
-  if (dof & dof::kDy) global_force_[node.global_dof_index_[dof::kIdy]] = v;
-  if (dof & dof::kDz) global_force_[node.global_dof_index_[dof::kIdz]] = v;
+  auto& global_force = (*global_force_);
+  for (std::size_t i = 0; i < kDofs.size(); ++i) {
+    if (dof & kDofs[i]) global_force[node.global_dof_index_[i]] = v;
+  }
 }
 
 void Model::AddForce(dof::Dof dof, double v,
@@ -72,7 +74,7 @@ void Model::AddForce(dof::Dof dof, double v,
 }
 
 void Model::Assemble() {
-  const std::array<dof::Dof, dof::kNumStrucDof> dofs{
+  const std::array<dof::Dof, dof::kNumStrucDof> kDofs{
       dof::kX, dof::kY, dof::kZ, dof::kDx, dof::kDy, dof::kDz};
 
   // Add constraints for any dof not supported by any elements in the model
@@ -82,38 +84,32 @@ void Model::Assemble() {
         static_cast<dof::Dof>(supported_dof | blocks_[i]->GetSupportedDof());
   }
   for (std::size_t i = 0; i < dof::kNumStrucDof; ++i) {
-    if ((supported_dof & dofs[i]) == 0) {
-      AddConstraint(dofs[i], 0.0);
+    if ((supported_dof & kDofs[i]) == 0) {
+      AddConstraint(kDofs[i], 0.0);
     }
   }
-
-  // Determine how many active dofs their are
-  std::size_t num_active_dof = 0;
-  for (std::size_t i = 0; i < nodes_.GetNumNodes(); ++i) {
-    for (std::size_t j = 0; j < dof::kNumStrucDof; ++j) {
-      if ((constraints_[i] & dofs[j]) == 0) {
-        nodes_.GetNodeById(i).active_dof_index_[j] = num_active_dof++;
-      }
-    }
-  }
-
-  // Allocate storage for matrices
-  active_dof_ = std::make_shared<cpe::matrix::Matrix>(num_active_dof, 1);
-  active_force_ = std::make_shared<cpe::matrix::Matrix>(num_active_dof, 1);
-  stiffness_matrix_ =
-      std::make_shared<cpe::matrix::Matrix>(num_active_dof, num_active_dof);
 
   // Assemble the stiffness matrix
+  stiffness_matrix_ = std::make_shared<cpe::matrix::Matrix>(
+      global_dof_->GetNumRows(), global_dof_->GetNumRows());
   for (std::size_t i = 0; i < blocks_.size(); ++i)
     blocks_[i]->Assemble(nodes_, stiffness_matrix_);
 
-  // Populate the force vector
-  for (std::size_t i = 0; i < nodes_.GetNumNodes(); ++i) {
-    for (std::size_t j = 0; j < dof::kNumStrucDof; ++j) {
-      if ((constraints_[i] & dofs[j]) == 0) {
-        std::size_t ai = nodes_.GetNodeById(i).active_dof_index_[j];
-        std::size_t gi = nodes_.GetNodeById(i).global_dof_index_[j];
-        (*active_force_)[ai] = global_force_[gi];
+  // Modify system to enforce constraints
+  auto& stiff = *stiffness_matrix_;
+  auto& dof = *global_dof_;
+  auto& force = *global_force_;
+  for (std::size_t i = 0; i < dof.GetNumRows(); ++i) {
+    if (global_dof_constrained_[i]) {
+      for (std::size_t j = 0; j < dof.GetNumRows(); ++j) {
+        if (i == j) {
+          force[i] = dof[i];
+          stiff[i, i] = 1.0;
+        } else {
+          force[i] -= stiff[j, i] * dof[i];
+          stiff[j, i] = 0.0;
+          stiff[i, j] = 0.0;
+        }
       }
     }
   }
@@ -127,9 +123,10 @@ std::size_t Model::GetNumElements() const {
   return result;
 }
 
-void Model::Solve() {
-  std::ignore = cpe::linearsolver::ssor::Solve(*stiffness_matrix_, *active_dof_,
-                                               *active_force_, 1.0e-10, 1.5);
+int Model::Solve() {
+  int result = cpe::linearsolver::ssor::Solve(*stiffness_matrix_, *global_dof_,
+                                              *global_force_, 1.0e-10, 1.5);
+  return result;
 }
 
 void Model::AssignGlobalDofIndices() {
@@ -141,8 +138,10 @@ void Model::AssignGlobalDofIndices() {
       nodes_.GetNodeById(i).global_dof_index_[j] = global_dof_count++;
     }
   }
-  global_dof_.resize(global_dof_count, 0.0);
-  global_force_.resize(global_dof_count, 0.0);
+
+  global_dof_ = std::make_shared<cpe::matrix::Matrix>(global_dof_count, 1);
+  global_force_ = std::make_shared<cpe::matrix::Matrix>(global_dof_count, 1);
+  global_dof_constrained_.resize(global_dof_count, false);
 
   global_dof_indices_assigned_ = true;
 }

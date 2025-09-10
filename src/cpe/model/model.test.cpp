@@ -47,14 +47,15 @@ TEST(ModelTest, AddConstraintSingle) {
   EXPECT_EQ(model.nodes_[0].global_dof_index_[5], 5);
   EXPECT_EQ(model.nodes_[1].global_dof_index_[0], 6);
   EXPECT_EQ(model.nodes_[1].global_dof_index_[5], 11);
-  EXPECT_EQ(model.global_dof_.size(), 12);
-  for (std::size_t i = 0; i < model.global_dof_.size(); ++i) {
+  auto& global_dof = *model.global_dof_;
+  EXPECT_EQ(model.global_dof_->GetNumRows(), 12);
+  for (std::size_t i = 0; i < model.global_dof_->GetNumRows(); ++i) {
     if (i == 0) {
-      EXPECT_EQ(model.global_dof_[i], 1.0);
+      EXPECT_EQ(global_dof[i], 1.0);
     } else if (i == 1) {
-      EXPECT_EQ(model.global_dof_[i], 2.0);
+      EXPECT_EQ(global_dof[i], 2.0);
     } else {
-      EXPECT_EQ(model.global_dof_[i], 0.0);
+      EXPECT_EQ(global_dof[i], 0.0);
     }
   }
 }
@@ -70,12 +71,13 @@ TEST(ModelTest, AddConstraintMulti) {
   EXPECT_EQ(model.nodes_[0].global_dof_index_[5], 5);
   EXPECT_EQ(model.nodes_[1].global_dof_index_[0], 6);
   EXPECT_EQ(model.nodes_[1].global_dof_index_[5], 11);
-  EXPECT_EQ(model.global_dof_.size(), 12);
-  for (std::size_t i = 0; i < model.global_dof_.size(); ++i) {
+  EXPECT_EQ(model.global_dof_->GetNumRows(), 12);
+  auto& global_dof = *model.global_dof_;
+  for (std::size_t i = 0; i < model.global_dof_->GetNumRows(); ++i) {
     if (i == 0 || i == 6) {
-      EXPECT_EQ(model.global_dof_[i], 1.0);
+      EXPECT_EQ(global_dof[i], 1.0);
     } else {
-      EXPECT_EQ(model.global_dof_[i], 0.0);
+      EXPECT_EQ(global_dof[i], 0.0);
     }
   }
 }
@@ -91,12 +93,13 @@ TEST(ModelTest, AddConstraintAll) {
   EXPECT_EQ(model.nodes_[0].global_dof_index_[5], 5);
   EXPECT_EQ(model.nodes_[1].global_dof_index_[0], 6);
   EXPECT_EQ(model.nodes_[1].global_dof_index_[5], 11);
-  EXPECT_EQ(model.global_dof_.size(), 12);
-  for (std::size_t i = 0; i < model.global_dof_.size(); ++i) {
+  EXPECT_EQ(model.global_dof_->GetNumRows(), 12);
+  auto& global_dof = *model.global_dof_;
+  for (std::size_t i = 0; i < model.global_dof_->GetNumRows(); ++i) {
     if (i == 0 || i == 6) {
-      EXPECT_EQ(model.global_dof_[i], 1.0);
+      EXPECT_EQ(global_dof[i], 1.0);
     } else {
-      EXPECT_EQ(model.global_dof_[i], 0.0);
+      EXPECT_EQ(global_dof[i], 0.0);
     }
   }
 }
@@ -107,14 +110,15 @@ TEST(ModelTest, AddForceSingle) {
   model.nodes_.AddNode(1, 2.0);
   model.AddForce(cpe::model::dof::kX, 1.0, 0);
   model.AddForce(cpe::model::dof::kY, 2.0, 0);
-  EXPECT_EQ(model.global_force_.size(), 12);
-  for (std::size_t i = 0; i < model.global_force_.size(); ++i) {
+  EXPECT_EQ(model.global_force_->GetNumRows(), 12);
+  auto& global_force = *model.global_force_;
+  for (std::size_t i = 0; i < model.global_force_->GetNumRows(); ++i) {
     if (i == 0) {
-      EXPECT_EQ(model.global_force_[i], 1.0);
+      EXPECT_EQ(global_force[i], 1.0);
     } else if (i == 1) {
-      EXPECT_EQ(model.global_force_[i], 2.0);
+      EXPECT_EQ(global_force[i], 2.0);
     } else {
-      EXPECT_EQ(model.global_force_[i], 0.0);
+      EXPECT_EQ(global_force[i], 0.0);
     }
   }
 }
@@ -124,12 +128,13 @@ TEST(ModelTest, AddForceMulti) {
   model.nodes_.AddNode(0, 1.0);
   model.nodes_.AddNode(1, 2.0);
   model.AddForce(cpe::model::dof::kX, 1.0, {0, 1});
-  EXPECT_EQ(model.global_force_.size(), 12);
-  for (std::size_t i = 0; i < model.global_force_.size(); ++i) {
+  EXPECT_EQ(model.global_force_->GetNumRows(), 12);
+  auto& global_force = *model.global_force_;
+  for (std::size_t i = 0; i < model.global_force_->GetNumRows(); ++i) {
     if (i == 0 || i == 6) {
-      EXPECT_EQ(model.global_force_[i], 1.0);
+      EXPECT_EQ(global_force[i], 1.0);
     } else {
-      EXPECT_EQ(model.global_force_[i], 0.0);
+      EXPECT_EQ(global_force[i], 0.0);
     }
   }
 }
@@ -139,12 +144,13 @@ TEST(ModelTest, AddForceAll) {
   model.nodes_.AddNode(0, 1.0);
   model.nodes_.AddNode(1, 2.0);
   model.AddForce(cpe::model::dof::kX, 1.0);
-  EXPECT_EQ(model.global_force_.size(), 12);
-  for (std::size_t i = 0; i < model.global_force_.size(); ++i) {
+  EXPECT_EQ(model.global_force_->GetNumRows(), 12);
+  auto& global_force = *model.global_force_;
+  for (std::size_t i = 0; i < model.global_force_->GetNumRows(); ++i) {
     if (i == 0 || i == 6) {
-      EXPECT_EQ(model.global_force_[i], 1.0);
+      EXPECT_EQ(global_force[i], 1.0);
     } else {
-      EXPECT_EQ(model.global_force_[i], 0.0);
+      EXPECT_EQ(global_force[i], 0.0);
     }
   }
 }
@@ -169,14 +175,8 @@ TEST(ModelTest, Assemble) {
   // support that
   model.AddForce(cpe::model::dof::kX, 1.0, 1);
   model.Assemble();
-  EXPECT_EQ(model.active_dof_->GetNumColumns(), 1);
-  EXPECT_EQ(model.active_dof_->GetNumRows(), 2);
-  EXPECT_EQ(model.active_force_->GetNumColumns(), 1);
-  EXPECT_EQ(model.active_force_->GetNumRows(), 2);
-  EXPECT_EQ((*model.active_force_)[0], 1.0);
-  EXPECT_EQ((*model.active_force_)[1], 0.0);
-  EXPECT_EQ(model.stiffness_matrix_->GetNumColumns(), 2);
-  EXPECT_EQ(model.stiffness_matrix_->GetNumRows(), 2);
+  EXPECT_EQ(model.stiffness_matrix_->GetNumColumns(), 12);
+  EXPECT_EQ(model.stiffness_matrix_->GetNumRows(), 12);
 }
 
 TEST(ModelTest, GetNumberOfElements) {
@@ -224,13 +224,13 @@ TEST(ModelTest, Solve) {
   A[0, 1] = A[1, 2] = A[2, 3] = A[3, 4] = -1.0;
   A[1, 0] = A[2, 1] = A[3, 2] = A[4, 3] = -1.0;
   A[0, 3] = A[3, 0] = A[1, 4] = A[4, 1] = 1.0;
-  model.active_force_ = std::make_shared<cpe::matrix::Matrix>(5, 1);
-  cpe::matrix::Matrix& b = *(model.active_force_);
+  model.global_force_ = std::make_shared<cpe::matrix::Matrix>(5, 1);
+  cpe::matrix::Matrix& b = *(model.global_force_);
   b[0] = b[1] = b[2] = b[3] = b[4] = 100.0;
-  model.active_dof_ = std::make_shared<cpe::matrix::Matrix>(5, 1);
-  cpe::matrix::Matrix& x = *(model.active_dof_);
-  int num_iter = cpe::linearsolver::ssor::Solve(A, x, b, 1.0e-6, 1.0);
-  EXPECT_EQ(num_iter, 15);
+  model.global_dof_ = std::make_shared<cpe::matrix::Matrix>(5, 1);
+  cpe::matrix::Matrix& x = *(model.global_dof_);
+  int num_iter = model.Solve();
+  EXPECT_EQ(num_iter, 48);
   EXPECT_NEAR(x[0], 25.000000, 0.0001);
   EXPECT_NEAR(x[1], 35.714285, 0.0001);
   EXPECT_NEAR(x[2], 42.857143, 0.0001);
