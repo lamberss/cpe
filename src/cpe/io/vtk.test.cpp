@@ -50,6 +50,8 @@ TEST(VTKTest, WriteVtu) {
   block->AddElement(1, 2);
   block->AddElement(0, 2);
 
+  model.Assemble();
+
   std::string expected = R"(<?xml version="1.0" encoding="UTF-8"?>
 <VTKFile type="UnstructuredGrid" version="0.1">
   <UnstructuredGrid>
@@ -78,6 +80,18 @@ TEST(VTKTest, WriteVtu) {
           3
         </DataArray>
       </Cells>
+      <PointData>
+        <DataArray Name="Displacement" type="Float64" NumberOfComponents="3" format="ascii">
+           0.00000000000000000e+00   0.00000000000000000e+00   0.00000000000000000e+00
+           0.00000000000000000e+00   0.00000000000000000e+00   0.00000000000000000e+00
+           0.00000000000000000e+00   0.00000000000000000e+00   0.00000000000000000e+00
+        </DataArray>
+        <DataArray Name="Rotation" type="Float64" NumberOfComponents="3" format="ascii">
+           0.00000000000000000e+00   0.00000000000000000e+00   0.00000000000000000e+00
+           0.00000000000000000e+00   0.00000000000000000e+00   0.00000000000000000e+00
+           0.00000000000000000e+00   0.00000000000000000e+00   0.00000000000000000e+00
+        </DataArray>
+      </PointData>
     </Piece>
   </UnstructuredGrid>
 </VTKFile>

@@ -70,6 +70,46 @@ void WriteVtuCells(std::ostream& os, const cpe::model::Model& model,
   os << pre << "</Cells>\n";
 }
 
+void WriteVtuPointData(std::ostream& os, const cpe::model::Model& model,
+                       int level = 0, int indent = 2) {
+  std::string pre(indent * level, ' ');
+  std::string ind(indent, ' ');
+
+  os << std::scientific << std::setprecision(double_precision);
+  os << pre << "<PointData>\n";
+
+  auto& gdof = *(model.global_dof_);
+  os << pre << ind
+     << "<DataArray Name=\"Displacement\" type=\"Float64\" NumberOfComponents=\"3\" "
+        "format=\"ascii\">\n";
+  for (std::size_t i = 0; i < model.GetNumNodes(); ++i) {
+    auto& dofs = model.nodes_[i].global_dof_index_;
+    std::size_t ix = dofs[cpe::model::dof::kIx];
+    std::size_t iy = dofs[cpe::model::dof::kIy];
+    std::size_t iz = dofs[cpe::model::dof::kIz];
+    os << pre << ind << ind << std::setw(double_width) << gdof[ix]
+       << ind << std::setw(double_width) << gdof[iy] << ind
+       << std::setw(double_width) << gdof[iz] << "\n";
+  }
+  os << pre << ind << "</DataArray>\n";
+
+  os << pre << ind
+     << "<DataArray Name=\"Rotation\" type=\"Float64\" NumberOfComponents=\"3\" "
+        "format=\"ascii\">\n";
+  for (std::size_t i = 0; i < model.GetNumNodes(); ++i) {
+    auto& dofs = model.nodes_[i].global_dof_index_;
+    std::size_t idx = dofs[cpe::model::dof::kIdx];
+    std::size_t idy = dofs[cpe::model::dof::kIdy];
+    std::size_t idz = dofs[cpe::model::dof::kIdz];
+    os << pre << ind << ind << std::setw(double_width) << gdof[idx]
+       << ind << std::setw(double_width) << gdof[idy] << ind
+       << std::setw(double_width) << gdof[idz] << "\n";
+  }
+  os << pre << ind << "</DataArray>\n";
+
+  os << pre << "</PointData>\n";
+}
+
 void WriteVtuPoints(std::ostream& os, const cpe::model::Model& model,
                     int level = 0, int indent = 2) {
   std::string pre(indent * level, ' ');
@@ -109,6 +149,8 @@ void WriteVtu(std::ostream& os, const cpe::model::Model& model) {
   const int indent_level = 3;
   WriteVtuPoints(os, model, indent_level);
   WriteVtuCells(os, model, indent_level);
+  if (model.stiffness_matrix_)
+    WriteVtuPointData(os, model, indent_level);
 
   os << "    </Piece>\n";
   os << "  </UnstructuredGrid>\n";
