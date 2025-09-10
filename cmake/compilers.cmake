@@ -8,4 +8,6 @@ else()
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
+endif()
