@@ -36,10 +36,11 @@ class NodeList {
 
   void AddNode(std::size_t id, double x, double y = 0.0, double z = 0.0);
 
-  Node& GetNodeById(std::size_t id) { return nodes_[node_ids_[id]]; }
+  Node& GetNodeById(std::size_t id) { return nodes_[GetNodeIndex(id)]; }
   const Node& GetNodeById(std::size_t id) const {
     return nodes_[node_ids_.at(id)];
   }
+  std::size_t GetNodeIndex(const std::size_t& id) const { return node_ids_.at(id); }
 
   std::size_t GetNumNodes() { return nodes_.size(); }
   std::size_t GetNumNodes() const { return nodes_.size(); }

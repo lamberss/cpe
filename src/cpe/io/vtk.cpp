@@ -46,7 +46,9 @@ void WriteVtuCells(std::ostream& os, const cpe::model::Model& model,
     for (std::size_t j = 0; j < block.GetNumElements(); ++j) {
       os << pre << ind;
       for (unsigned int k = 0; k < block[j].GetNumNodes(); ++k) {
-        os << ind << block[j][block[j].kVtkOrder[k]];
+        std::size_t elem_node_index = block[j].kVtkOrder[k];
+        std::size_t node_id = block[j][elem_node_index];
+        os << ind << model.nodes_.GetNodeIndex(node_id);
       }
       os << "\n";
       if (j >= 1) offsets[j] = offsets[j - 1];

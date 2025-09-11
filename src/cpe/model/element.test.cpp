@@ -48,8 +48,8 @@ TEST(ElementTest, AssembleXAlligned) {
   (*property)["area"] = 10.0;
   const double length = 100.0;
   const double k = (*property)["area"] * material->YoungsModulus() / length;
-  const std::size_t n1 = 0;
-  const std::size_t n2 = 1;
+  const std::size_t n1 = 1;
+  const std::size_t n2 = 2;
   cpe::model::Element element(property, n1, n2);
   cpe::model::NodeList nodes;
   nodes.AddNode(n1, 0.0, 0.0, 0.0);
@@ -87,8 +87,8 @@ TEST(ElementTest, AssembleYAlligned) {
   (*property)["area"] = 10.0;
   const double length = 100.0;
   const double k = (*property)["area"] * material->YoungsModulus() / length;
-  const std::size_t n1 = 0;
-  const std::size_t n2 = 1;
+  const std::size_t n1 = 1;
+  const std::size_t n2 = 2;
   cpe::model::Element element(property, n1, n2);
   cpe::model::NodeList nodes;
   nodes.AddNode(n1, 0.0, 0.0, 0.0);
@@ -126,8 +126,8 @@ TEST(ElementTest, AssembleZAlligned) {
   (*property)["area"] = 10.0;
   const double length = 100.0;
   const double k = (*property)["area"] * material->YoungsModulus() / length;
-  const std::size_t n1 = 0;
-  const std::size_t n2 = 1;
+  const std::size_t n1 = 1;
+  const std::size_t n2 = 2;
   cpe::model::Element element(property, n1, n2);
   cpe::model::NodeList nodes;
   nodes.AddNode(n1, 0.0, 0.0, 0.0);
@@ -166,8 +166,8 @@ TEST(ElementTest, AssembleArbitrary) {
   const double length = 100.0;
   const double p = std::sqrt(length * length / 3.0);
   const double k = (*property)["area"] * material->YoungsModulus() / length;
-  const std::size_t n1 = 0;
-  const std::size_t n2 = 1;
+  const std::size_t n1 = 1;
+  const std::size_t n2 = 2;
   cpe::model::Element element(property, n1, n2);
   cpe::model::NodeList nodes;
   nodes.AddNode(n1, 0.0, 0.0, 0.0);
