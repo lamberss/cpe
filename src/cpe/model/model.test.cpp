@@ -35,14 +35,14 @@ TEST(ModelTest, Create) {
 
 TEST(ModelTest, AddConstraintSingle) {
   cpe::model::Model model;
-  model.nodes_.AddNode(0, 1.0);
-  model.nodes_.AddNode(1, 2.0);
-  model.AddConstraint(cpe::model::dof::kX, 1.0, 0);
-  EXPECT_EQ(model.constraints_[0], cpe::model::dof::kX);
-  EXPECT_EQ(model.constraints_[1], cpe::model::dof::kNone);
-  model.AddConstraint(cpe::model::dof::kY, 2.0, 0);
-  EXPECT_EQ(model.constraints_[0], cpe::model::dof::kX | cpe::model::dof::kY);
-  EXPECT_EQ(model.constraints_[1], cpe::model::dof::kNone);
+  model.nodes_.AddNode(1, 1.0);
+  model.nodes_.AddNode(2, 2.0);
+  model.AddConstraint(cpe::model::dof::kX, 1.0, 1);
+  EXPECT_EQ(model.constraints_[1], cpe::model::dof::kX);
+  EXPECT_EQ(model.constraints_[2], cpe::model::dof::kNone);
+  model.AddConstraint(cpe::model::dof::kY, 2.0, 1);
+  EXPECT_EQ(model.constraints_[1], cpe::model::dof::kX | cpe::model::dof::kY);
+  EXPECT_EQ(model.constraints_[2], cpe::model::dof::kNone);
   EXPECT_EQ(model.nodes_[0].global_dof_index_[0], 0);
   EXPECT_EQ(model.nodes_[0].global_dof_index_[5], 5);
   EXPECT_EQ(model.nodes_[1].global_dof_index_[0], 6);
@@ -59,14 +59,13 @@ TEST(ModelTest, AddConstraintSingle) {
     }
   }
 }
-
 TEST(ModelTest, AddConstraintMulti) {
   cpe::model::Model model;
-  model.nodes_.AddNode(0, 1.0);
-  model.nodes_.AddNode(1, 2.0);
-  model.AddConstraint(cpe::model::dof::kX, 1.0, {0, 1});
-  EXPECT_EQ(model.constraints_[0], cpe::model::dof::kX);
+  model.nodes_.AddNode(1, 1.0);
+  model.nodes_.AddNode(2, 2.0);
+  model.AddConstraint(cpe::model::dof::kX, 1.0, {1, 2});
   EXPECT_EQ(model.constraints_[1], cpe::model::dof::kX);
+  EXPECT_EQ(model.constraints_[2], cpe::model::dof::kX);
   EXPECT_EQ(model.nodes_[0].global_dof_index_[0], 0);
   EXPECT_EQ(model.nodes_[0].global_dof_index_[5], 5);
   EXPECT_EQ(model.nodes_[1].global_dof_index_[0], 6);
@@ -84,11 +83,11 @@ TEST(ModelTest, AddConstraintMulti) {
 
 TEST(ModelTest, AddConstraintAll) {
   cpe::model::Model model;
-  model.nodes_.AddNode(0, 1.0);
-  model.nodes_.AddNode(1, 2.0);
+  model.nodes_.AddNode(1, 1.0);
+  model.nodes_.AddNode(2, 2.0);
   model.AddConstraint(cpe::model::dof::kX, 1.0);
-  EXPECT_EQ(model.constraints_[0], cpe::model::dof::kX);
   EXPECT_EQ(model.constraints_[1], cpe::model::dof::kX);
+  EXPECT_EQ(model.constraints_[2], cpe::model::dof::kX);
   EXPECT_EQ(model.nodes_[0].global_dof_index_[0], 0);
   EXPECT_EQ(model.nodes_[0].global_dof_index_[5], 5);
   EXPECT_EQ(model.nodes_[1].global_dof_index_[0], 6);
@@ -106,10 +105,10 @@ TEST(ModelTest, AddConstraintAll) {
 
 TEST(ModelTest, AddForceSingle) {
   cpe::model::Model model;
-  model.nodes_.AddNode(0, 1.0);
-  model.nodes_.AddNode(1, 2.0);
-  model.AddForce(cpe::model::dof::kX, 1.0, 0);
-  model.AddForce(cpe::model::dof::kY, 2.0, 0);
+  model.nodes_.AddNode(1, 1.0);
+  model.nodes_.AddNode(2, 2.0);
+  model.AddForce(cpe::model::dof::kX, 1.0, 1);
+  model.AddForce(cpe::model::dof::kY, 2.0, 1);
   EXPECT_EQ(model.global_force_->GetNumRows(), 12);
   auto& global_force = *model.global_force_;
   for (std::size_t i = 0; i < model.global_force_->GetNumRows(); ++i) {
@@ -125,9 +124,9 @@ TEST(ModelTest, AddForceSingle) {
 
 TEST(ModelTest, AddForceMulti) {
   cpe::model::Model model;
-  model.nodes_.AddNode(0, 1.0);
-  model.nodes_.AddNode(1, 2.0);
-  model.AddForce(cpe::model::dof::kX, 1.0, {0, 1});
+  model.nodes_.AddNode(1, 1.0);
+  model.nodes_.AddNode(2, 2.0);
+  model.AddForce(cpe::model::dof::kX, 1.0, {1, 2});
   EXPECT_EQ(model.global_force_->GetNumRows(), 12);
   auto& global_force = *model.global_force_;
   for (std::size_t i = 0; i < model.global_force_->GetNumRows(); ++i) {
@@ -141,8 +140,8 @@ TEST(ModelTest, AddForceMulti) {
 
 TEST(ModelTest, AddForceAll) {
   cpe::model::Model model;
-  model.nodes_.AddNode(0, 1.0);
-  model.nodes_.AddNode(1, 2.0);
+  model.nodes_.AddNode(1, 1.0);
+  model.nodes_.AddNode(2, 2.0);
   model.AddForce(cpe::model::dof::kX, 1.0);
   EXPECT_EQ(model.global_force_->GetNumRows(), 12);
   auto& global_force = *model.global_force_;
@@ -157,8 +156,8 @@ TEST(ModelTest, AddForceAll) {
 
 TEST(ModelTest, Assemble) {
   cpe::model::Model model;
-  model.nodes_.AddNode(0, 1.0);
-  model.nodes_.AddNode(1, 2.0);
+  model.nodes_.AddNode(1, 1.0);
+  model.nodes_.AddNode(2, 2.0);
   std::shared_ptr<cpe::model::Material> material =
       std::make_shared<cpe::model::Material>("Aluminum", 70.0e9, 0.3);
   std::shared_ptr<cpe::model::Property> property =
@@ -168,8 +167,8 @@ TEST(ModelTest, Assemble) {
   std::shared_ptr<ElementBlock> block =
       std::make_shared<ElementBlock>("truss", property, 8);
   model.blocks_.push_back(block);
-  block->AddElement(0, 1);
-  model.AddConstraint(cpe::model::dof::kAll, 0.0, 0);
+  block->AddElement(1, 2);
+  model.AddConstraint(cpe::model::dof::kAll, 0.0, 1);
   model.AddConstraint(cpe::model::dof::kAllNon2d, 0.0);
   // NOTE: Assembly will add a constraint on kDz since the element doesn't
   // support that
@@ -189,8 +188,6 @@ TEST(ModelTest, GetNumberOfElements) {
       std::make_shared<cpe::model::Property>("circle", material);
   (*property_circle)["area"] = 2.0;
   cpe::model::Model model;
-  model.nodes_.AddNode(0, 1.0);
-  model.nodes_.AddNode(1, 2.0);
   using ElementBlock = cpe::model::ElementBlock<cpe::model::Element>;
   std::shared_ptr<ElementBlock> block1 =
       std::make_shared<ElementBlock>("truss1", property_square, 4);
@@ -211,8 +208,8 @@ TEST(ModelTest, GetNumberOfElements) {
 
 TEST(ModelTest, GetNumberOfNodes) {
   cpe::model::Model model;
-  model.nodes_.AddNode(0, 1.0);
-  model.nodes_.AddNode(1, 2.0);
+  model.nodes_.AddNode(1, 1.0);
+  model.nodes_.AddNode(2, 2.0);
   EXPECT_EQ(model.GetNumNodes(), 2);
 }
 

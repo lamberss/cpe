@@ -31,6 +31,9 @@ class NodeList {
  public:
   NodeList(std::size_t n = 0);
 
+  auto begin() const { return node_ids_.begin(); }
+  auto end() const { return node_ids_.end(); }
+
   void AddNode(std::size_t id, double x, double y = 0.0, double z = 0.0);
 
   Node& GetNodeById(std::size_t id) { return nodes_[node_ids_[id]]; }

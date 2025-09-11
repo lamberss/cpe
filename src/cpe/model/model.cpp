@@ -21,15 +21,14 @@
 // SOFTWARE.
 #include <cpe/linearsolver/ssor.hpp>
 #include <cpe/model/model.hpp>
+#include <ranges>
 
 namespace cpe::model {
 
 Model::Model() : global_dof_indices_assigned_(false) {};
 
 void Model::AddConstraint(dof::Dof dof, double v) {
-  for (std::size_t i = 0; i < nodes_.GetNumNodes(); ++i) {
-    AddConstraint(dof, v, i);
-  }
+  for (const auto& key : std::views::keys(nodes_)) AddConstraint(dof, v, key);
 }
 
 void Model::AddConstraint(dof::Dof dof, double v, std::size_t node_id) {
@@ -54,7 +53,7 @@ void Model::AddConstraint(dof::Dof dof, double v,
 }
 
 void Model::AddForce(dof::Dof dof, double v) {
-  for (std::size_t i = 0; i < nodes_.GetNumNodes(); ++i) AddForce(dof, v, i);
+  for (const auto& key : std::views::keys(nodes_)) AddForce(dof, v, key);
 }
 
 void Model::AddForce(dof::Dof dof, double v, std::size_t node_id) {
@@ -135,7 +134,7 @@ void Model::AssignGlobalDofIndices() {
   std::size_t global_dof_count = 0;
   for (std::size_t i = 0; i < nodes_.GetNumNodes(); ++i) {
     for (std::size_t j = 0; j < dof::kNumStrucDof; ++j) {
-      nodes_.GetNodeById(i).global_dof_index_[j] = global_dof_count++;
+      nodes_[i].global_dof_index_[j] = global_dof_count++;
     }
   }
 

@@ -22,6 +22,7 @@
 #include <gtest/gtest.h>
 
 #include <cpe/model/nodelist.hpp>
+#include <ranges>
 #include <stdexcept>
 
 namespace {
@@ -66,6 +67,21 @@ TEST(NodeListTest, Access) {
   EXPECT_EQ(node2.x_, x);
   EXPECT_EQ(node2.y_, y);
   EXPECT_EQ(node2.z_, z);
+}
+
+TEST(NodeListTest, Iterate) {
+  const std::size_t id1 = 5280;
+  const std::size_t id2 = 473281;
+  const double x = 1.0;
+  const double y = 2.0;
+  const double z = -10.0;
+  cpe::model::NodeList node_list;
+  node_list.AddNode(id1, x, y, z);
+  node_list.AddNode(id2, z, y, x);
+  std::vector<std::size_t> ids{id1, id2};
+  for (const auto& [key, id] : std::views::zip(std::views::keys(node_list), ids)) {
+    EXPECT_EQ(key, id);
+  }
 }
 
 }  // namespace
