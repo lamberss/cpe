@@ -61,9 +61,9 @@ void Model::AddForce(dof::Dof dof, double v, std::size_t node_id) {
       dof::kX, dof::kY, dof::kZ, dof::kDx, dof::kDy, dof::kDz};
   AssignGlobalDofIndices();
   Node& node = nodes_.GetNodeById(node_id);
-  auto& global_force = (*global_force_);
+  auto& applied_force = (*applied_force_);
   for (std::size_t i = 0; i < kDofs.size(); ++i) {
-    if (dof & kDofs[i]) global_force[node.global_dof_index_[i]] = v;
+    if (dof & kDofs[i]) applied_force[node.global_dof_index_[i]] = v;
   }
 }
 
@@ -97,7 +97,7 @@ void Model::Assemble() {
   // Modify system to enforce constraints
   auto& stiff = *stiffness_matrix_;
   auto& dof = *global_dof_;
-  auto& force = *global_force_;
+  auto& force = *induced_force_;
   for (std::size_t i = 0; i < dof.GetNumRows(); ++i) {
     if (global_dof_constrained_[i]) {
       for (std::size_t j = 0; j < dof.GetNumRows(); ++j) {
@@ -123,8 +123,9 @@ std::size_t Model::GetNumElements() const {
 }
 
 int Model::Solve() {
+  cpe::matrix::Matrix all_forces = *applied_force_ + *induced_force_;
   int result = cpe::linearsolver::ssor::Solve(*stiffness_matrix_, *global_dof_,
-                                              *global_force_, 1.0e-10, 1.5);
+                                              all_forces, 1.0e-10, 1.5);
   return result;
 }
 
@@ -139,7 +140,8 @@ void Model::AssignGlobalDofIndices() {
   }
 
   global_dof_ = std::make_shared<cpe::matrix::Matrix>(global_dof_count, 1);
-  global_force_ = std::make_shared<cpe::matrix::Matrix>(global_dof_count, 1);
+  applied_force_ = std::make_shared<cpe::matrix::Matrix>(global_dof_count, 1);
+  induced_force_ = std::make_shared<cpe::matrix::Matrix>(global_dof_count, 1);
   global_dof_constrained_.resize(global_dof_count, false);
 
   global_dof_indices_assigned_ = true;

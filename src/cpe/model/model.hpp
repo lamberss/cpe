@@ -54,7 +54,8 @@ class Model {
   std::map<std::size_t, dof::Dof> constraints_;
   std::shared_ptr<cpe::matrix::Matrix> global_dof_;
   std::vector<bool> global_dof_constrained_;
-  std::shared_ptr<cpe::matrix::Matrix> global_force_;
+  std::shared_ptr<cpe::matrix::Matrix> applied_force_;
+  std::shared_ptr<cpe::matrix::Matrix> induced_force_;
   NodeList nodes_;
   std::shared_ptr<cpe::matrix::Matrix> stiffness_matrix_;
 

@@ -109,6 +109,35 @@ void WriteVtuPointData(std::ostream& os, const cpe::model::Model& model,
   }
   os << pre << ind << "</DataArray>\n";
 
+  auto& aforce = *(model.applied_force_);
+  os << pre << ind
+     << "<DataArray Name=\"Applied Force\" type=\"Float64\" NumberOfComponents=\"3\" "
+        "format=\"ascii\">\n";
+  for (std::size_t i = 0; i < model.GetNumNodes(); ++i) {
+    auto& dofs = model.nodes_[i].global_dof_index_;
+    std::size_t ix = dofs[cpe::model::dof::kIx];
+    std::size_t iy = dofs[cpe::model::dof::kIy];
+    std::size_t iz = dofs[cpe::model::dof::kIz];
+    os << pre << ind << ind << std::setw(double_width) << aforce[ix]
+       << ind << std::setw(double_width) << aforce[iy] << ind
+       << std::setw(double_width) << aforce[iz] << "\n";
+  }
+  os << pre << ind << "</DataArray>\n";
+
+  os << pre << ind
+     << "<DataArray Name=\"Applied Moment\" type=\"Float64\" NumberOfComponents=\"3\" "
+        "format=\"ascii\">\n";
+  for (std::size_t i = 0; i < model.GetNumNodes(); ++i) {
+    auto& dofs = model.nodes_[i].global_dof_index_;
+    std::size_t idx = dofs[cpe::model::dof::kIdx];
+    std::size_t idy = dofs[cpe::model::dof::kIdy];
+    std::size_t idz = dofs[cpe::model::dof::kIdz];
+    os << pre << ind << ind << std::setw(double_width) << aforce[idx]
+       << ind << std::setw(double_width) << aforce[idy] << ind
+       << std::setw(double_width) << aforce[idz] << "\n";
+  }
+  os << pre << ind << "</DataArray>\n";
+
   os << pre << "</PointData>\n";
 }
 

@@ -109,9 +109,9 @@ TEST(ModelTest, AddForceSingle) {
   model.nodes_.AddNode(2, 2.0);
   model.AddForce(cpe::model::dof::kX, 1.0, 1);
   model.AddForce(cpe::model::dof::kY, 2.0, 1);
-  EXPECT_EQ(model.global_force_->GetNumRows(), 12);
-  auto& global_force = *model.global_force_;
-  for (std::size_t i = 0; i < model.global_force_->GetNumRows(); ++i) {
+  EXPECT_EQ(model.applied_force_->GetNumRows(), 12);
+  auto& global_force = *model.applied_force_;
+  for (std::size_t i = 0; i < model.applied_force_->GetNumRows(); ++i) {
     if (i == 0) {
       EXPECT_EQ(global_force[i], 1.0);
     } else if (i == 1) {
@@ -127,9 +127,9 @@ TEST(ModelTest, AddForceMulti) {
   model.nodes_.AddNode(1, 1.0);
   model.nodes_.AddNode(2, 2.0);
   model.AddForce(cpe::model::dof::kX, 1.0, {1, 2});
-  EXPECT_EQ(model.global_force_->GetNumRows(), 12);
-  auto& global_force = *model.global_force_;
-  for (std::size_t i = 0; i < model.global_force_->GetNumRows(); ++i) {
+  EXPECT_EQ(model.applied_force_->GetNumRows(), 12);
+  auto& global_force = *model.applied_force_;
+  for (std::size_t i = 0; i < model.applied_force_->GetNumRows(); ++i) {
     if (i == 0 || i == 6) {
       EXPECT_EQ(global_force[i], 1.0);
     } else {
@@ -143,9 +143,9 @@ TEST(ModelTest, AddForceAll) {
   model.nodes_.AddNode(1, 1.0);
   model.nodes_.AddNode(2, 2.0);
   model.AddForce(cpe::model::dof::kX, 1.0);
-  EXPECT_EQ(model.global_force_->GetNumRows(), 12);
-  auto& global_force = *model.global_force_;
-  for (std::size_t i = 0; i < model.global_force_->GetNumRows(); ++i) {
+  EXPECT_EQ(model.applied_force_->GetNumRows(), 12);
+  auto& global_force = *model.applied_force_;
+  for (std::size_t i = 0; i < model.applied_force_->GetNumRows(); ++i) {
     if (i == 0 || i == 6) {
       EXPECT_EQ(global_force[i], 1.0);
     } else {
@@ -221,8 +221,9 @@ TEST(ModelTest, Solve) {
   A[0, 1] = A[1, 2] = A[2, 3] = A[3, 4] = -1.0;
   A[1, 0] = A[2, 1] = A[3, 2] = A[4, 3] = -1.0;
   A[0, 3] = A[3, 0] = A[1, 4] = A[4, 1] = 1.0;
-  model.global_force_ = std::make_shared<cpe::matrix::Matrix>(5, 1);
-  cpe::matrix::Matrix& b = *(model.global_force_);
+  model.induced_force_ = std::make_shared<cpe::matrix::Matrix>(5, 1);
+  model.applied_force_ = std::make_shared<cpe::matrix::Matrix>(5, 1);
+  cpe::matrix::Matrix& b = *(model.applied_force_);
   b[0] = b[1] = b[2] = b[3] = b[4] = 100.0;
   model.global_dof_ = std::make_shared<cpe::matrix::Matrix>(5, 1);
   cpe::matrix::Matrix& x = *(model.global_dof_);
